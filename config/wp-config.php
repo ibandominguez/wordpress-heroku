@@ -6,7 +6,8 @@ define('PREFIX', preg_replace(array('/\:/', '/\./'), '_', HOST).'_');
 define('URL', PROTOCOL.HOST);
 
 function getEnvOr($key, $default) {
-	return !empty($_ENV[$key]) ? json_decode($_ENV[$key]) : $default;
+	$value = getenv($key);
+	return !empty($value) ? $value : $default;
 }
 
 define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
