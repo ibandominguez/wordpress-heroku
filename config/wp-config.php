@@ -34,6 +34,26 @@ define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
 define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'theme'));
 
+define('AS3CF_SETTINGS', serialize(array(
+	'provider' => 'aws', // Storage Provider ('aws', 'do', 'gcp')
+	'access-key-id' => '********************', // Access Key ID for Storage Provider (aws and do only, replace '*')
+	'secret-access-key' => '**************************************', // Secret Access Key
+	'key-file-path' => '/path/to/key/file.json', // GCP Key File Path (gcp only). Make sure not public
+	'use-server-roles' => false, // Use IAM Roles on Amazon Elastic Compute Cloud (EC2) or Google Compute Engine (GCE)
+	'bucket' => 'mybucket', // Bucket to upload files to
+	'region' => '', // Bucket region (e.g. 'us-west-1' - leave blank for default region)
+	'copy-to-s3' => true, // Automatically copy files to bucket on upload
+	'serve-from-s3' => true, // Rewrite file URLs to bucket
+	'domain' => 'path', // Bucket URL format to use ('path', 'cloudfront')
+	'cloudfront' => 'cdn.exmple.com', // Custom domain if 'domain' set to 'cloudfront'
+	'enable-object-prefix' => true, // Enable object prefix, useful if you use your bucket for other files
+	'object-prefix' => 'wp-content/uploads/', // Object prefix to use if 'enable-object-prefix' is 'true'
+	'use-yearmonth-folders' => true, // Organize bucket files into YYYY/MM directories
+	'force-https' => false, // Serve files over HTTPS
+	'remove-local-file' => false, // Remove the local file version once offloaded to bucket
+	'object-versioning' => true // Append a timestamped folder to path of files offloaded to bucket
+)));
+
 define('WP_DEBUG', getEnvOr('DEBUG', false));
 
 $table_prefix = PREFIX;
