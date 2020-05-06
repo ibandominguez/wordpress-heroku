@@ -1,0 +1,30 @@
+{
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "wordpress/wordpress",
+        "version": "5.4.1",
+        "dist": {
+          "url": "https://es.wordpress.org/latest-es_ES.zip",
+          "type": "zip"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "wordpress/wordpress": "5.4.*"
+  },
+  "scripts": {
+    "rm-public": "rm -rf public",
+    "cp-config": "cp -r config public",
+    "cp-wpcore": "cp -r vendor/wordpress/wordpress/* public",
+    "cp-plugins": "cp -r plugins/* public/wp-content/plugins",
+    "cp-theme": "cp -r theme public/wp-content/themes",
+    "rm-themes": "rm -rf public/wp-content/themes/*",
+    "rm-plugins": "rm -rf public/wp-content/plugins/*",
+    "pre-install-cmd": "composer rm-public",
+    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer rm-themes && composer rm-plugins && composer cp-theme && composer cp-plugins"
+  }
+}
