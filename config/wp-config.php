@@ -10,7 +10,7 @@ function getEnvOr($key, $default) {
 	return !empty($value) ? $value : $default;
 }
 
-if (getenv('CLEARDB_DATABASE_URL')): die('HEllo');
+if ($url = getenv('CLEARDB_DATABASE_URL')):
 	$parts = parse_url($url);
 	define('DB_NAME', substr($parts['path'], 1));
 	define('DB_USER', $parts['user']);
