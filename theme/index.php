@@ -9,12 +9,12 @@
   <body>
     <div class="container py-5">
       <?php if (have_posts()): while (have_posts()) : the_post(); ?>
-        <?php if (is_page() || is_single()): ?>
+        <?php if (is_page() || is_single()): /* Single template */ ?>
           <h2><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
           <?php if (has_post_thumbnail()): the_post_thumbnail('full', ['class' => 'd-block w-100 my-3']); endif; ?>
           <div class="the-content"><?php the_content(); ?></div>
           <pre><?php get_post_meta(get_the_id()); ?></pre>
-        <?php else: ?>
+        <?php else: /* Listing template */ ?>
           <h4><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h4>
           <?php if (has_post_thumbnail()): the_post_thumbnail('full', ['class' => 'd-block w-100 my-3']); endif; ?>
           <div class="the-excerpt"><?php the_excerpt(); ?></div>
@@ -22,7 +22,7 @@
             <?= the_posts_pagination(); ?>
           </div>
         <?php endif; ?>
-      <?php endwhile; else: ?>
+      <?php endwhile; else: /* 404 template */ ?>
         <div class="vh-100 d-flex flex-column justify-content-center align-items-center">
           <h2>404</h2>
           <p class="lead">El contenido que buscas no existe</p>
