@@ -10,8 +10,8 @@ function getEnvOr($key, $default) {
 	return !empty($value) ? $value : $default;
 }
 
-if (!empty(getenv('CLEARDB_DATABASE_URL'))):
-	$url = parse_url(getenv('CLEARDB_DATABASE_URL'));
+if (!empty(getenv('JAWSDB_URL'))):
+	$url = parse_url(getenv('JAWSDB_URL'));
 
 	define('DB_NAME', substr($url['path'], 1));
 	define('DB_USER', $url['user']);
