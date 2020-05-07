@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8ee12d74bf42dc53c1b5e0b74093e21",
+    "content-hash": "dfcae42f719a9c7f3eb3cf2e4ddd7a56",
     "packages": [
         {
             "name": "wordpress/wordpress",
@@ -25,7 +25,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6"
+        "php": "7.2.12",
+        "ext-gd": "*"
     },
     "platform-dev": []
 }
