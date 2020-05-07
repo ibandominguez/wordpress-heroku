@@ -5,6 +5,10 @@ The goal of this repository is to create a backend for clients apps that can be 
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ibandominguez/wordpress-heroku)
 
+The app is automatically provisioned and adds aws s3 support out of the box using *Cloudcube*(https://elements.heroku.com/addons/cloudcube) and a running db using *Jaws DB Mysql*(https://elements.heroku.com/addons/jawsdb).
+
+In less that a minute you should have wordpress up and running.
+
 ## Features
 
 * Uses a single database and creates dynamic tables based on the url prefix so that the same core can be used for multiple backends.
