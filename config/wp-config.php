@@ -34,20 +34,22 @@ define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
 define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'theme'));
 
+/**
+ * File Settings
+ *
+ * See doc · https://deliciousbrains.com/wp-offload-media/doc/settings-constants/
+ */
 define('AS3CF_SETTINGS', serialize(array(
-	'provider' => 'aws', // Storage Provider ('aws', 'do', 'gcp')
-	'access-key-id' => '********************', // Access Key ID for Storage Provider (aws and do only, replace '*')
-	'secret-access-key' => '**************************************', // Secret Access Key
-	'key-file-path' => '/path/to/key/file.json', // GCP Key File Path (gcp only). Make sure not public
-	'use-server-roles' => false, // Use IAM Roles on Amazon Elastic Compute Cloud (EC2) or Google Compute Engine (GCE)
-	'bucket' => 'mybucket', // Bucket to upload files to
-	'region' => '', // Bucket region (e.g. 'us-west-1' - leave blank for default region)
+	'provider' => getEnvOr('FS_PROVIDER', 'aws'), // Storage Provider ('aws', 'do', 'gcp')
+	'access-key-id' => getEnvOr('FS_KEY_ID', null), // Access Key ID for Storage Provider (aws and do only, replace '*')
+	'secret-access-key' => getEnvOr('FS_ACCESS_KEY', null), // Secret Access Key
+	'bucket' => getEnvOr('FS_BUCKET', 'mybucket'), // Bucket to upload files to
+	'region' => getEnvOr('FS_BUCKET', ''), // Bucket region (e.g. 'us-west-1' - leave blank for default region)
 	'copy-to-s3' => true, // Automatically copy files to bucket on upload
 	'serve-from-s3' => true, // Rewrite file URLs to bucket
 	'domain' => 'path', // Bucket URL format to use ('path', 'cloudfront')
-	'cloudfront' => 'cdn.exmple.com', // Custom domain if 'domain' set to 'cloudfront'
 	'enable-object-prefix' => true, // Enable object prefix, useful if you use your bucket for other files
-	'object-prefix' => 'wp-content/uploads/', // Object prefix to use if 'enable-object-prefix' is 'true'
+	'object-prefix' => PREFIX.'/uploads/', // Object prefix to use if 'enable-object-prefix' is 'true'
 	'use-yearmonth-folders' => true, // Organize bucket files into YYYY/MM directories
 	'force-https' => false, // Serve files over HTTPS
 	'remove-local-file' => false, // Remove the local file version once offloaded to bucket
@@ -63,3 +65,30 @@ if (!defined('ABSPATH')):
 endif;
 
 require_once(ABSPATH . 'wp-settings.php');
+
+/** Options configurations
+ *
+ * Key => Value set of options to be applied
+ */
+global $wp_rewrite;
+
+foreach (array(
+	'permalink_structure' => '/%postname%/', // change the permalink structure
+	// ...
+) as $key => $value):
+	update_option($key, $value);
+endforeach;
+
+$wp_rewrite->flush_rules();
+
+/** Plugins activations
+ *
+ * Key => Value set of options to be applied
+ */
+include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+foreach (array(
+	'amazon-s3-and-cloudfront/wordpress-s3.php'
+) as $plugin):
+	activate_plugin($plugin);
+endforeach;
