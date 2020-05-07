@@ -46,24 +46,26 @@ define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'theme'));
 /**
  * File Settings
  *
+ * Autoconfigure with heroku
  * See doc · https://deliciousbrains.com/wp-offload-media/doc/settings-constants/
  */
-define('AS3CF_SETTINGS', serialize(array(
-	'provider' => getEnvOr('FS_PROVIDER', 'aws'), // Storage Provider ('aws', 'do', 'gcp')
-	'access-key-id' => getEnvOr('FS_KEY_ID', null), // Access Key ID for Storage Provider (aws and do only, replace '*')
-	'secret-access-key' => getEnvOr('FS_ACCESS_KEY', null), // Secret Access Key
-	'bucket' => getEnvOr('FS_BUCKET', 'mybucket'), // Bucket to upload files to
-	'region' => getEnvOr('FS_BUCKET', ''), // Bucket region (e.g. 'us-west-1' - leave blank for default region)
-	'copy-to-s3' => true, // Automatically copy files to bucket on upload
-	'serve-from-s3' => true, // Rewrite file URLs to bucket
-	'domain' => 'path', // Bucket URL format to use ('path', 'cloudfront')
-	'enable-object-prefix' => true, // Enable object prefix, useful if you use your bucket for other files
-	'object-prefix' => PREFIX.'/uploads/', // Object prefix to use if 'enable-object-prefix' is 'true'
-	'use-yearmonth-folders' => true, // Organize bucket files into YYYY/MM directories
-	'force-https' => false, // Serve files over HTTPS
-	'remove-local-file' => false, // Remove the local file version once offloaded to bucket
-	'object-versioning' => true // Append a timestamped folder to path of files offloaded to bucket
-)));
+if (!empty(getenv('CLOUDCUBE_URL'))):
+	$url = parse_url(getenv('CLOUDCUBE_URL'));
+
+	define('AS3CF_SETTINGS', serialize(array(
+		'provider' => 'aws',
+		'access-key-id' => getenv('CLOUDCUBE_ACCESS_KEY_ID'),
+		'secret-access-key' => getenv('CLOUDCUBE_SECRET_ACCESS_KEY'),
+		'bucket' => explode('.', $url['host'])[0],
+		'region' => '',
+		'domain' => 'cloudfront', // Bucket URL format to use ('path', 'cloudfront')
+		'cloudfront' => $url['host'], // Set cdn
+		'enable-object-prefix' => true, // Enable object prefix, useful if you use your bucket for other files
+		'object-prefix' => $url['path'], // Object prefix to use if 'enable-object-prefix' is 'true'
+		'copy-to-s3' => true, // Automatically copy files to bucket on upload
+		'serve-from-s3' => true, // Rewrite file URLs to bucket
+	)));
+endif;
 
 define('WP_DEBUG', getEnvOr('DEBUG', false));
 
