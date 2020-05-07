@@ -18,6 +18,12 @@ The goal of this repository is to create a backend for clients apps that can be 
 * Add your required plugins (/plugins directory)
 * Configure your ENV vars
 
+## Serving locally
+
+```sh
+php serve.php
+```
+
 ## LICENSE
 
 MIT
