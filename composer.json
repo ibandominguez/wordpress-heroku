@@ -13,7 +13,7 @@
     }
   ],
   "require": {
-    "php": "7.2.*",
+    "php": "~7.2.0",
     "ext-gd": "*",
     "wordpress/wordpress": "5.4.*"
   },
