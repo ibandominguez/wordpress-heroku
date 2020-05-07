@@ -44,12 +44,8 @@ define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
 define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'theme'));
 
-/**
- * File Settings
- *
- * Autoconfigure with heroku
- * See doc · https://deliciousbrains.com/wp-offload-media/doc/settings-constants/
- */
+// File Settings
+// See doc · https://deliciousbrains.com/wp-offload-media/doc/settings-constants/
 if (!empty(getenv('CLOUDCUBE_URL'))):
 	$url = parse_url(getenv('CLOUDCUBE_URL'));
 
@@ -65,6 +61,8 @@ if (!empty(getenv('CLOUDCUBE_URL'))):
 		'object-prefix' => $url['path'], // Object prefix to use if 'enable-object-prefix' is 'true'
 		'copy-to-s3' => true, // Automatically copy files to bucket on upload
 		'serve-from-s3' => true, // Rewrite file URLs to bucket
+		'remove-local-file' => true, // Remove the local file version once offloaded to bucket
+		'object-versioning' => false // Append a timestamped folder to path of files offloaded to bucket
 	)));
 endif;
 
@@ -78,10 +76,7 @@ endif;
 
 require_once(ABSPATH . 'wp-settings.php');
 
-/** Options configurations
- *
- * Key => Value set of options to be applied
- */
+// Options config
 global $wp_rewrite;
 
 foreach (array(
@@ -93,10 +88,7 @@ endforeach;
 
 $wp_rewrite->flush_rules();
 
-/** Plugins activations
- *
- * Key => Value set of options to be applied
- */
+// Plugins activation
 include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 foreach (array(
