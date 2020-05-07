@@ -1,19 +1,22 @@
 # wordpress-heroku
 
-An easy way to setup wordpress on heroku
+This project uses wordpress as a dependency and configures the theme and plugins that are required.
+The goal of this repository is to create a backend for clients apps that can be deployed to Heroku.
 
-## Composer
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ibandominguez/wordpress-heroku)
 
-Composer it is not being used as supposed but it helps getting wordpress as a zip and running the required commands
-to get wordpress up and running on heroku dynos.
+## Features
 
-## Theme
+* Uses a single database and creates dynamic tables based on the url prefix so that the same core can be used for multiple backends.
+* Uses s3 for file storage, since Heroku doesn't support file persistance.
+* Uses pods for Custom post type and custom fields to extends the different resources on a api.
 
-Edit the theme directory and it will be copied to the right directory on deployment
+## Getting started
 
-## Plugins
-
-Add the required plugins and they will be copied to the right directory on deployment
+* Edit de config/wp-config.php according to your needs
+* Develop your theme (/theme directory)
+* Add your required plugins (/plugins directory)
+* Configure your ENV vars
 
 ## LICENSE
 

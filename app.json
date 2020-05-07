@@ -1,0 +1,7 @@
+{
+  "name": "Wordpress on heroku",
+  "description": "An easy way to wordress and heroku, file system ready",
+  "repository": "https://github.com/ibandominguez/wordpress-heroku",
+  "addons": ["cleardb"],
+  "keywords": ["php", "wordress", "s3"]
+}
