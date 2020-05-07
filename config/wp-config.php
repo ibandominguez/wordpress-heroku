@@ -10,12 +10,13 @@ function getEnvOr($key, $default) {
 	return !empty($value) ? $value : $default;
 }
 
-if ($url = getenv('CLEARDB_DATABASE_URL')):
-	$parts = parse_url($url);
-	define('DB_NAME', substr($parts['path'], 1));
-	define('DB_USER', $parts['user']);
-	define('DB_PASSWORD', $parts['pass']);
-	define('DB_HOST', $parts['host']);
+if (!empty(getenv('CLEARDB_DATABASE_URL'))):
+	$url = parse_url(getenv('CLEARDB_DATABASE_URL'));
+	
+	define('DB_NAME', substr($url['path'], 1));
+	define('DB_USER', $url['user']);
+	define('DB_PASSWORD', $url['pass']);
+	define('DB_HOST', $url['host']);
 else:
 	define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
 	define('DB_USER', getEnvOr('DB_USER', 'root'));
