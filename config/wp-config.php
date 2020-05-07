@@ -58,11 +58,11 @@ if (!empty(getenv('CLOUDCUBE_URL'))):
 		'domain' => 'cloudfront', // Bucket URL format to use ('path', 'cloudfront')
 		'cloudfront' => $url['host'], // Set cdn
 		'enable-object-prefix' => true, // Enable object prefix, useful if you use your bucket for other files
-		'object-prefix' => $url['path'], // Object prefix to use if 'enable-object-prefix' is 'true'
+		'object-prefix' => str_replace('/', '', $url['path']), // Object prefix to use if 'enable-object-prefix' is 'true'
 		'copy-to-s3' => true, // Automatically copy files to bucket on upload
 		'serve-from-s3' => true, // Rewrite file URLs to bucket
-		'remove-local-file' => true, // Remove the local file version once offloaded to bucket
-		'object-versioning' => false // Append a timestamped folder to path of files offloaded to bucket
+		'use-yearmonth-folders' => true, // Organize bucket files into YYYY/MM directories
+		'object-versioning' => true // Append a timestamped folder to path of files offloaded to bucket
 	)));
 endif;
 
