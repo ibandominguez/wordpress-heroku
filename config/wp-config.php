@@ -2,7 +2,7 @@
 
 define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://');
 define('HOST', $_SERVER['HTTP_HOST']);
-define('PREFIX', preg_replace(array('/\:/', '/\./'), '_', HOST).'_');
+define('PREFIX', preg_replace(array('/\:/', '/\./', '/-/'), '_', HOST).'_');
 define('URL', PROTOCOL.HOST);
 
 function getEnvOr($key, $default) {
@@ -12,7 +12,7 @@ function getEnvOr($key, $default) {
 
 if (!empty(getenv('CLEARDB_DATABASE_URL'))):
 	$url = parse_url(getenv('CLEARDB_DATABASE_URL'));
-	
+
 	define('DB_NAME', substr($url['path'], 1));
 	define('DB_USER', $url['user']);
 	define('DB_PASSWORD', $url['pass']);
