@@ -10,10 +10,19 @@ function getEnvOr($key, $default) {
 	return !empty($value) ? $value : $default;
 }
 
-define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
-define('DB_USER', getEnvOr('DB_USER', 'root'));
-define('DB_PASSWORD', getEnvOr('DB_PASSWORD', ''));
-define('DB_HOST', getEnvOr('DB_HOST', 'localhost'));
+if (getenv('CLEARDB_DATABASE_URL')): die('HEllo');
+	$parts = parse_url($url);
+	define('DB_NAME', substr($parts['path'], 1));
+	define('DB_USER', $parts['user']);
+	define('DB_PASSWORD', $parts['pass']);
+	define('DB_HOST', $parts['host']);
+else:
+	define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
+	define('DB_USER', getEnvOr('DB_USER', 'root'));
+	define('DB_PASSWORD', getEnvOr('DB_PASSWORD', ''));
+	define('DB_HOST', getEnvOr('DB_HOST', 'localhost'));
+endif;
+
 define('DB_CHARSET', getEnvOr('DB_CHARSET', 'utf8mb4'));
 define('DB_COLLATE', getEnvOr('DB_COLLATE', ''));
 
