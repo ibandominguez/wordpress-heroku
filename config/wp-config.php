@@ -21,7 +21,7 @@ else:
 	define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
 	define('DB_USER', getEnvOr('DB_USER', 'root'));
 	define('DB_PASSWORD', getEnvOr('DB_PASSWORD', ''));
-	define('DB_HOST', getEnvOr('DB_HOST', 'localhost'));
+	define('DB_HOST', getEnvOr('DB_HOST', '127.0.0.1'));
 endif;
 
 define('DB_CHARSET', getEnvOr('DB_CHARSET', 'utf8mb4'));
@@ -42,7 +42,7 @@ define('WP_HOME', getEnvOr('WP_HOME', URL));
 define('DISALLOW_FILE_EDIT', getEnvOr('DISALLOW_FILE_EDIT', true));
 define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
-define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'theme'));
+define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'default'));
 
 // File Settings
 // See doc · https://deliciousbrains.com/wp-offload-media/doc/settings-constants/

@@ -21,11 +21,9 @@
     "rm-public": "rm -rf public",
     "cp-config": "cp -r config public",
     "cp-wpcore": "cp -r vendor/wordpress/wordpress/* public",
-    "cp-plugins": "cp -r plugins/* public/wp-content/plugins",
-    "cp-theme": "cp -r theme public/wp-content/themes",
-    "rm-themes": "rm -rf public/wp-content/themes/*",
-    "rm-plugins": "rm -rf public/wp-content/plugins/*",
+    "cp-plugins": "rm -rf public/wp-content/plugins/* && cp -r plugins/* public/wp-content/plugins",
+    "cp-themes": "rm -rf public/wp-content/themes/* && cp -r themes/* public/wp-content/themes",
     "pre-install-cmd": "composer rm-public",
-    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer rm-themes && composer rm-plugins && composer cp-theme && composer cp-plugins"
+    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer cp-themes && composer cp-plugins"
   }
 }
