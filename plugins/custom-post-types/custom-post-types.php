@@ -27,8 +27,8 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
             add_filter('add_theme_compatibility_template', array( $this, 'update_theme_compatibility_template') );
             add_filter('get_field_from_shortcode', array( $this, 'update_shortcode_field_view'), 10, 3 );
             add_filter('form_edit_field_types', array( $this, 'update_form_edit_field_types') );
-            add_action('view_field_types', array( $this, 'update_form_view_field_types'), 10, 5 );      
-            add_action('init', array( $this, 'init_pro_version') );            
+            add_action('view_field_types', array( $this, 'update_form_view_field_types'), 10, 5 );
+            add_action('init', array( $this, 'init_pro_version') );
             $this->setup_theme_template_compatibility();
 
             // Init main plugin code
@@ -78,7 +78,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
             }
         }
 
-        public function update_form_view_field_types( $id,$type,$value,$required, $options ){ 
+        public function update_form_view_field_types( $id,$type,$value,$required, $options ){
             // v 2.0.0
             if($type == 'image'){ ?>
 <div class="file-uploader-field">
@@ -91,7 +91,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
             if($type == 'checkbox'){ ?>
 <div class="checkbox-group">
     <?php
-                $options = explode(PHP_EOL, $options);    
+                $options = explode(PHP_EOL, $options);
                 $value = !empty($value) ? $value : array();
                 foreach($options as $option){ ?>
     <label><input type="checkbox" name="custom_field[<?php echo $id;?>][]" value="<?php echo str_replace(array("\r", "\n"), '', $option); ?>"<?php echo (in_array( str_replace(array("\r", "\n"), '', $option), $value ) ? ' checked' : '' ); ?>><?php echo str_replace(array("\r", "\n"), '', $option); ?></label><br>
@@ -99,27 +99,70 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
 </div>
 <?php }
 
+            // DEBUG: Custom added
+            /* NewType */ if ($type === 'route'): ?>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+            <script type="text/javascript">
+            var app = angular.module('app', []);
+            app.run(function($rootScope) {
+              try {
+                $rootScope.route = <?php echo !empty($value) ? $value : 'null'; ?> || [];
+              } catch (e) {
+                $rootScope.route = [];
+              }
 
+              $rootScope.openRouteInGmaps = function () {
+                var origin = $rootScope.route[0].latitude + ',' + $rootScope.route[0].longitude;
+                var destination = $rootScope.route[$rootScope.route.length - 1].latitude + ',' + $rootScope.route[$rootScope.route.length - 1].longitude;
+                var points = $rootScope.route.map(function(coord) {
+                  return coord.latitude + ',' + coord.longitude;
+                }).join('%7C');
+
+                window.open([
+                  'https://www.google.com/maps/dir/?api=1',
+                  'origin=' + origin,
+                  'destination=' + destination,
+                  'travelmode=walking',
+                  'waypoints=' + points,
+                ].join('&'), '_blank')
+              }
+            });
+            </script>
+            <div ng-app="app" style="display: none" ng-style="{ display: 'block' }">
+              <input id="<?php echo $id; ?>_field" type="hidden" name="custom_field[<?php echo $id; ?>]" value="{{ route }}" <?php echo $required; ?> />
+
+              <div style="margin-bottom: 10px">
+                <div style="display: flex; margin-bottom: 2.5px" ng-repeat="coordinate in route track by $index">
+                  <input required min="-90" max="90" step="0.0000001" placeholder="Format: 28.1329271" type="number" ng-model="coordinate.latitude">
+                  <input onchange="checkForEmbed()" required min="-180" max="180" step="0.0000001" placeholder="Format: -15.4428294" type="number" ng-model="coordinate.longitude">
+                  <span class="button button-warning" ng-click="route.splice($index, 1)">remove</span>
+                </div>
+                <span class="button button-primary" ng-click="route.push({ latitude: '', longitude: '' })">+ Add coordinate</span>
+              </div>
+
+              <span ng-show="route.length > 2" ng-click="openRouteInGmaps()" class="button">Open in google maps (walking mode)</span>
+            </div>
+            <?php endif; /* EndNewType */
+            // DEBUG: Custom added
         }
 
         public function update_form_edit_field_types( $types ){
             // v 2.0.0
-            $types['image'] = array(
-                'label' => __( 'IMAGE', 'custom-post-types' ),
-            );
+            $types['image'] = array('label' => __( 'IMAGE', 'custom-post-types' ));
 
             // v 2.0.4
-            function the_checkbox_field_output($id, $options = null){ ?>
-<label><?php _e( 'Field options', 'custom-post-types' ); ?>
-    <textarea class="field-extra-options" name="field_settings[fields][<?php echo $id;?>][options]" placeholder="<?php _e( 'Field options, one per row', 'custom-post-types' ); ?>"><?php echo $options;?></textarea>
-</label>
-<?php }
-
             $types['checkbox'] = array(
-                'label' => __( 'CHECKBOX', 'custom-post-types' ),
-                'options' => 'the_checkbox_field_output',
+                'label' => __('CHECKBOX', 'custom-post-types'),
+                'options' => function ($id, $options = null) { ?>
+                  <label><?php _e( 'Field options', 'custom-post-types' ); ?>
+                      <textarea class="field-extra-options" name="field_settings[fields][<?php echo $id;?>][options]" placeholder="<?php _e( 'Field options, one per row', 'custom-post-types' ); ?>"><?php echo $options;?></textarea>
+                  </label>
+                <?php }
             );
 
+            // DEBUG: Custom added
+            $types['route'] = array('label' => __( 'ROUTE', 'custom-post-types' ));
+            // DEBUG: Custom added
 
             return $types;
         }
@@ -134,6 +177,12 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
             if($field_type == 'checkbox'){
                 $value = '<span class="field-'.$id.'">'.implode(', ', $value).'</span>';
             }
+
+            // DEBUG: Custom added
+            if ($field_type === 'route') {
+              $value = '<span class="field-'.$id.'">'.implode(', ', $value).'</span>';
+            }
+            // DEBUG: Custom added
 
             return $value;
         }
@@ -246,7 +295,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
         }
 
 
-        public function return_pro_button(){ 
+        public function return_pro_button(){
             if( !$this->is_pro_version_active() ){
                 return '<a class="button button-primary button-hero button-icon pro-icon" href="https://www.andreadegiovine.it/webmaster/custom-post-types-pro?utm_source=tools_plugin_page&amp;utm_medium=plugin_page&amp;utm_campaign=custom_post_types" target="_blank">'.__('Become PRO', 'custom-post-types' ).' - 12.20€ <small><del>99€</del></small></a>';
             }
@@ -279,7 +328,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                 $post = get_post($_GET['post']);
                 $template_settings = isset(get_post_meta( $post->ID, '_template_settings_meta')[0]) ? get_post_meta( $post->ID, '_template_settings_meta')[0] : array();
                 $template_used_by = isset($template_settings['field_used_by']) ? $template_settings['field_used_by'] : '';
-            }  
+            }
 
             $return_fields_list = array(
                 'title' => __( 'Post title', 'custom-post-types' ),
@@ -299,10 +348,10 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                     if(isset($field_settings['field_post_types']) && in_array($template_used_by, $field_settings['field_post_types'])){
                         foreach($fields as $id => $field){ if($field['type'] !== '0'){
                             $return_fields_list[$id] = $field['name'];
-                        } 
+                        }
                                                          }
-                    } 
-                } 
+                    }
+                }
             }
             return $return_fields_list;
 
@@ -317,7 +366,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                 $post = get_post($_GET['post']);
                 $template_settings = isset(get_post_meta( $post->ID, '_template_settings_meta')[0]) ? get_post_meta( $post->ID, '_template_settings_meta')[0] : array();
                 $template_used_by = isset($template_settings['field_used_by']) ? $template_settings['field_used_by'] : '';
-            }  
+            }
 
             $return_taxs_list = array(
                 'category' => __( 'Categories', 'custom-post-types' ),
@@ -406,7 +455,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
         }
 
         public function init_load_textdomain() {
-            load_plugin_textdomain( 'custom-post-types', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
+            load_plugin_textdomain( 'custom-post-types', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
         }
 
         public function plugin_activate() {
@@ -426,7 +475,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                 $this->cpt_ui_name . '_field',
                 $this->cpt_ui_name . '_tax',
                 $this->cpt_ui_name,
-            );   
+            );
             if ( ( is_single() && in_array($post->post_type, $cpts_to_remove_view) ) || ( isset($_GET['post']) && get_post($_GET['post']) && in_array(get_post($_GET['post'])->post_type, $cpts_to_remove_view) ) ) {
                 $wp_admin_bar->remove_node('view');
             }
@@ -441,7 +490,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                 $this->cpt_ui_name . '_field',
                 $this->cpt_ui_name . '_tax',
                 $this->cpt_ui_name,
-            );   
+            );
             if ( ( is_single() && in_array($post->post_type, $cpts_to_remove_view) ) || ( isset($_GET['post']) && get_post($_GET['post']) && in_array(get_post($_GET['post'])->post_type, $cpts_to_remove_view) ) ) {
                 $wp_admin_bar->remove_node('view');
             }
@@ -458,7 +507,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
             if (in_array($post->post_type, $cpts_to_remove_view)) {
                 unset($actions['view']);
             }
-            return $actions;   
+            return $actions;
         }
 
         public function force_404_ui_cpt() {
@@ -895,26 +944,26 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
 
                 $cpt_id = isset($cpt_settings['cpt_id']) && !empty($cpt_settings['cpt_id']) ? $cpt_settings['cpt_id'] : 'cpt_' . $post_type->ID;
 
-                $cpt_add_new = isset($cpt_settings['cpt_add_new']) && !empty($cpt_settings['cpt_add_new']) ? $cpt_settings['cpt_add_new'] : sprintf( __( 'Add new %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );                
-                $cpt_add_new_item = isset($cpt_settings['cpt_add_new_item']) && !empty($cpt_settings['cpt_add_new_item']) ? $cpt_settings['cpt_add_new_item'] : sprintf( __( 'Add new %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );                
-                $cpt_edit_item = isset($cpt_settings['cpt_edit_item']) && !empty($cpt_settings['cpt_edit_item']) ? $cpt_settings['cpt_edit_item'] : sprintf( __( 'Edit %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );                
-                $cpt_new_item = isset($cpt_settings['cpt_new_item']) && !empty($cpt_settings['cpt_new_item']) ? $cpt_settings['cpt_new_item'] : sprintf( __( 'Add %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );                
+                $cpt_add_new = isset($cpt_settings['cpt_add_new']) && !empty($cpt_settings['cpt_add_new']) ? $cpt_settings['cpt_add_new'] : sprintf( __( 'Add new %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_add_new_item = isset($cpt_settings['cpt_add_new_item']) && !empty($cpt_settings['cpt_add_new_item']) ? $cpt_settings['cpt_add_new_item'] : sprintf( __( 'Add new %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_edit_item = isset($cpt_settings['cpt_edit_item']) && !empty($cpt_settings['cpt_edit_item']) ? $cpt_settings['cpt_edit_item'] : sprintf( __( 'Edit %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_new_item = isset($cpt_settings['cpt_new_item']) && !empty($cpt_settings['cpt_new_item']) ? $cpt_settings['cpt_new_item'] : sprintf( __( 'Add %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
                 $cpt_view_item = isset($cpt_settings['cpt_view_item']) && !empty($cpt_settings['cpt_view_item']) ? $cpt_settings['cpt_view_item'] : sprintf( __( 'View %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
-                $cpt_view_items = isset($cpt_settings['cpt_view_items']) && !empty($cpt_settings['cpt_view_items']) ? $cpt_settings['cpt_view_items'] : sprintf( __( 'View %s', 'custom-post-types' ), $post_type->post_title );                
-                $cpt_search_items = isset($cpt_settings['cpt_search_items']) && !empty($cpt_settings['cpt_search_items']) ? $cpt_settings['cpt_search_items'] : sprintf( __( 'Search %s', 'custom-post-types' ), $post_type->post_title );                
-                $cpt_not_found = isset($cpt_settings['cpt_not_found']) && !empty($cpt_settings['cpt_not_found']) ? $cpt_settings['cpt_not_found'] : __( 'No Contents avaiable.', 'custom-post-types' );  
-                $cpt_not_found_in_trash = isset($cpt_settings['cpt_not_found_in_trash']) && !empty($cpt_settings['cpt_not_found_in_trash']) ? $cpt_settings['cpt_not_found_in_trash'] : __( 'No Contents in the trash.', 'custom-post-types' );                
+                $cpt_view_items = isset($cpt_settings['cpt_view_items']) && !empty($cpt_settings['cpt_view_items']) ? $cpt_settings['cpt_view_items'] : sprintf( __( 'View %s', 'custom-post-types' ), $post_type->post_title );
+                $cpt_search_items = isset($cpt_settings['cpt_search_items']) && !empty($cpt_settings['cpt_search_items']) ? $cpt_settings['cpt_search_items'] : sprintf( __( 'Search %s', 'custom-post-types' ), $post_type->post_title );
+                $cpt_not_found = isset($cpt_settings['cpt_not_found']) && !empty($cpt_settings['cpt_not_found']) ? $cpt_settings['cpt_not_found'] : __( 'No Contents avaiable.', 'custom-post-types' );
+                $cpt_not_found_in_trash = isset($cpt_settings['cpt_not_found_in_trash']) && !empty($cpt_settings['cpt_not_found_in_trash']) ? $cpt_settings['cpt_not_found_in_trash'] : __( 'No Contents in the trash.', 'custom-post-types' );
                 $cpt_parent_item_colon = isset($cpt_settings['cpt_parent_item_colon']) && !empty($cpt_settings['cpt_parent_item_colon']) ? $cpt_settings['cpt_parent_item_colon'] : sprintf( __( 'Parent %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
-                $cpt_all_items = isset($cpt_settings['cpt_all_items']) && !empty($cpt_settings['cpt_all_items']) ? $cpt_settings['cpt_all_items'] : sprintf( __( 'View %s', 'custom-post-types' ), $post_type->post_title );                
-                $cpt_archives = isset($cpt_settings['cpt_archives']) && !empty($cpt_settings['cpt_archives']) ? $cpt_settings['cpt_archives'] : sprintf( __( '%s archives', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );                
-                $cpt_attributes = isset($cpt_settings['cpt_attributes']) && !empty($cpt_settings['cpt_attributes']) ? $cpt_settings['cpt_attributes'] : sprintf( __( '%s attributes', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );                
-                $cpt_insert_into_item = isset($cpt_settings['cpt_insert_into_item']) && !empty($cpt_settings['cpt_insert_into_item']) ? $cpt_settings['cpt_insert_into_item'] : sprintf( __( 'Insert into %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );     
-                $cpt_uploaded_to_this_item = isset($cpt_settings['cpt_uploaded_to_this_item']) && !empty($cpt_settings['cpt_uploaded_to_this_item']) ? $cpt_settings['cpt_uploaded_to_this_item'] : sprintf( __( 'Uploaded to this %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );  
-                $cpt_featured_image = isset($cpt_settings['cpt_featured_image']) && !empty($cpt_settings['cpt_featured_image']) ? $cpt_settings['cpt_featured_image'] : __( 'Featured image', 'custom-post-types' );                
-                $cpt_set_featured_image = isset($cpt_settings['cpt_set_featured_image']) && !empty($cpt_settings['cpt_set_featured_image']) ? $cpt_settings['cpt_set_featured_image'] : __( 'Set featured image', 'custom-post-types' );                
-                $cpt_remove_featured_image = isset($cpt_settings['cpt_remove_featured_image']) && !empty($cpt_settings['cpt_remove_featured_image']) ? $cpt_settings['cpt_remove_featured_image'] : __( 'Remove featured image', 'custom-post-types' );                
-                $cpt_use_featured_image = isset($cpt_settings['cpt_use_featured_image']) && !empty($cpt_settings['cpt_use_featured_image']) ? $cpt_settings['cpt_use_featured_image'] : __( 'Use as featured image', 'custom-post-types' );                
-                $cpt_menu_name = isset($cpt_settings['cpt_menu_name']) && !empty($cpt_settings['cpt_menu_name']) ? $cpt_settings['cpt_menu_name'] : __( $post_type->post_title, 'custom-post-types' );  
+                $cpt_all_items = isset($cpt_settings['cpt_all_items']) && !empty($cpt_settings['cpt_all_items']) ? $cpt_settings['cpt_all_items'] : sprintf( __( 'View %s', 'custom-post-types' ), $post_type->post_title );
+                $cpt_archives = isset($cpt_settings['cpt_archives']) && !empty($cpt_settings['cpt_archives']) ? $cpt_settings['cpt_archives'] : sprintf( __( '%s archives', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_attributes = isset($cpt_settings['cpt_attributes']) && !empty($cpt_settings['cpt_attributes']) ? $cpt_settings['cpt_attributes'] : sprintf( __( '%s attributes', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_insert_into_item = isset($cpt_settings['cpt_insert_into_item']) && !empty($cpt_settings['cpt_insert_into_item']) ? $cpt_settings['cpt_insert_into_item'] : sprintf( __( 'Insert into %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_uploaded_to_this_item = isset($cpt_settings['cpt_uploaded_to_this_item']) && !empty($cpt_settings['cpt_uploaded_to_this_item']) ? $cpt_settings['cpt_uploaded_to_this_item'] : sprintf( __( 'Uploaded to this %s', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
+                $cpt_featured_image = isset($cpt_settings['cpt_featured_image']) && !empty($cpt_settings['cpt_featured_image']) ? $cpt_settings['cpt_featured_image'] : __( 'Featured image', 'custom-post-types' );
+                $cpt_set_featured_image = isset($cpt_settings['cpt_set_featured_image']) && !empty($cpt_settings['cpt_set_featured_image']) ? $cpt_settings['cpt_set_featured_image'] : __( 'Set featured image', 'custom-post-types' );
+                $cpt_remove_featured_image = isset($cpt_settings['cpt_remove_featured_image']) && !empty($cpt_settings['cpt_remove_featured_image']) ? $cpt_settings['cpt_remove_featured_image'] : __( 'Remove featured image', 'custom-post-types' );
+                $cpt_use_featured_image = isset($cpt_settings['cpt_use_featured_image']) && !empty($cpt_settings['cpt_use_featured_image']) ? $cpt_settings['cpt_use_featured_image'] : __( 'Use as featured image', 'custom-post-types' );
+                $cpt_menu_name = isset($cpt_settings['cpt_menu_name']) && !empty($cpt_settings['cpt_menu_name']) ? $cpt_settings['cpt_menu_name'] : __( $post_type->post_title, 'custom-post-types' );
                 $cpt_name_admin_bar = isset($cpt_settings['cpt_name_admin_bar']) && !empty($cpt_settings['cpt_name_admin_bar']) ? $cpt_settings['cpt_name_admin_bar'] : __( $cpt_settings['cpt_singular_name'], 'custom-post-types' );
                 $cpt_item_published = isset($cpt_settings['cpt_item_published']) && !empty($cpt_settings['cpt_item_published']) ? $cpt_settings['cpt_item_published'] : sprintf( __( '%s published', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
                 $cpt_item_published_privately = isset($cpt_settings['cpt_item_published_privately']) && !empty($cpt_settings['cpt_item_published_privately']) ? $cpt_settings['cpt_item_published_privately'] : sprintf( __( '%s published privately', 'custom-post-types' ), $cpt_settings['cpt_singular_name'] );
@@ -1007,15 +1056,15 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
 
                 $tax_id = isset($tax_settings['tax_id']) && !empty($tax_settings['tax_id']) ? $tax_settings['tax_id'] : 'tax_' . $taxonomy->ID;
 
-                $tax_search_items = isset($tax_settings['tax_search_items']) && !empty($tax_settings['tax_search_items']) ? $tax_settings['tax_search_items'] : sprintf( __( 'Search %s', 'custom-post-types' ), $taxonomy->post_title );                 
-                $tax_all_items = isset($tax_settings['tax_all_items']) && !empty($tax_settings['tax_all_items']) ? $tax_settings['tax_all_items'] : sprintf( __( 'View %s', 'custom-post-types' ), $taxonomy->post_title );                 
-                $tax_parent_item = isset($tax_settings['tax_parent_item']) && !empty($tax_settings['tax_parent_item']) ? $tax_settings['tax_parent_item'] : sprintf( __( 'Parent %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );                 
-                $tax_parent_item_colon = isset($tax_settings['tax_parent_item_colon']) && !empty($tax_settings['tax_parent_item_colon']) ? $tax_settings['tax_parent_item_colon'] : sprintf( __( 'Parent %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );                 
-                $tax_edit_item = isset($tax_settings['tax_edit_item']) && !empty($tax_settings['tax_edit_item']) ? $tax_settings['tax_edit_item'] : sprintf( __( 'Edit %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );                 
-                $tax_update_item = isset($tax_settings['tax_update_item']) && !empty($tax_settings['tax_update_item']) ? $tax_settings['tax_update_item'] : sprintf( __( 'Update %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );                 
-                $tax_add_new_item = isset($tax_settings['tax_add_new_item']) && !empty($tax_settings['tax_add_new_item']) ? $tax_settings['tax_add_new_item'] : sprintf( __( 'Add %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );                 
-                $tax_new_item_name = isset($tax_settings['tax_new_item_name']) && !empty($tax_settings['tax_new_item_name']) ? $tax_settings['tax_new_item_name'] : sprintf( __( '%s name', 'custom-post-types' ), $tax_settings['tax_singular_name'] );                 
-                $tax_menu_name = isset($tax_settings['tax_menu_name']) && !empty($tax_settings['tax_menu_name']) ? $tax_settings['tax_menu_name'] : __( $taxonomy->post_title, 'custom-post-types' ); 
+                $tax_search_items = isset($tax_settings['tax_search_items']) && !empty($tax_settings['tax_search_items']) ? $tax_settings['tax_search_items'] : sprintf( __( 'Search %s', 'custom-post-types' ), $taxonomy->post_title );
+                $tax_all_items = isset($tax_settings['tax_all_items']) && !empty($tax_settings['tax_all_items']) ? $tax_settings['tax_all_items'] : sprintf( __( 'View %s', 'custom-post-types' ), $taxonomy->post_title );
+                $tax_parent_item = isset($tax_settings['tax_parent_item']) && !empty($tax_settings['tax_parent_item']) ? $tax_settings['tax_parent_item'] : sprintf( __( 'Parent %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );
+                $tax_parent_item_colon = isset($tax_settings['tax_parent_item_colon']) && !empty($tax_settings['tax_parent_item_colon']) ? $tax_settings['tax_parent_item_colon'] : sprintf( __( 'Parent %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );
+                $tax_edit_item = isset($tax_settings['tax_edit_item']) && !empty($tax_settings['tax_edit_item']) ? $tax_settings['tax_edit_item'] : sprintf( __( 'Edit %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );
+                $tax_update_item = isset($tax_settings['tax_update_item']) && !empty($tax_settings['tax_update_item']) ? $tax_settings['tax_update_item'] : sprintf( __( 'Update %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );
+                $tax_add_new_item = isset($tax_settings['tax_add_new_item']) && !empty($tax_settings['tax_add_new_item']) ? $tax_settings['tax_add_new_item'] : sprintf( __( 'Add %s', 'custom-post-types' ), $tax_settings['tax_singular_name'] );
+                $tax_new_item_name = isset($tax_settings['tax_new_item_name']) && !empty($tax_settings['tax_new_item_name']) ? $tax_settings['tax_new_item_name'] : sprintf( __( '%s name', 'custom-post-types' ), $tax_settings['tax_singular_name'] );
+                $tax_menu_name = isset($tax_settings['tax_menu_name']) && !empty($tax_settings['tax_menu_name']) ? $tax_settings['tax_menu_name'] : __( $taxonomy->post_title, 'custom-post-types' );
 
                 $labels = array(
                     'name'              => __( $taxonomy->post_title, 'custom-post-types' ),
@@ -1069,7 +1118,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                     $template_used_by = isset($template_settings['field_used_by']) ? $template_settings['field_used_by'] : '';
                     if($template_used_by === $post->post_type && file_exists($current_teme_single_template)){
                         $load_template = $current_teme_single_template;
-                    }                    
+                    }
                 }
             }
 
@@ -1165,7 +1214,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
 
                     case 'cpt_count' :
                         $cpt_settings = isset(get_post_meta( $post_id, '_cpt_settings_meta')[0]) ? get_post_meta( $post_id, '_cpt_settings_meta')[0] : array();
-                        echo '<a href="' . admin_url( 'edit.php?post_type=' . (isset($cpt_settings['cpt_id']) ? $cpt_settings['cpt_id'] : 'cpt_' . $post_id) ) . '">' . wp_count_posts((isset($cpt_settings['cpt_id']) ? $cpt_settings['cpt_id'] : 'cpt_' . $post_id))->publish . '</a>'; 
+                        echo '<a href="' . admin_url( 'edit.php?post_type=' . (isset($cpt_settings['cpt_id']) ? $cpt_settings['cpt_id'] : 'cpt_' . $post_id) ) . '">' . wp_count_posts((isset($cpt_settings['cpt_id']) ? $cpt_settings['cpt_id'] : 'cpt_' . $post_id))->publish . '</a>';
                         break;
 
                 }
@@ -1255,7 +1304,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
 
         public function init_admin_notices(){
             if(!isset($_COOKIE[ $this->cpt_ui_name . '_notices_close'])) { ?>
-<?php 
+<?php
                 if( !$this->is_pro_version_active() ) {
                     printf( '<div class="%1$s"><p>%2$s<br><strong><a href="%3$s" target="_blank">%4$s</a></strong> - <a href="%5$s" target="_blank">%6$s</a> - <a href="%7$s" target="_blank">%8$s</a> - <a href="#" class="%9$s-notices-close">%10$s</a></p></div>', $this->cpt_ui_name . '-notices notice notice-success is-dismissible', __( '<strong>Custom post type</strong> notice:<br>Thanks for using this plugin! Do you want to help us grow to add new features?', 'custom-post-types' ) , 'https://www.andreadegiovine.it/webmaster/custom-post-types-pro?utm_source=tools_plugin_page&utm_medium=plugin_page&utm_campaign=custom_post_types', __( 'Become PRO', 'custom-post-types' ), 'https://wordpress.org/support/plugin/custom-post-types/reviews/#new-post', __( 'Review', 'custom-post-types' ), 'https://www.andreadegiovine.it/outlinks/1422/?utm_source=wordpress_dashboard&utm_medium=notices&utm_campaign=custom_post_types', __( 'Send donation', 'custom-post-types' ), $this->cpt_ui_name, __( 'Close and don\'t show again', 'custom-post-types' ) );
                 } else {
@@ -1309,7 +1358,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
                 if( !$theme_has_while ){
                     printf( '<div class="%1$s"><p>%2$s<br><a href="%3$s" class="button-primary" style="margin-top:1em;" target="_blank">%4$s</a> <a href="%5$s" class="button-secondary" style="margin-top:1em;" target="_blank">%6$s</a></p></div>', $this->cpt_ui_name . '-notices notice notice-error', __( '<strong>Custom post type</strong> notice:<br>The theme you are using does not contain the "while () : ... endwhile;" loop in the "single.php" file. To use custom templates the theme must have this "while" loop type in its "single.php" file.', 'custom-post-types' ) , 'https://wordpress.org/support/plugin/custom-post-types/', __( 'Ask for integration', 'custom-post-types' ), 'https://codex.wordpress.org/The_Loop#Loop_Examples', __( 'WordPress documentation', 'custom-post-types' ) );
                 }
-            } 
+            }
 
             if( !file_exists($current_teme_single_template) && ( $theme_has_while || isset($theme_compatibility_array[$current_theme_name]) ) ){
                 printf( '<div class="%1$s"><p>%2$s<br><a href="%3$s" class="button-primary" style="margin-top:1em;">%4$s</a></p></div>', $this->cpt_ui_name . '-notices notice notice-error', __( '<strong>Custom post type</strong> notice:<br>Is this the first time you use the plugin or have you changed the theme?<br>In order to use custom templates, the plugin must copy the "single.php" file of the current theme to the "custom-templates" folder contained in the WordPress "uploads" folder.', 'custom-post-types' ) , admin_url( 'edit.php?post_type='.$this->cpt_ui_name.'_template&action=copy_theme_template' ), __( 'Continue', 'custom-post-types' ) );
@@ -1366,7 +1415,7 @@ if ( ! class_exists( 'adg_custom_post_types' ) ) {
             $value = '';
             if( isset($all_metabox_array[$a['id']]['id']) ){
                 $value = metadata_exists('post', $post->ID, $all_metabox_array[$a['id']]['id']) ? get_post_meta( $post->ID, $all_metabox_array[$a['id']]['id'], true ) : '';
-            }            
+            }
             if(!$value){
                 $value = isset(get_post_meta( $post->ID, '_custom_meta')[0][$a['id']]['value']) ? get_post_meta( $post->ID, '_custom_meta')[0][$a['id']]['value'] : '';
             }
@@ -1563,7 +1612,7 @@ function init_plugin_dev_functions(){
                     $template_used_by = isset($template_settings['field_used_by']) ? $template_settings['field_used_by'] : '';
                     if($template_used_by === $post->post_type){
                         echo do_shortcode($template->post_content);
-                    }                    
+                    }
                 }
             }
         }
@@ -1571,4 +1620,3 @@ function init_plugin_dev_functions(){
 
 }
 add_action('init', 'init_plugin_dev_functions');
-
