@@ -10,6 +10,7 @@ Version: 0.1.0
 */
 
 require_once __DIR__.'/includes/basic.php';
+require_once __DIR__.'/includes/meta.php';
 
 // Basic auth
 add_filter('determine_current_user', 'determineCurrentUser', 20);
