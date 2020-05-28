@@ -1,0 +1,524 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Post Types 1.0.0\n"
+"POT-Creation-Date: 2019-05-23 15:23+0100\n"
+"PO-Revision-Date: 2019-05-23 15:23+0100\n"
+"Last-Translator: \n"
+"Language-Team: Andrea De Giovine <email@andreadegiovine.it>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.11\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e;_x\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: custom-post-types.php:63 custom-post-types.php:72
+msgid "Custom Post Types"
+msgstr ""
+
+#: custom-post-types.php:64 custom-post-types.php:66
+msgid "Post Type"
+msgstr ""
+
+#: custom-post-types.php:65
+msgid "Post Types"
+msgstr ""
+
+#: custom-post-types.php:67
+msgid "Add Post Type"
+msgstr ""
+
+#: custom-post-types.php:68
+msgid "Add new Post Type"
+msgstr ""
+
+#: custom-post-types.php:69
+msgid "New Post Type"
+msgstr ""
+
+#: custom-post-types.php:70
+msgid "Edit Post Type"
+msgstr ""
+
+#: custom-post-types.php:71
+msgid "View Post Type"
+msgstr ""
+
+#: custom-post-types.php:73
+msgid "Search Post Type"
+msgstr ""
+
+#: custom-post-types.php:74
+msgid "No Post Type available."
+msgstr ""
+
+#: custom-post-types.php:75
+msgid "No Post Type in the trash."
+msgstr ""
+
+#: custom-post-types.php:80
+msgid "Create and manage Custom Post Types."
+msgstr ""
+
+#: custom-post-types.php:108 custom-post-types.php:117
+msgid "Custom Taxonomies"
+msgstr ""
+
+#: custom-post-types.php:109 custom-post-types.php:110
+#: custom-post-types.php:111
+msgid "Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:112
+msgid "Add Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:113
+msgid "Add new Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:114
+msgid "New Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:115
+msgid "Edit Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:116
+msgid "View Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:118
+msgid "Search Taxonomy"
+msgstr ""
+
+#: custom-post-types.php:119
+msgid "No Taxonomy available."
+msgstr ""
+
+#: custom-post-types.php:120
+msgid "No Taxonomy in the trash."
+msgstr ""
+
+#: custom-post-types.php:125
+msgid "Create and manage Custom Taxonomies."
+msgstr ""
+
+#: custom-post-types.php:154 custom-post-types.php:163
+msgid "Custom Fields"
+msgstr ""
+
+#: custom-post-types.php:155 custom-post-types.php:156
+#: custom-post-types.php:157
+msgid "Field"
+msgstr ""
+
+#: custom-post-types.php:158
+msgid "Add Field"
+msgstr ""
+
+#: custom-post-types.php:159
+msgid "Add new Field"
+msgstr ""
+
+#: custom-post-types.php:160
+msgid "New Field"
+msgstr ""
+
+#: custom-post-types.php:161
+msgid "Edit Field"
+msgstr ""
+
+#: custom-post-types.php:162
+msgid "View Field"
+msgstr ""
+
+#: custom-post-types.php:164
+msgid "Search Field"
+msgstr ""
+
+#: custom-post-types.php:165
+msgid "No Field available."
+msgstr ""
+
+#: custom-post-types.php:166
+msgid "No Field in the trash."
+msgstr ""
+
+#: custom-post-types.php:171
+msgid "Create and manage Custom Fields."
+msgstr ""
+
+#: custom-post-types.php:201
+msgid "Custom Templates"
+msgstr ""
+
+#: custom-post-types.php:214
+msgid "Post Type Settings"
+msgstr ""
+
+#: custom-post-types.php:223
+msgid "Taxonomy Settings"
+msgstr ""
+
+#: custom-post-types.php:232
+msgid "Field Settings"
+msgstr ""
+
+#: custom-post-types.php:291 custom-post-types.php:385
+msgid "Single name"
+msgstr ""
+
+#: custom-post-types.php:293
+msgid "ex: Product"
+msgstr ""
+
+#: custom-post-types.php:294 custom-post-types.php:388
+msgid "Singular name."
+msgstr ""
+
+#: custom-post-types.php:299 custom-post-types.php:393
+msgid "Hierarchical"
+msgstr ""
+
+#: custom-post-types.php:302 custom-post-types.php:313
+#: custom-post-types.php:324 custom-post-types.php:335
+#: custom-post-types.php:346 custom-post-types.php:365
+#: custom-post-types.php:396 custom-post-types.php:407
+#: custom-post-types.php:434 custom-post-types.php:484
+msgid "YES"
+msgstr ""
+
+#: custom-post-types.php:303 custom-post-types.php:314
+#: custom-post-types.php:325 custom-post-types.php:336
+#: custom-post-types.php:347 custom-post-types.php:366
+#: custom-post-types.php:397 custom-post-types.php:408
+#: custom-post-types.php:435 custom-post-types.php:485
+msgid "NO"
+msgstr ""
+
+#: custom-post-types.php:305
+msgid ""
+"If set to \"YES\" it will be possible to set a parent POST TYPE (as for "
+"pages)."
+msgstr ""
+
+#: custom-post-types.php:310 custom-post-types.php:404
+msgid "Visibility"
+msgstr ""
+
+#: custom-post-types.php:316
+msgid ""
+"If set to \"YES\" it will be shown in the frontend and will have a permalink "
+"and a single template."
+msgstr ""
+
+#: custom-post-types.php:321
+msgid "Content Editor"
+msgstr ""
+
+#: custom-post-types.php:327
+msgid ""
+"If set to \"YES\" the content editor will be shown during creation / "
+"modification."
+msgstr ""
+
+#: custom-post-types.php:332
+msgid "Excerpt"
+msgstr ""
+
+#: custom-post-types.php:338
+msgid ""
+"If set to \"YES\" the \"Excerpt\" field will be shown during creation / "
+"modification."
+msgstr ""
+
+#: custom-post-types.php:343
+msgid "Featured image"
+msgstr ""
+
+#: custom-post-types.php:349
+msgid ""
+"If set to \"YES\" the \"Featured image\" field will be shown during "
+"creation / modification."
+msgstr ""
+
+#: custom-post-types.php:354
+msgid "Menu icon"
+msgstr ""
+
+#: custom-post-types.php:357
+msgid ""
+"You can enter the name of an <a href=\"https://developer.wordpress.org/"
+"resource/dashicons\" target=\"_blank\" rel=\"nofolow\">Dashicons</a> icon "
+"(ex: dashicons-tag) or the URL of an image (20px * 20px)."
+msgstr ""
+
+#: custom-post-types.php:362 custom-post-types.php:431
+#: custom-post-types.php:481
+msgid "Administrators only"
+msgstr ""
+
+#: custom-post-types.php:368 custom-post-types.php:437
+#: custom-post-types.php:487
+msgid ""
+"If set to \"YES\", only the administrators can create / modify these "
+"contents, if \"NO\" all the roles with the minimum capacity of \"edit_posts"
+"\"."
+msgstr ""
+
+#: custom-post-types.php:387
+msgid "ex: Product Category"
+msgstr ""
+
+#: custom-post-types.php:399
+msgid ""
+"If set to \"YES\" it will be possible to set a parent TAXONOMY (as for the "
+"Articles categories)."
+msgstr ""
+
+#: custom-post-types.php:410
+msgid ""
+"If set to \"YES\" it will be shown in the frontend and will have a permalink "
+"and an archive template."
+msgstr ""
+
+#: custom-post-types.php:415 custom-post-types.php:465
+msgid "Assignment"
+msgstr ""
+
+#: custom-post-types.php:418 custom-post-types.php:468
+msgid "Posts"
+msgstr ""
+
+#: custom-post-types.php:426
+msgid "Choose for which POST TYPE use this taxonomy."
+msgstr ""
+
+#: custom-post-types.php:454
+msgid "Position"
+msgstr ""
+
+#: custom-post-types.php:457
+msgid "EDITOR"
+msgstr ""
+
+#: custom-post-types.php:458
+msgid "SIDEBAR"
+msgstr ""
+
+#: custom-post-types.php:460
+msgid ""
+"If set to \"EDITOR\" it will be shown at the bottom of the central column, "
+"if \"SIDEBAR\" it will be shown in the sidebar."
+msgstr ""
+
+#: custom-post-types.php:476
+msgid "Choose for which POST TYPE use this field."
+msgstr ""
+
+#: custom-post-types.php:490
+msgid "Fields list"
+msgstr ""
+
+#: custom-post-types.php:491
+msgid ""
+"Add the custom fields you want to use when creating / editing the associated "
+"content types.<br>\n"
+"To display the field in your template use the shortcode [custom-field id="
+"\"field_XXXX\"] that appears next to the created field."
+msgstr ""
+
+#: custom-post-types.php:498 custom-post-types.php:537
+msgid "Field type..."
+msgstr ""
+
+#: custom-post-types.php:499 custom-post-types.php:538
+msgid "TEXT"
+msgstr ""
+
+#: custom-post-types.php:500 custom-post-types.php:539
+msgid "NUMBER"
+msgstr ""
+
+#: custom-post-types.php:501 custom-post-types.php:540
+msgid "TEXTAREA"
+msgstr ""
+
+#: custom-post-types.php:502 custom-post-types.php:541
+msgid "EMAIL"
+msgstr ""
+
+#: custom-post-types.php:503 custom-post-types.php:542
+msgid "DROPDOWN"
+msgstr ""
+
+#: custom-post-types.php:504 custom-post-types.php:543
+msgid "DATE"
+msgstr ""
+
+#: custom-post-types.php:505 custom-post-types.php:544
+msgid "TIME"
+msgstr ""
+
+#: custom-post-types.php:506 custom-post-types.php:545
+msgid "FILE UPLOAD"
+msgstr ""
+
+#: custom-post-types.php:508 custom-post-types.php:562
+msgid "delete"
+msgstr ""
+
+#: custom-post-types.php:512 custom-post-types.php:565
+msgid "Field name"
+msgstr ""
+
+#: custom-post-types.php:513 custom-post-types.php:566
+msgid "Required"
+msgstr ""
+
+#: custom-post-types.php:516 custom-post-types.php:573
+msgid "Field options, one per row"
+msgstr ""
+
+#: custom-post-types.php:522
+msgid "Add field"
+msgstr ""
+
+#: custom-post-types.php:549 custom-post-types.php:561
+#: custom-post-types.php:584
+msgid "Select the field type first."
+msgstr ""
+
+#: custom-post-types.php:633
+msgid "- Choose -"
+msgstr ""
+
+#: custom-post-types.php:645 custom-post-types.php:866
+#: custom-post-types.php:963
+msgid "Work in progress..."
+msgstr ""
+
+#: custom-post-types.php:747 custom-post-types.php:748
+#, php-format
+msgid "Add new %s"
+msgstr ""
+
+#: custom-post-types.php:749 custom-post-types.php:818
+#, php-format
+msgid "Add %s"
+msgstr ""
+
+#: custom-post-types.php:750 custom-post-types.php:816
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: custom-post-types.php:751 custom-post-types.php:752
+#: custom-post-types.php:813
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: custom-post-types.php:753 custom-post-types.php:812
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#: custom-post-types.php:754
+msgid "No Contents avaiable."
+msgstr ""
+
+#: custom-post-types.php:755
+msgid "No Contents in the trash."
+msgstr ""
+
+#: custom-post-types.php:772
+msgid "Post Type created with the \"Custom Post Types\" plugin."
+msgstr ""
+
+#: custom-post-types.php:814
+#, php-format
+msgid "Parent %s"
+msgstr ""
+
+#: custom-post-types.php:815
+#, php-format
+msgid "Parent %s:"
+msgstr ""
+
+#: custom-post-types.php:817
+#, php-format
+msgid "Update %s"
+msgstr ""
+
+#: custom-post-types.php:819
+#, php-format
+msgid "%s name"
+msgstr ""
+
+#: custom-post-types.php:849
+msgid "Name"
+msgstr ""
+
+#: custom-post-types.php:858
+msgid ""
+"It must be unique. It will be used in the menu and as a slug in the URLs."
+msgstr ""
+
+#: custom-post-types.php:868
+msgid ""
+"I am working to implement this feature which will be free to all users. <br> "
+"Below is the donation link to help me support processing costs and the link "
+"to my website."
+msgstr ""
+
+#: custom-post-types.php:869 custom-post-types.php:972
+msgid "Send donation"
+msgstr ""
+
+#: custom-post-types.php:870
+msgid "Developer website"
+msgstr ""
+
+#: custom-post-types.php:871
+msgid "Send suggestion"
+msgstr ""
+
+#: custom-post-types.php:889 custom-post-types.php:896
+msgid "ID"
+msgstr ""
+
+#: custom-post-types.php:890 custom-post-types.php:897
+msgid "Permalink base"
+msgstr ""
+
+#: custom-post-types.php:891
+msgid "Count"
+msgstr ""
+
+#: custom-post-types.php:898 custom-post-types.php:903
+msgid "Used by"
+msgstr ""
+
+#: custom-post-types.php:972
+msgid ""
+"<strong>Custom Post Types</strong> notice:<br>Thanks for using this plugin! "
+"Do you want to help us grow to add new features?"
+msgstr ""
+
+#: custom-post-types.php:972 custom-post-types.php:999
+msgid "Review this plugin"
+msgstr ""
+
+#: custom-post-types.php:972
+msgid "Close and don't show again"
+msgstr ""
+
+#: custom-post-types.php:998
+msgid "Support"
+msgstr ""

@@ -1,0 +1,1 @@
+<?php do_action('tools_import_page'); ?>

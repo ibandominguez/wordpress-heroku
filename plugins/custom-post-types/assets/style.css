@@ -1,0 +1,479 @@
+#cpt_ui_metabox .inside {
+    margin: 12px 0 0 0;
+}
+
+.inside .wp-cpt-row {
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.inside .wp-cpt-row:last-child {
+    margin: 0;
+}
+
+.inside .wp-cpt-row > :nth-child(1) {
+    flex: 0 0 20%;
+}
+
+.inside .wp-cpt-row > :nth-child(2) {
+    flex: 0 0 30%;
+}
+
+.inside .wp-cpt-row > :nth-child(3) {
+    flex: 0 0 calc(50% - 40px);
+}
+
+.inside .wp-cpt-row > input {
+    margin: 0;
+    padding: 0 10px;
+    line-height: 2;
+}
+
+.inside .wp-cpt-row > small {
+    padding: 0 20px;
+    line-height: 1.3;
+    opacity: 0.6;
+}
+
+.inside .wp-cpt-row:hover > label {
+    text-decoration: underline;
+}
+
+.inside .wp-cpt-row:hover > small, .post-type-wp_cpt #post:hover .wp_cpt_sub > small, .post-type-wp_cpt_tax #post:hover .wp_cpt_sub > small {
+    opacity: 1;
+}
+
+#post-body-content .wp_cpt_sub > small {
+    padding: 0 10px;
+    line-height: 1.3;
+    opacity: 0.6;
+    display: block;
+}
+
+#post .wp_cpt_top > label {
+    padding: 5px 10px;
+    margin-top: 25px;
+    display: block;
+    line-height: 1.4em;
+    font-size: 13px;
+}
+
+#post .wp_cpt_top > label:hover {
+    text-decoration: underline;
+}
+
+.post-type-wp_cpt #poststuff, .post-type-wp_cpt_tax #poststuff {
+    padding-top: 0;
+}
+
+#TB_ajaxContent .modal-image-cpt {
+    margin: 0 auto 20px;
+    display: block;
+    max-width: 190px;
+}
+
+.inside .wp-cpt-row.field-form {
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 10px;
+}
+
+.inside > h3 {
+    border-top: 1px dashed #eee;
+    padding-top: 1em;
+}
+
+.manage_cpt_top {
+    margin-top: 20px;
+}
+
+.wp-cpt-row input[type=text] {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.wp-cpt-row textarea, .wp-field-row textarea {
+    margin-top: 5px;
+    width: 100%;
+    height: 100px;
+}
+
+.inside .wp-field-row {
+    margin: 6px 0 0;
+    display: flex;
+}
+
+.inside .wp-field-row > :nth-child(1) {
+    flex: 0 0 25%;
+    text-align: right;
+    padding-right: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inside .wp-cpt-row > :nth-child(3) {
+    padding: 0 20px;
+}
+
+.wp-field-row input[type=text], .wp-field-row input[type=date], .wp-field-row input[type=number], .wp-field-row select, .file-uploader-field {
+    width: 100%;
+}
+
+.file-uploader-field {
+    display: flex;
+}
+
+.wp-cpt-row .delete-field {
+    padding: 5px 5px 0;
+    font-size: smaller;
+}
+
+.wp-cpt-row .field-extra-options {
+    margin-top: 5px;
+    width: 100%;
+}
+
+/* Update 2.0.0 */
+
+.wp-cpt-field-row.field-form {
+    display: flex;
+    flex-wrap: wrap;
+    background: #f1f1f1;
+    padding: 20px 70px 5px 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.wp-cpt-field-row.field-form .field-form-sx, .wp-cpt-field-row.field-form .field-form-dx {
+    width: calc( (100% - 15px) / 2 );
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+
+.wp-cpt-field-row.field-form .field-form-dx {
+    padding-right: 0;
+}
+
+.wp-cpt-field-row.field-form .field-form-delete, .wp-cpt-field-row.field-form .field-form-duplicate {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    height: calc( (100% - 6px) / 2 );
+    width: 50px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wp-cpt-field-row.field-form .field-form-duplicate {
+    top: auto;
+    bottom: 2px;
+}
+
+.wp-cpt-field-row.field-form .field-form-delete a, .wp-cpt-field-row.field-form .field-form-duplicate a {
+    text-decoration: none;
+    font-size: xx-large;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    height: 100%;
+}
+
+.wp-cpt-field-row.field-form .field-form-delete a:hover, .wp-cpt-field-row.field-form .field-form-duplicate a:hover {
+    zoom: 1.2;
+}
+
+.wp-cpt-field-row.field-form .field-form-delete a span, .wp-cpt-field-row.field-form .field-form-duplicate a span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.wp-cpt-field-row.field-form select, .wp-cpt-field-row.field-form input[type=text], .wp-cpt-field-row.field-form textarea {
+    width: 100%;
+    margin: 5px 0 0;
+}
+
+.wp-cpt-tools .tools-page {
+    padding-top: 20px;
+}
+
+.tools-page .wp-cpt-plugin-banner {
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+}
+
+.tools-page .wp-cpt-plugin-banner .details {
+    min-width: 250px;
+    padding: 30px 20px;
+}
+
+.tools-page .wp-cpt-plugin-banner .banner {
+    flex: 1;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    background-color: #00a6ff;
+}
+
+.tools-page .wp-cpt-plugin-banner .banner:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://ps.w.org/custom-post-types/assets/banner-772x250.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+.tools-page .wp-cpt-plugin-banner .plugin-title {
+    margin: 0 0;
+    text-transform: uppercase;
+}
+
+.tools-page .wp-cpt-plugin-banner a {
+    text-decoration: none;
+}
+
+.tools-page .wp-cpt-plugin-banner a:not(.button):hover {
+    text-decoration: underline;
+}
+
+.tools-page .wp-cpt-plugin-banner ul {
+    list-style: inside;
+}
+
+.inside .wp-field-row {
+    border-bottom: 1px solid #e2e4e7;
+    padding: 15px;
+    outline: none;
+    margin: 0;
+}
+
+.inside .wp-field-row:hover {
+    background: #f3f4f5;
+}
+
+.cpt-pro {
+    display: inline-block;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    text-align: center;
+}
+
+.cpt-pro p, .cpt-pro ul, .cpt-pro h2 {
+    margin: 0 0 15px;
+}
+
+.cpt-pro ul {
+    display: inline-block;
+    text-align: left;
+    list-style: none;
+}
+
+.cpt-pro ul li {
+    position: relative;
+    padding-left: 30px;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    margin: 0 0 5px;
+}
+
+.cpt-pro ul li:before {
+    font-family: dashicons;
+    content: "\f12a";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    font-size: 1.3em;
+    color: #46b450;
+}
+
+.cpt-pro ul li:last-child {
+    margin: 0;
+}
+
+.cpt-pro h2 {
+    font-size: 2em;
+    line-height: 1;
+}
+
+.button.button-icon:before {
+    content: "";
+    font-family: dashicons;
+    line-height: 1;
+    transform: scale(2);
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: -10px;
+}
+
+.button.button-icon.pro-icon:before {
+    content: "\f313";
+}
+
+
+/* END - Update 2.0.0 */
+
+
+/* Update 2.0.4 */
+
+#manage_cpt-default_field_markup, #manage_cpt-default_field_markup * {
+    display: none !important;
+}
+
+/* END - Update 2.0.4 */
+
+
+
+#adminmenu > .menu-icon-manage_cpt > .wp-submenu > li > a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inside .shortcode-custom-fields {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    background: transparent;
+    width: 100%;
+}
+
+.advanced-cpt-settings-btn, .normal-cpt-settings-btn {
+    background: #f1f1f1;
+    color: #aaa;
+    display: block;
+    width: 100%;
+    line-height: 32px;
+    cursor: pointer;
+    border: 1px solid #e5e5e5;
+    margin: 20px 0 0;
+    clear: both;
+    padding: 0;
+}
+
+.normal-cpt-settings-btn {
+    display: none;
+}
+
+.advanced-cpt-settings-btn .dashicons, .normal-cpt-settings-btn .dashicons {
+    line-height: unset;
+    margin-right: 10px;
+    transition: unset;
+}
+
+.advanced-cpt-settings-btn:hover, .normal-cpt-settings-btn:hover {
+    color: #444;
+}
+
+.inside .advanced-cpt-settings {
+    display: none;
+}
+
+.cpt-block-select {
+    padding: 14px;
+    background-color: #f8f9f9;
+    font-size: 13px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+}
+
+.cpt-block-select label {
+    white-space: nowrap;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.cpt-block-select label:before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg aria-hidden='true' role='img' focusable='false' class='dashicon dashicons-index-card' xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M1 3.17V18h18V4H8v-.83c0-.32-.12-.6-.35-.83S7.14 2 6.82 2H2.18c-.33 0-.6.11-.83.34-.24.23-.35.51-.35.83zM10 6v2H3V6h7zm7 0v10h-5V6h5zm-7 4v2H3v-2h7zm0 4v2H3v-2h7z'%3E%3C/path%3E%3C/svg%3E ");
+}
+
+.cpt-block-select select {
+    display: block;
+    margin: 5px 0 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+.cpt-block-notice {
+    display: block;
+    padding: 14px;
+    background-color: #00a6ff;
+    color: #fff;
+    font-size: 13px;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 782px){
+    .inside .wp-cpt-row {
+        margin: 0 0 10px;
+        display: block;
+    }
+    .inside .wp-cpt-row > * {
+        flex: none !important;
+        width: 100%;
+        margin-bottom: 5px;
+        display: block;
+    }
+    .inside .wp-cpt-row > small {
+        padding: 0;
+    }
+    .inside .wp-field-row {
+        margin: 6px 0 0;
+        display: block;
+    }
+    .inside .wp-field-row > :nth-child(1) {
+        flex: none !important;
+        width: 100%;
+        margin-bottom: 5px;
+        display: block;
+        text-align: left;
+        padding-right: 0;
+    }
+
+
+    /* Update 2.0.0 */
+
+    .wp-cpt-field-row.field-form .field-form-sx, .wp-cpt-field-row.field-form .field-form-dx {
+        width: 100%;
+        padding-right: 0;
+        padding-bottom: 10px;
+    }
+
+    .tools-page .wp-cpt-plugin-banner .details {
+        width: 100%;
+    }
+
+    .tools-page .wp-cpt-plugin-banner .banner {
+        padding-top: 32.38%;
+    }
+
+    /* END - Update 2.0.0 */
+    
+    /* Update 2.0.4 */
+    
+    .hide-mobile {
+        display: none !important;
+    }
+    
+    /* END - Update 2.0.4 */
+    
+}
