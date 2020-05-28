@@ -11,6 +11,7 @@ Version: 0.1.0
 
 require_once __DIR__.'/includes/basic.php';
 require_once __DIR__.'/includes/meta.php';
+require_once __DIR__.'/includes/access-token.php';
 
 // Basic auth
 add_filter('determine_current_user', 'determineCurrentUser', 20);
@@ -18,3 +19,6 @@ add_filter('rest_authentication_errors', 'restAuthenticationErrors');
 
 // Rest api meta support
 add_action('rest_api_init', 'retrievePostMeta');
+
+// Access token
+add_action('rest_api_init', 'registerAccessTokenHandler');
