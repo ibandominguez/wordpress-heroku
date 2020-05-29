@@ -1,5 +1,9 @@
 <?php
 
+function signBasicHeaderToken($email, $password) {
+  return 'basic ' . base64_encode($email . ':' . $password);
+}
+
 function makeRequest($provider, $token) {
   switch ($provider) {
     case 'facebook':
@@ -50,13 +54,14 @@ function handleAccessTokenRequest($request) {
 
   $userId = wp_insert_user($userData);
 
-  add_user_meta($userId, 'image_url', $providerResponse->picture);
-  add_user_meta($userId, 'oauth_provider', $request['provider']);
-  add_user_meta($userId, 'oauth_id', $providerResponse->id);
+  update_user_meta($userId, 'image_url', $providerResponse->picture);
+  update_user_meta($userId, 'oauth_provider', $request['provider']);
+  update_user_meta($userId, 'oauth_id', $providerResponse->id);
 
-  $userData['image_url'] = $providerResponse->picture;
-  $userData['basic_authorization_header'] = 'basic ' . base64_encode($userData['user_email'] . ':' . $userData['user_pass']);
-  $response = new WP_REST_Response($userData);
+  $userResponseData = getUserFormattedResponseData(get_user_by('id', $userId));
+  $userResponseData['image_url'] = $providerResponse->picture;
+  $userResponseData['basic_authorization_header'] = signBasicHeaderToken($userData['user_email'], $userData['user_pass']);
+  $response = new WP_REST_Response($userResponseData);
   $response->set_status(201);
   return $response;
 }
@@ -66,4 +71,29 @@ function registerAccessTokenHandler() {
     'methods' => 'POST',
     'callback' => 'handleAccessTokenRequest'
   ));
+}
+
+function getUserFormattedResponseData($user) {
+  $data = [];
+
+  $data['id'] = $user->ID;
+  $data['username'] = $user->user_login;
+  $data['name'] = $user->display_name;
+  $data['first_name'] = $user->first_name;
+  $data['last_name'] = $user->last_name;
+  $data['email'] = $user->user_email;
+  $data['url'] = $user->user_url;
+  $data['description'] = $user->description;
+  $data['link'] = get_author_posts_url($user->ID, $user->user_nicename);
+  $data['locale'] = get_user_locale($user);
+  $data['nickname'] = $user->nickname;
+  $data['slug'] = $user->user_nicename;
+  $data['roles'] = array_values($user->roles);
+  $data['registered_date'] = gmdate('c', strtotime($user->user_registered));
+  $data['capabilities'] = (object) $user->allcaps;
+  $data['extra_capabilities'] = (object) $user->caps;
+  $data['avatar_urls'] = rest_get_avatar_urls($user);
+  $data['meta'] = get_user_meta($user->ID);
+
+  return $data;
 }
