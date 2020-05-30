@@ -15,6 +15,14 @@ class ModifyUsersPostRestRoute {
    */
   private $baseController;
 
+  /**
+   * @return ModifyUsersPostRestRoute
+   */
+  static public function boot()
+  {
+    return new self();
+  }
+
   public function __construct()
   {
     $this->baseController = new WP_REST_Users_Controller();
@@ -29,12 +37,14 @@ class ModifyUsersPostRestRoute {
   public function registerUsersPostRoute()
   {
     /** @link https://developer.wordpress.org/reference/functions/register_rest_route/ */
-    register_rest_route('wp/v2', '/users', [[
-      'methods' => WP_REST_Server::CREATABLE,
-      'args' => $this->baseController->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
-      'callback' => array($this, 'callback'),
-      'permission_callback' => array($this, 'permissionCallback')
-    ]]);
+    register_rest_route('wp/v2', '/users', array(
+      array(
+        'methods' => WP_REST_Server::CREATABLE,
+        'args' => $this->baseController->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
+        'callback' => array($this, 'callback'),
+        'permission_callback' => array($this, 'permissionCallback')
+      )
+    ));
   }
 
   /**
