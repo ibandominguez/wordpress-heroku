@@ -12,7 +12,7 @@ Version: 0.1.0
 require_once __DIR__.'/includes/basic.php';
 require_once __DIR__.'/includes/meta.php';
 require_once __DIR__.'/includes/access-token.php';
-require_once __DIR__.'/includes/modify-post-users-route.php';
+require_once __DIR__.'/includes/ModifyUsersPostRestRoute.php';
 
 // Basic auth
 add_filter('determine_current_user', 'determineCurrentUser', 20);
@@ -24,5 +24,9 @@ add_action('rest_api_init', 'retrievePostMeta');
 // Access token
 add_action('rest_api_init', 'registerAccessTokenHandler');
 
-// Modify post users to allow signup
-add_action('rest_api_init', 'modifyPostUsersRoute');
+/**
+ * Moddifies POST /wp-json/wp/v2/users
+ * allowing users to be registered as subscribers and
+ * returning the basic authorization header in the default response
+ */
+new ModifyUsersPostRestRoute();
