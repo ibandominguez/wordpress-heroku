@@ -150,6 +150,9 @@ class CustomTypes
         <label>Menu position
           <input type="number" name="<?= $this->metaKey; ?>[menu_position]" ng-model="settings.menu_position">
         </label>
+        <label>REST base
+          <input ng-change="settings.rest_base = settings.rest_base.toLowerCase().replace(' ', '')" type="text" name="<?= $this->metaKey; ?>[rest_base]" ng-model="settings.rest_base">
+        </label>
       </div>
 
       <div class="form-group">
@@ -160,6 +163,7 @@ class CustomTypes
         <input type="checkbox" name="<?= $this->metaKey; ?>[query_var]" ng-checked="!!settings.query_var" ng-model="settings.query_var" value="true" /> Query var<br>
         <input type="checkbox" name="<?= $this->metaKey; ?>[has_archive]" ng-checked="!!settings.has_archive" ng-model="settings.has_archive" value="true" /> Has archive<br>
         <input type="checkbox" name="<?= $this->metaKey; ?>[hierarchical]" ng-checked="!!settings.hierarchical" ng-model="settings.hierarchical" value="true" /> Hierarchical<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[show_in_rest]" ng-checked="!!settings.show_in_rest" ng-model="settings.show_in_rest" value="true" /> Show in REST<br>
       </div>
 
       <h4>Post type supports</h4>
