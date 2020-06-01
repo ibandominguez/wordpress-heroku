@@ -64,6 +64,7 @@ class CustomFields
       'has_archive'        => true,
       'hierarchical'       => false,
       'menu_position'      => null,
+      'menu_icon'          => 'dashicons-chart-pie',
       'supports'           => array('title'),
     );
 
