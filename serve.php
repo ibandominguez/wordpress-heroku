@@ -27,4 +27,8 @@ foreach (array(
   @symlink($key, $value);
 endforeach;
 
-exec('php -S localhost:8000 -t '.__DIR__.'/public');
+putenv('WP_DEBUG=true');
+putenv('DISALLOW_FILE_EDIT=true');
+putenv('DISALLOW_FILE_MODS=true');
+
+exec('php -S 192.168.1.3:8000 -t '.__DIR__.'/public');

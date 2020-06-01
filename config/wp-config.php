@@ -66,7 +66,7 @@ if (!empty(getenv('CLOUDCUBE_URL'))):
 	)));
 endif;
 
-define('WP_DEBUG', getEnvOr('DEBUG', false));
+define('WP_DEBUG', getEnvOr('DEBUG', true));
 
 $table_prefix = PREFIX;
 
