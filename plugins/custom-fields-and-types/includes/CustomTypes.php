@@ -90,7 +90,7 @@ class CustomTypes
       $settings = array();
     endif;
 
-    $settings['menu_position'] = intval($settings['menu_position']);
+    $settings['menu_position'] = intval(@$settings['menu_position']);
 
     if (empty($settings['labels'])):
       $settings['labels'] = array(
@@ -165,17 +165,17 @@ class CustomTypes
       <h4>Post type supports</h4>
 
       <div class="form-group">
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('title') !== -1" value="title" /> Title<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('editor') !== -1" value="editor" /> Editor<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('comments') !== -1" value="comments" /> Comments<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('revisions') !== -1" value="revisions" /> Revisions<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('trackbacks') !== -1" value="trackbacks" /> Trackbacks<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('author') !== -1" value="author" /> Author<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('excerpt') !== -1" value="excerpt" /> Excerpt<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('page') !== -1" value="page-attributes" /> Page attributes<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('thumbnail') !== -1" value="thumbnail" /> Thumbnail<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('custom') !== -1" value="custom-fields" /> Custom fields<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports.indexOf('post') !== -1" value="post-formats" /> Post formats<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('title') !== -1" value="title" /> Title<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('editor') !== -1" value="editor" /> Editor<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('comments') !== -1" value="comments" /> Comments<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('revisions') !== -1" value="revisions" /> Revisions<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('trackbacks') !== -1" value="trackbacks" /> Trackbacks<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('author') !== -1" value="author" /> Author<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('excerpt') !== -1" value="excerpt" /> Excerpt<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('page') !== -1" value="page-attributes" /> Page attributes<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('thumbnail') !== -1" value="thumbnail" /> Thumbnail<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('custom') !== -1" value="custom-fields" /> Custom fields<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.support && setttings.supports.indexOf('post') !== -1" value="post-formats" /> Post formats<br>
       </div>
 
       <h4>Labels</h4>

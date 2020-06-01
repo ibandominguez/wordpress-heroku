@@ -108,7 +108,20 @@ class CustomFields
   {
     wp_nonce_field($this->settingsMetaKey, "{$this->settingsMetaKey}_nonce");
     $value = get_post_meta($post->ID, $this->settingsMetaKey, true);
-    $this->renderSettingsForm($value); // HTML to be embbed in the form
+    $this->renderSettingsForm($this->formatInitialValues($value)); // HTML to be embbed in the form
+  }
+
+  public function formatInitialValues($settings)
+  {
+    if (empty($settings)):
+      $settings = array();
+    endif;
+
+    if (empty($settings['fields'])):
+      $settings['fields'] = array();
+    endif;
+
+    return $settings;
   }
 
   /**
@@ -137,7 +150,7 @@ class CustomFields
           <?php foreach (get_post_types(array('public' => true)) as $type): ?>
             <div>
               <input type="checkbox"
-                ng-checked="data.settings.types.indexOf('<?= $type; ?>') !== -1"
+                ng-checked="data.settings.types && data.settings.types.indexOf('<?= $type; ?>') !== -1"
                 name="<?= $this->settingsMetaKey; ?>[settings][types][]"
                 value="<?= $type; ?>"
               > <?= $type; ?>
