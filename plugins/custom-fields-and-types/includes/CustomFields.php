@@ -193,6 +193,10 @@ class CustomFields
             <label for="">One option per line:</label>
             <textarea class="w-100" name="<?= $this->settingsMetaKey; ?>[fields][{{ $index }}][options]" ng-model="data.fields[$index].options"></textarea>
           </div>
+          <div class="mb-sm" ng-if="data.fields[$index].type === 'route'">
+            <label for="">Google api key:</label>
+            <input class="w-100" type="text" ng-model="data.fields[$index].options" name="<?= $this->settingsMetaKey; ?>[fields][{{ $index }}][options]" placeholder="Google api key">
+          </div>
         </div>
         <div class="item flex-full">
           <input type="checkbox" value="true" ng-checked="data.fields[$index].show_in_rest" name="<?= $this->settingsMetaKey; ?>[fields][{{ $index }}][show_in_rest]"> Add to rest api <br>
