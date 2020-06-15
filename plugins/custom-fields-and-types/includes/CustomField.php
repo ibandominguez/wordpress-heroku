@@ -50,14 +50,6 @@ class CustomField
     }
   }
 
-  public function getRegisterType()
-  {
-    switch ($this->type) {
-      case 'route': return 'array';
-      default: return 'string';
-    }
-  }
-
   public function getRequiredAttr()
   {
     if ($this->required) {
