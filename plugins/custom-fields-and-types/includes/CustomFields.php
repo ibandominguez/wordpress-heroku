@@ -191,7 +191,7 @@ class CustomFields
           </div>
           <div class="mb-sm" ng-if="data.fields[$index].type === 'select'">
             <label for="">One option per line:</label>
-            <textarea name="<?= $this->settingsMetaKey; ?>[fields][{{ $index }}][options]" ng-model="data.fields[$index].options"></textarea>
+            <textarea class="w-100" name="<?= $this->settingsMetaKey; ?>[fields][{{ $index }}][options]" ng-model="data.fields[$index].options"></textarea>
           </div>
         </div>
         <div class="item flex-full">
