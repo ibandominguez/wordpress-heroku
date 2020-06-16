@@ -260,6 +260,16 @@ class CustomFields
       $settings = get_post_meta($group->ID, $this->settingsMetaKey, true);
       $fields = !empty($settings['fields']) ? $settings['fields'] : array();
 
+      // Force hide custom fields meta box
+      if (!empty($settings['settings']['types'])):
+        add_action('admin_menu', function() use ($settings) {
+          foreach ($settings['settings']['types'] as $type):
+            remove_meta_box('postcustom', $type, 'normal');
+          endforeach;
+        });
+      endif;
+
+      // Register metas
       $fields = array_map(function($field) {
         $type = new CustomField($field);
         $type->register();
