@@ -140,7 +140,10 @@ class CustomField
       var $input = jQuery('#input-<?= $this->key; ?>');
       var $search = jQuery('#search-<?= $this->key; ?>').geocomplete({
         location: 'Canary Islands',
-        map: '#map-<?= $this->key; ?>'
+        map: '#map-<?= $this->key; ?>',
+        mapOptions: {
+          mapTypeId: 'satellite'
+        }
       });
 
       var map = $search.geocomplete('map');
@@ -203,7 +206,7 @@ class CustomField
       function handlePoints () {
         $points.empty();
         var totalDistanceInKM = 0;
-        
+
         markers.map(function(marker, index) {
           var lat = marker.position.lat();
           var lng = marker.position.lng();
