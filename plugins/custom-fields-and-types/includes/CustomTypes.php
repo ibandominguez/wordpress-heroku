@@ -50,7 +50,7 @@ class CustomTypes
       'public'             => true,
       'publicly_queryable' => true,
       'show_ui'            => true,
-      'show_in_menu'       => true,
+      'show_in_menu'       => current_user_can('administrator'),
       'query_var'          => true,
       'rewrite'            => array('slug' => $this->postType),
       'capability_type'    => 'post',

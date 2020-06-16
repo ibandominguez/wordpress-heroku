@@ -6,7 +6,7 @@ Plugin URI: https://github.com/ibandominguez/heroku-wordpress/custom-fields-and-
 Description: Custom fields and types implementation
 Author: Ibán Dominguez Noda
 Author URI: https://github.com/ibandominguez
-Version: 0.1.8
+Version: 0.1.9
 */
 
 require_once(__DIR__.'/includes/CustomField.php');

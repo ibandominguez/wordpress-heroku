@@ -57,7 +57,7 @@ class CustomFields
       'public'             => false,
       'publicly_queryable' => false,
       'show_ui'            => true,
-      'show_in_menu'       => true,
+      'show_in_menu'       => current_user_can('administrator'),
       'query_var'          => true,
       'rewrite'            => array('slug' => $this->customFieldsGroupPostType),
       'capability_type'    => 'post',
