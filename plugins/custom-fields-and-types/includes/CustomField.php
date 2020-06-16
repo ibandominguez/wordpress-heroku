@@ -28,14 +28,40 @@ class CustomField
       /** @link https://developer.wordpress.org/reference/functions/register_meta/ */
       register_meta('post', $this->key, array(
         'object_subtype' => $type,
-        'type' => 'string', // TODO: (Extend types) 'string', 'boolean', 'integer', 'number', 'array', and 'object'.
+        'type' => $this->getMetaType(), // TODO: (Extend types) 'string', 'boolean', 'integer', 'number', 'array', and 'object'.
         'description' => "Field {$this->name}",
         'single' => true, // TODO: Extend for repeateable fields
         // 'sanitize_callback' => function() {},
         // 'auth_callback' => function() {},
-        'show_in_rest' => $this->show_in_rest
+        'show_in_rest' => $this->getShowInRest()
       ));
     endforeach;
+  }
+
+  public function getShowInRest()
+  {
+    switch ($this->type) {
+      case 'route': return array(
+        'schema' => array(
+          'items' => array(
+            'type' => 'object',
+            'properties' => array(
+              'latitude' => array('type' => 'number'),
+              'longitude' => array('type' => 'number')
+            ),
+          )
+        )
+      );
+      default: return $this->show_in_rest;
+    }
+  }
+
+  public function getMetaType()
+  {
+    switch ($this->type) {
+      case 'route': return 'array';
+      default: return 'string';
+    }
   }
 
   public function render()
@@ -158,6 +184,8 @@ class CustomField
 
           $points.append([
             '<div style="padding: 15px">',
+              '<input type="hidden" name="<?= $this->key; ?>[' + index + '][latitude]" value="' + lat + '">',
+              '<input type="hidden" name="<?= $this->key; ?>[' + index + '][longitude]" value="' + lng + '">',
               '<span style="cursor: pointer" class="dashicons dashicons-trash" onclick="deleteMarker(' + index + ')"></span>',
               '<b>Point ' + (index + 1) + '</b><br>',
                'Lat: '+ lat + '. Lng:' + lng,
@@ -175,9 +203,8 @@ class CustomField
         $input.val(JSON.stringify(value));
       }
 
-      // Draw old markers
-      if ($input.val()) {
-        var oldMarkers = JSON.parse($input.val());
+      <?php if (!empty($this->value)): ?>
+        var oldMarkers = <?= json_encode(unserialize($this->value)); ?>;
 
         oldMarkers.map(function (marker, index) {
           createMarker({
@@ -191,10 +218,9 @@ class CustomField
           map.setCenter(new google.maps.LatLng(oldMarkers[0].latitude, oldMarkers[0].longitude));
           map.setZoom(14);
         }, 1000);
-      }
+      <?php endif; ?>
     }
     </script>
-    <input type="hidden" id="input-<?= $this->key; ?>" type="text" name="<?= $this->key; ?>" value='<?= $this->value; ?>'>
     <label for="<?= $this->key; ?>"><?= $this->name; ?></label>
     <div style="display: flex">
       <div style="flex: 1">
