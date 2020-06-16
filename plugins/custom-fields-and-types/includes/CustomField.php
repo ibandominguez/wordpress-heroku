@@ -22,18 +22,20 @@ class CustomField
     $this->value = $value;
   }
 
-  public function register()
+  public function register($types)
   {
-    /** @link https://developer.wordpress.org/reference/functions/register_meta/ */
-    register_meta('post', $this->key, array(
-      // 'object_subtype' => null,
-      'type' => 'string', // TODO: (Extend types) 'string', 'boolean', 'integer', 'number', 'array', and 'object'.
-      'description' => "Field {$this->name}",
-      'single' => true, // TODO: Extend for repeateable fields
-      // 'sanitize_callback' => function() {},
-      // 'auth_callback' => function() {},
-      'show_in_rest' => $this->show_in_rest
-    ));
+    foreach ($types as $type):
+      /** @link https://developer.wordpress.org/reference/functions/register_meta/ */
+      register_meta('post', $this->key, array(
+        'object_subtype' => $type,
+        'type' => 'string', // TODO: (Extend types) 'string', 'boolean', 'integer', 'number', 'array', and 'object'.
+        'description' => "Field {$this->name}",
+        'single' => true, // TODO: Extend for repeateable fields
+        // 'sanitize_callback' => function() {},
+        // 'auth_callback' => function() {},
+        'show_in_rest' => $this->show_in_rest
+      ));
+    endforeach;
   }
 
   public function render()

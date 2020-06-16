@@ -270,9 +270,13 @@ class CustomFields
       endif;
 
       // Register metas
-      $fields = array_map(function($field) {
+      $fields = array_map(function($field) use ($settings) {
         $type = new CustomField($field);
-        $type->register();
+
+        if (!empty($settings['settings']['types'])):
+          $type->register($settings['settings']['types']);
+        endif;
+
         return $type;
       }, $fields);
 
