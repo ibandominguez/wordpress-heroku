@@ -176,10 +176,10 @@ class CustomTypes
         <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('trackbacks') !== -1" value="trackbacks" /> Trackbacks<br>
         <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('author') !== -1" value="author" /> Author<br>
         <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('excerpt') !== -1" value="excerpt" /> Excerpt<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('page') !== -1" value="page-attributes" /> Page attributes<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('page-attributes') !== -1" value="page-attributes" /> Page attributes<br>
         <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('thumbnail') !== -1" value="thumbnail" /> Thumbnail<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('custom') !== -1" value="custom-fields" /> Custom fields<br>
-        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('post') !== -1" value="post-formats" /> Post formats<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('custom-fields') !== -1" value="custom-fields" /> Custom fields<br>
+        <input type="checkbox" name="<?= $this->metaKey; ?>[supports][]" ng-checked="settings.supports && settings.supports.indexOf('post-formats') !== -1" value="post-formats" /> Post formats<br>
       </div>
 
       <h4>Labels</h4>
