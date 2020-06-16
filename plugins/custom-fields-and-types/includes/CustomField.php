@@ -145,6 +145,15 @@ class CustomField
 
       var map = $search.geocomplete('map');
       var markers = [];
+      var polyline = new google.maps.Polyline({
+        path: [],
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+
+      polyline.setMap(map);
 
       map.addListener('click', function (event) {
         createMarker(event);
@@ -193,14 +202,9 @@ class CustomField
           ].join(''));
         });
 
-        var value = markers.reduce(function(value, marker) {
-          var lat = marker.position.lat();
-          var lng = marker.position.lng();
-          value.push({ latitude: lat, longitude: lng });
-          return value;
-        }, []);
-
-        $input.val(JSON.stringify(value));
+        polyline.setPath(markers.map(function(marker) {
+          return { lat: marker.position.lat(), lng: marker.position.lng() };
+        }));
       }
 
       <?php if (!empty($this->value)): ?>
