@@ -184,12 +184,39 @@ class CustomField
         markers.push(marker);
       }
 
-      // Draw makers on screen and add to hidden input
+      function toRad(v){return v * Math.PI / 180;}
+      function haversine(l1, l2) {
+        var R = 6371; // km
+        var x1 = l2.latitude-l1.latitude;
+        var dLat = toRad(x1);
+        var x2 = l2.longitude-l1.longitude;
+        var dLon = toRad(x2);
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(toRad(l1.latitude)) * Math.cos(toRad(l2.latitude)) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        return d;
+      }
+
+      // Draw markers on screen and add to hidden input
       function handlePoints () {
         $points.empty();
+        var totalDistanceInKM = 0;
+        
         markers.map(function(marker, index) {
           var lat = marker.position.lat();
           var lng = marker.position.lng();
+
+          if (markers[index + 1]) {
+            totalDistanceInKM += haversine({
+              latitude: lat,
+              longitude: lng
+            }, {
+              latitude: markers[index + 1].position.lat(),
+              longitude: markers[index + 1].position.lng(),
+            });
+          }
 
           $points.append([
             '<div style="padding: 15px">',
@@ -201,6 +228,8 @@ class CustomField
             '</div>'
           ].join(''));
         });
+
+        $points.append('<div>Total: <b>' + totalDistanceInKM.toFixed(2) + 'km<b></div>');
 
         polyline.setPath(markers.map(function(marker) {
           return { lat: marker.position.lat(), lng: marker.position.lng() };
