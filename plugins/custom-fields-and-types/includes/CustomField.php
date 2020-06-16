@@ -3,7 +3,7 @@
 class CustomField
 {
   static $types = array(
-    'text', 'date', 'time', 'textarea', 'select', 'route'
+    'text', 'date', 'time', 'textarea', 'select', 'route', 'number'
   );
 
   public function __construct($config)
@@ -60,6 +60,7 @@ class CustomField
   {
     switch ($this->type) {
       case 'route': return 'array';
+      case 'number': return 'number';
       default: return 'string';
     }
   }
@@ -72,7 +73,7 @@ class CustomField
       case 'time': return $this->renderTime();
       case 'textarea': return $this->renderTextarea();
       case 'select': return $this->renderSelect();
-      case 'number': return $this->renderSelect();
+      case 'number': return $this->renderNumber();
       case 'route': return $this->renderRoute();
       default: return $this->renderText();
     }
