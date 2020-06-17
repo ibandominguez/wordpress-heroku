@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Plugin Name: WP Rest api user registration
- * Plugin URI: https://github.com/ibandominguez/wordpress-heroku/tree/master/plugins/rest-api-extensions/ModifyUsersPostRestRoute.php
- * Description: Allow users to register as subscribers using the rest api.
- * Author: Ibán Dominguez Noda
- * Author URI: https://github.com/ibandominguez
- * Version: 0.1.1
-*/
-
 class ModifyUsersPostRestRoute {
   /**
    * @var WP_REST_Users_Controller
@@ -51,7 +42,7 @@ class ModifyUsersPostRestRoute {
         'methods' => WP_REST_Server::DELETABLE,
         'args' => $this->baseController->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
         'callback' => array($this, 'deleteCallback'),
-        'permission_callback' => array($this, 'deletePermissionCallback')
+        'permission_callback' => array($this, 'loggedInCallback')
       )
     ));
   }
@@ -116,7 +107,7 @@ class ModifyUsersPostRestRoute {
    *
    * @return Bool|WP_Error
    */
-  public function deletePermissionCallback($request) {
+  public function loggedInCallback($request) {
     global $current_user;
 
     if (empty($current_user)):

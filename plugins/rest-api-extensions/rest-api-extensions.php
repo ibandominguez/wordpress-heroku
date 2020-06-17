@@ -12,6 +12,7 @@ Version: 0.1.0
 require_once __DIR__.'/includes/basic.php';
 require_once __DIR__.'/includes/access-token.php';
 require_once __DIR__.'/includes/ModifyUsersPostRestRoute.php';
+require_once __DIR__.'/includes/UserMetasRoutes.php';
 
 // Basic auth
 add_filter('determine_current_user', 'determineCurrentUser', 20);
@@ -26,3 +27,14 @@ add_action('rest_api_init', 'registerAccessTokenHandler');
  * returning the basic authorization header in the default response
  */
 ModifyUsersPostRestRoute::boot();
+
+/**
+ * Adds metas routes
+ *
+ * GET /users/me/metas/<metas_key>
+ * POST /users/me/metas/<metas_key> {any...}
+ * GET /users/me/metas/<metas_key>/<id>
+ * PUT /users/me/metas/<metas_key><id> {any...}
+ * DELETE /users/me/metas/<metas_key><id>
+ */
+UserMetasRoutes::boot();
