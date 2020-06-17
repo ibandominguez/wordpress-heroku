@@ -92,6 +92,6 @@ class ModifyUsersPostRestRoute {
    */
   private function makeBasicAuthHeader($email, $password)
   {
-    return 'basic ' . base64_encode("{$email}:{$password}");
+    return 'Basic ' . base64_encode("{$email}:{$password}");
   }
 }
