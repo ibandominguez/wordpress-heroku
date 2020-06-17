@@ -67,6 +67,8 @@ if (!empty(getenv('CLOUDCUBE_URL'))):
 endif;
 
 define('WP_DEBUG', getEnvOr('DEBUG', true));
+define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/../site.logs'));
+define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', true));
 
 $table_prefix = PREFIX;
 

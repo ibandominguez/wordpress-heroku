@@ -6,7 +6,7 @@
  * Description: Allow users to register as subscribers using the rest api.
  * Author: Ibán Dominguez Noda
  * Author URI: https://github.com/ibandominguez
- * Version: 0.1.0
+ * Version: 0.1.1
 */
 
 class ModifyUsersPostRestRoute {
@@ -45,6 +45,15 @@ class ModifyUsersPostRestRoute {
         'permission_callback' => array($this, 'permissionCallback')
       )
     ));
+
+    register_rest_route('wp/v2', '/users/me', array(
+      array(
+        'methods' => WP_REST_Server::DELETABLE,
+        'args' => $this->baseController->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
+        'callback' => array($this, 'deleteCallback'),
+        'permission_callback' => array($this, 'deletePermissionCallback')
+      )
+    ));
   }
 
   /**
@@ -79,6 +88,43 @@ class ModifyUsersPostRestRoute {
       );
     else:
       $request->set_param('roles', array('subscriber'));
+    endif;
+
+    return true;
+  }
+
+  /**
+   * @param WP_REST_Request $request
+   *
+   * @return Bool|WP_Error
+   */
+  public function deleteCallback($request) {
+    global $current_user;
+
+    require_once(ABSPATH.'wp-admin/includes/user.php');
+
+    $deleted = wp_delete_user($current_user->ID);
+
+    return new WP_REST_Response(array(
+      'status' => 204,
+      'response' => ['success' => $deleted]
+    ));
+  }
+
+  /**
+   * @param WP_REST_Request $request
+   *
+   * @return Bool|WP_Error
+   */
+  public function deletePermissionCallback($request) {
+    global $current_user;
+
+    if (empty($current_user)):
+      return new WP_Error(
+        'rest_cannot_delete_user',
+        __('Sorry, you must be signed in to remove your account.'),
+        array('status' => rest_authorization_required_code())
+      );
     endif;
 
     return true;
