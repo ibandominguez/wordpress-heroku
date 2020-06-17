@@ -297,6 +297,23 @@ class CustomTypes
 
       if (!empty($settings['key']) && strlen($settings['key']) <= 20):
         register_post_type($settings['key'], $settings);
+
+        if (isset($settings['supports']) && in_array('thumbnail', $settings['supports'])):
+          add_theme_support('post-thumbnails', array($settings['key']));
+
+          add_action('rest_api_init', function() use ($settings) {
+            register_rest_field($settings['key'], 'featured_media_url', array(
+              'update_callback' => null,
+              'schema'          => null,
+              'get_callback'    => function($object, $field_name, $request) {
+                if ($object['featured_media']):
+                  $images = wp_get_attachment_image_src($object['featured_media'], 'app-thumb');
+                  return $images[0];
+                endif;
+              }
+            ));
+          });
+        endif;
       endif;
     endforeach;
   }
