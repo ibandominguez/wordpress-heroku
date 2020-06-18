@@ -132,6 +132,7 @@ class UserMetasRoutes {
     $metas = $wpdb->get_results($wpdb->prepare("
       select * from $wpdb->usermeta
       where user_id = {$current_user->ID} and meta_key = %s
+      order by umeta_id desc
     ", $request['meta_key']), ARRAY_A);
 
     foreach ($metas as &$meta):
