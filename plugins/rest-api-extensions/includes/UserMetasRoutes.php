@@ -119,7 +119,7 @@ class UserMetasRoutes {
       ", $request['meta_id'], $current_user->ID, $request['meta_key']
     ), ARRAY_A);
 
-    return new WP_REST_Response(null, 204);
+    return new WP_REST_Response([], 200);
   }
 
   public function listMetasCallback($request)
