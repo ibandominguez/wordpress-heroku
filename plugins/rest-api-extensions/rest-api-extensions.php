@@ -38,3 +38,21 @@ ModifyUsersPostRestRoute::boot();
  * DELETE /users/me/<metas_key><meta_id>
  */
 UserMetasRoutes::boot();
+
+/**
+ * Make sure all posts containing
+ * featued image url will return it to the client
+ */
+add_action('rest_api_init', function() {
+  register_rest_field(get_post_types(), 'featured_image_url', array(
+    'update_callback' => null,
+    'schema'          => null,
+    'get_callback'    => function($object, $field_name, $request) {
+      if ($object['featured_media']) {
+        $image = wp_get_attachment_image_src($object['featured_media'], 'app-thumb');
+        return $image[0];
+      }
+      return false;
+    }
+  ));
+});
