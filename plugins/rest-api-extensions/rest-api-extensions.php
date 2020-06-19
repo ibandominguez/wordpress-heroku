@@ -31,10 +31,10 @@ ModifyUsersPostRestRoute::boot();
 /**
  * Adds metas routes
  *
- * GET /users/me/metas/<metas_key>
- * POST /users/me/metas/<metas_key> {any...}
- * GET /users/me/metas/<metas_key>/<id>
- * PUT /users/me/metas/<metas_key><id> {any...}
- * DELETE /users/me/metas/<metas_key><id>
+ * GET /users/me/<metas_key>
+ * POST /users/me/<metas_key> {any...}
+ * GET /users/me/<metas_key>/<meta_id>
+ * PUT /users/me/<metas_key>/<meta_id> {any...}
+ * DELETE /users/me/<metas_key><meta_id>
  */
 UserMetasRoutes::boot();
