@@ -30,6 +30,11 @@ $key = get_option('race_map_key');
 </div><hr>
 
 <div class="form-group">
+  <label class="form-label" for="duration_minutes">Duración en minutos</label>
+  <input id="duration_minutes" class="form-control" type="number" step="0.01" name="duration_minutes" value="<?= get_post_meta($post->ID, 'duration_minutes', true); ?>" required>
+</div><hr>
+
+<div class="form-group">
   <label class="form-label" for="description">Descripción</label>
   <textarea id="description" class="form-control" name="description"><?= get_post_meta($post->ID, 'description', true); ?></textarea>
 </div><hr>
@@ -163,6 +168,7 @@ function initMap() {
     });
 
     $points.append('<div>Distancia total: <b>' + totalDistanceInKM.toFixed(2) + 'km<b></div>');
+    $points.append('<input type="hidden" name="distance_km" value="' + totalDistanceInKM.toFixed(2) + '">');
 
     polyline.setPath(markers.map(function(marker) {
       return { lat: marker.position.lat(), lng: marker.position.lng() };
