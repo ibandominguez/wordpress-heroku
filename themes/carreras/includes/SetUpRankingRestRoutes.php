@@ -84,6 +84,19 @@ class SetUpRankingRestRoutes
     global $wpdb;
     global $current_user;
 
+    $sessions = $wpdb->get_row(
+      $wpdb->prepare("
+        select
+          count(*) as total,
+          sum(if(sessions.post_parent, 0, 1)) as free,
+          sum(if(sessions.post_parent, 1, 0)) as race
+        from {$wpdb->posts} as sessions
+        where sessions.post_type = 'session'
+        and sessions.post_author = %d
+      ", $current_user->ID),
+      ARRAY_A
+    );
+
     $goals = $wpdb->get_row(
       $wpdb->prepare("
         select
@@ -119,7 +132,16 @@ class SetUpRankingRestRoutes
       ARRAY_A
     );
 
-    return new WP_REST_Response(array_merge($stadistics, $goals), 200);
+    return new WP_REST_Response([
+      'total_sessions' => !empty($sessions) ? $sessions['total'] : '0',
+      'free_sessions' => !empty($sessions) ? $sessions['free'] : '0',
+      'race_sessions' => !empty($sessions) ? $sessions['race'] : '0',
+      'average_speed_kmh' => !empty($stadistics) ? $stadistics['average_speed_kmh'] : '0',
+      'duration_minutes' => !empty($stadistics) ? $stadistics['duration_minutes'] : '0',
+      'distance_km' => !empty($stadistics) ? $stadistics['distance_km'] : '0',
+      'total_goals' => !empty($goals) ? $goals['total_goals'] : '0',
+      'completed_goals' => !empty($goals) ? $goals['completed_goals'] : '0'
+    ], 200);
   }
 
   public function loggedInCallback($request) {
