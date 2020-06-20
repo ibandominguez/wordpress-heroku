@@ -1,7 +1,7 @@
 <?php
 
-class UserMetasRoutes {
-
+class UserMetasRoutes
+{
   static public function boot()
   {
     return new self();
@@ -180,5 +180,4 @@ class UserMetasRoutes {
 
     return true;
   }
-
 }

@@ -9,50 +9,100 @@ Author URI: https://github.com/ibandominguez
 Version: 0.1.0
 */
 
-require_once __DIR__.'/includes/basic.php';
-require_once __DIR__.'/includes/access-token.php';
-require_once __DIR__.'/includes/ModifyUsersPostRestRoute.php';
-require_once __DIR__.'/includes/UserMetasRoutes.php';
+function signBasicHeaderToken($email, $password) {
+  return 'basic ' . base64_encode($email . ':' . $password);
+}
 
-// Basic auth
-add_filter('determine_current_user', 'determineCurrentUser', 20);
-add_filter('rest_authentication_errors', 'restAuthenticationErrors');
+function makeRequest($provider, $token) {
+  switch ($provider) {
+    case 'facebook':
+      return json_decode(file_get_contents("https://graph.facebook.com/me?access_token=$token"));
+    case 'google':
+      return json_decode(file_get_contents("https://www.googleapis.com/oauth2/v1/userinfo?access_token=$token"));
+  }
+}
 
-// Access token
-add_action('rest_api_init', 'registerAccessTokenHandler');
+function handleAccessTokenRequest($request) {
+  $types = array('facebook', 'google');
 
-/**
- * Moddifies POST /wp-json/wp/v2/users
- * allowing users to be registered as subscribers and
- * returning the basic authorization header in the default response
- */
-ModifyUsersPostRestRoute::boot();
+  if (
+    empty($request['provider']) ||
+    empty($request['token']) ||
+    !in_array($request['provider'], $types)
+  ):
+    $response = new WP_REST_Response(array('message' => 'Provider and token are required'));
+    $response->set_status(400);
+    return $response;
+  endif;
 
-/**
- * Adds metas routes
- *
- * GET /users/me/<metas_key>
- * POST /users/me/<metas_key> {any...}
- * GET /users/me/<metas_key>/<meta_id>
- * PUT /users/me/<metas_key>/<meta_id> {any...}
- * DELETE /users/me/<metas_key><meta_id>
- */
-UserMetasRoutes::boot();
+  $providerResponse = makeRequest(
+    $request['provider'],
+    $request['token']
+  );
 
-/**
- * Make sure all posts containing
- * featued image url will return it to the client
- */
-add_action('rest_api_init', function() {
-  register_rest_field(get_post_types(), 'featured_image_url', array(
-    'update_callback' => null,
-    'schema'          => null,
-    'get_callback'    => function($object, $field_name, $request) {
-      if ($object['featured_media']) {
-        $image = wp_get_attachment_image_src($object['featured_media'], 'app-thumb');
-        return $image[0];
-      }
-      return false;
-    }
+  if (empty($providerResponse->email) || empty($providerResponse->name)):
+    $response = new WP_REST_Response(array('message' => 'Error fetching data from provider'));
+    $response->set_status(400);
+    return $response;
+  endif;
+
+  $userData = array(
+    'user_login' => $providerResponse->email,
+    'user_pass' => wp_generate_password(),
+    'user_email' => $providerResponse->email,
+    'first_name' => $providerResponse->given_name,
+    'last_name' => $providerResponse->family_name,
+    'display_name' => $providerResponse->name,
+    'role' => 'subscriber'
+  );
+
+  if ($userId = email_exists($providerResponse->email)):
+    $userData['ID'] = $userId;
+    wp_update_user($userData);
+  endif;
+
+  $userId = wp_insert_user($userData);
+
+  update_user_meta($userId, 'image_url', $providerResponse->picture);
+  update_user_meta($userId, 'oauth_provider', $request['provider']);
+  update_user_meta($userId, 'oauth_id', $providerResponse->id);
+
+  $userResponseData = getUserFormattedResponseData(get_user_by('id', $userId));
+  $userResponseData['image_url'] = $providerResponse->picture;
+  $userResponseData['basic_authorization_header'] = signBasicHeaderToken($userData['user_email'], $userData['user_pass']);
+  $response = new WP_REST_Response($userResponseData);
+  $response->set_status(201);
+  return $response;
+}
+
+function registerAccessTokenHandler() {
+  register_rest_route('wp/v2', '/access-token-users', array(
+    'methods' => 'POST',
+    'callback' => 'handleAccessTokenRequest'
   ));
-});
+}
+
+function getUserFormattedResponseData($user) {
+  $data = [];
+
+  $data['id'] = $user->ID;
+  $data['username'] = $user->user_login;
+  $data['name'] = $user->display_name;
+  $data['first_name'] = $user->first_name;
+  $data['last_name'] = $user->last_name;
+  $data['email'] = $user->user_email;
+  $data['url'] = $user->user_url;
+  $data['description'] = $user->description;
+  $data['link'] = get_author_posts_url($user->ID, $user->user_nicename);
+  $data['locale'] = get_user_locale($user);
+  $data['nickname'] = $user->nickname;
+  $data['slug'] = $user->user_nicename;
+  $data['roles'] = array_values($user->roles);
+  $data['registered_date'] = gmdate('c', strtotime($user->user_registered));
+  $data['capabilities'] = (object) $user->allcaps;
+  $data['extra_capabilities'] = (object) $user->caps;
+  $data['avatar_urls'] = rest_get_avatar_urls($user);
+  $data['meta'] = get_user_meta($user->ID);
+
+  return $data;
+}
