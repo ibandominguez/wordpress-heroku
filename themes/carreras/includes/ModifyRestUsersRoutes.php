@@ -72,14 +72,14 @@ class ModifyRestUsersRoutes
    * @return Bool|WP_Error
    */
   public function permissionCallback($request) {
-    if (!current_user_can('create_users') && ($request['roles'] && $request['roles'] !== array('subscriber'))):
+    if (!current_user_can('create_users') && ($request['roles'] && $request['roles'] !== array('runner'))):
       return new WP_Error(
         'rest_cannot_create_user',
-        __('Sorry, you are only allowed to create new users with the subscriber role.'),
+        __('Sorry, you are only allowed to create new users with the runner role.'),
         array('status' => rest_authorization_required_code())
       );
     else:
-      $request->set_param('roles', array('subscriber'));
+      $request->set_param('roles', array('runner'));
     endif;
 
     return true;
