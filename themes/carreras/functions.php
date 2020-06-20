@@ -2,11 +2,13 @@
 
 require_once(__DIR__.'/includes/SetUpAuthBasic.php');
 require_once(__DIR__.'/includes/ModifyRestUsersRoutes.php');
+require_once(__DIR__.'/includes/SetUpRankingRestRoutes.php');
 
 include_once(ABSPATH.'wp-admin/includes/plugin.php');
 
 SetUpAuthBasic::boot();
 ModifyRestUsersRoutes::boot();
+SetUpRankingRestRoutes::boot();
 
 add_action('init', function() {
   activate_plugin('rest-api-extensions');
@@ -226,7 +228,7 @@ add_action('init', function() {
   register_meta('post', 'average_speed_kmh', array(
     'object_subtype' => 'session',
     'type' => 'number',
-    'description' => 'Velocidad media',
+    'description' => 'Velocidad media en kmh',
     'single' => true,
     'show_in_rest' => true
   ));
@@ -234,7 +236,7 @@ add_action('init', function() {
   register_meta('post', 'duration_minutes', array(
     'object_subtype' => 'session',
     'type' => 'number',
-    'description' => 'Velocidad media',
+    'description' => 'Duración en minutos',
     'single' => true,
     'show_in_rest' => true
   ));
