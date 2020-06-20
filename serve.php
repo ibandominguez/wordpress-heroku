@@ -31,4 +31,4 @@ putenv('WP_DEBUG=true');
 putenv('DISALLOW_FILE_EDIT=true');
 putenv('DISALLOW_FILE_MODS=true');
 
-exec('php -S 192.168.1.3:8000 -t '.__DIR__.'/public');
+exec('php -S 0.0.0.0:8000 -t '.__DIR__.'/public');
