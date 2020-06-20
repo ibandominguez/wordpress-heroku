@@ -260,7 +260,9 @@ add_action('init', function() {
           'type' => 'object',
           'properties' => array(
             'latitude' => array('type' => 'number'),
-            'longitude' => array('type' => 'number')
+            'longitude' => array('type' => 'number'),
+            'speed' => array('type' => 'number'),
+            'timestamp' => array('type' => 'number')
           )
         )
       )
