@@ -68,8 +68,7 @@ add_action('init', function() {
   register_post_type('session', array(
     'public'             => true,
     'publicly_queryable' => true,
-    'show_ui'            => true,
-    'show_in_menu'       => true,
+    'show_in_menu'       => false,
     'query_var'          => true,
     'rewrite'            => 'sessions',
     'show_in_rest'       => true,
