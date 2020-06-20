@@ -128,7 +128,7 @@ add_action('init', function() {
    */
   add_action('save_post', function($postId) {
     $nonce = @$_POST['race_meta_box_nonce'];
-    $fieldKeys = array('date', 'time', 'description', 'distance_km', 'duration_minutes', 'route');
+    $fieldKeys = array('date', 'time', 'description', 'distance_km', 'duration_minutes', 'coordinates');
 
     if (
       // TODO: Add server side validation
@@ -204,7 +204,7 @@ add_action('init', function() {
     'show_in_rest' => true
   ));
 
-  register_meta('post', 'route', array(
+  register_meta('post', 'coordinates', array(
     'object_subtype' => 'race',
     'type' => 'array',
     'description' => 'Ruta de la carrera',
