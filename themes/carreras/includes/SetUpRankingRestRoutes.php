@@ -39,9 +39,9 @@ class SetUpRankingRestRoutes
         $wpdb->prepare("
           select
             {$wpdb->users}.display_name as name,
-            avg(average_speed_kmh.meta_value) as average_speed_kmh,
-            sum(duration_minutes.meta_value) as duration_minutes,
-            sum(distance_km.meta_value) as distance_km,
+            truncate(avg(average_speed_kmh.meta_value), 4) as average_speed_kmh,
+            truncate(sum(duration_minutes.meta_value), 2) as duration_minutes,
+            truncate(sum(distance_km.meta_value), 2) as distance_km,
             count(*) as total_sessions
           from {$wpdb->posts}
           join {$wpdb->users} on {$wpdb->posts}.post_author = {$wpdb->users}.ID
@@ -61,9 +61,9 @@ class SetUpRankingRestRoutes
       $rankings = $wpdb->get_results("
         select
           {$wpdb->users}.display_name as name,
-          avg(average_speed_kmh.meta_value) as average_speed_kmh,
-          sum(duration_minutes.meta_value) as duration_minutes,
-          sum(distance_km.meta_value) as distance_km,
+          truncate(avg(average_speed_kmh.meta_value), 4) as average_speed_kmh,
+          truncate(sum(duration_minutes.meta_value), 2) as duration_minutes,
+          truncate(sum(distance_km.meta_value), 2) as distance_km,
           count(*) as total_sessions
         from {$wpdb->posts}
         join {$wpdb->users} on {$wpdb->posts}.post_author = {$wpdb->users}.ID
@@ -103,9 +103,9 @@ class SetUpRankingRestRoutes
     $stadistics = $wpdb->get_row(
       $wpdb->prepare("
         select
-          avg(average_speed_kmh.meta_value) as average_speed_kmh,
-          sum(duration_minutes.meta_value) as duration_minutes,
-          sum(distance_km.meta_value) as distance_km,
+          truncate(avg(average_speed_kmh.meta_value), 4) as average_speed_kmh,
+          truncate(sum(duration_minutes.meta_value), 2) as duration_minutes,
+          truncate(sum(distance_km.meta_value), 2) as distance_km,
           count(*) as total_sessions
         from {$wpdb->posts}
         join {$wpdb->postmeta} as average_speed_kmh on (average_speed_kmh.post_id = {$wpdb->posts}.ID and average_speed_kmh.meta_key = 'average_speed_kmh')
