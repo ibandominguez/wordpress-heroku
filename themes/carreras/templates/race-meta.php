@@ -4,7 +4,7 @@
 $date = get_post_meta($post->ID, 'date', true);
 $time = get_post_meta($post->ID, 'time', true);
 $description = get_post_meta($post->ID, 'description', true);
-$route = get_post_meta($post->ID, 'route', true);
+$coordinates = get_post_meta($post->ID, 'coordinates', true);
 $key = get_option('race_map_key');
 ?>
 
@@ -14,8 +14,8 @@ $key = get_option('race_map_key');
 .row { display: flex; }
 .flex-full { flex: 1; }
 .flex-half { flex: 0.5; }
-#map-route { height: 500px; }
-#points-route { flex: 0.5; padding: 15px; background: #eee; }
+#map-coordinates { height: 500px; }
+#points-coordinates { flex: 0.5; padding: 15px; background: #eee; }
 .hint { display: block; padding-bottom: 5px; }
 </style>
 
@@ -47,14 +47,14 @@ $key = get_option('race_map_key');
 
 <?php if (!empty($key)): ?>
   <div class="form-group">
-    <label class="form-label" for="route">Ruta</label>
+    <label class="form-label" for="coordinates">Ruta</label>
     <div class="row">
       <div class="flex-full">
-        <input id="search-route" type="text" class="form-control" style="border-radius: 0">
-        <div id="results-route"></div>
-        <div id="map-route" class="form-control"></div>
+        <input id="search-coordinates" type="text" class="form-control" style="border-radius: 0">
+        <div id="results-coordinates"></div>
+        <div id="map-coordinates" class="form-control"></div>
       </div>
-      <div id="points-route" class="flex-full">
+      <div id="points-coordinates" class="flex-full">
         <h2>Haz click en el mapa para fijar un punto</h2>
         <p>Usa el campo de búsqueda para encontrar la zona que buscas</p>
         <p>Para hacer zoom usar los signos <b>+</b> y <b>-</b></p>
@@ -68,11 +68,11 @@ $key = get_option('race_map_key');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
 <script type="text/javascript">
 function initMap() {
-  var $points = jQuery('#points-route');
-  var $input = jQuery('#input-route');
-  var $search = jQuery('#search-route').geocomplete({
+  var $points = jQuery('#points-coordinates');
+  var $input = jQuery('#input-coordinates');
+  var $search = jQuery('#search-coordinates').geocomplete({
     location: 'Islas canarias',
-    map: '#map-route',
+    map: '#map-coordinates',
     mapOptions: {
       mapTypeId: 'satellite'
     }
@@ -158,8 +158,8 @@ function initMap() {
 
       $points.append([
         '<div style="padding: 15px">',
-          '<input type="hidden" name="route[' + index + '][latitude]" value="' + lat + '">',
-          '<input type="hidden" name="route[' + index + '][longitude]" value="' + lng + '">',
+          '<input type="hidden" name="coordinates[' + index + '][latitude]" value="' + lat + '">',
+          '<input type="hidden" name="coordinates[' + index + '][longitude]" value="' + lng + '">',
           '<span style="cursor: pointer" class="dashicons dashicons-trash" onclick="deleteMarker(' + index + ')"></span>',
           '<b>Punto ' + (index + 1) + '</b><br>',
            'Lat: '+ lat + '. Lng:' + lng,
@@ -175,8 +175,8 @@ function initMap() {
     }));
   }
 
-  <?php if (!empty($route)): ?>
-    var oldMarkers = <?= json_encode($route); ?>;
+  <?php if (!empty($coordinates)): ?>
+    var oldMarkers = <?= json_encode($coordinates); ?>;
 
     oldMarkers.map(function (marker, index) {
       createMarker({

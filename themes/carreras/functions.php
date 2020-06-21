@@ -66,6 +66,7 @@ add_action('init', function() {
    * Registering and api activation
    */
   register_post_type('session', array(
+    'label'              => 'Sesiones',
     'public'             => true,
     'publicly_queryable' => true,
     'show_in_menu'       => false,
