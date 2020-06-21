@@ -74,7 +74,7 @@ function initMap() {
     location: 'Islas canarias',
     map: '#map-coordinates',
     mapOptions: {
-      mapTypeId: 'satellite'
+      mapTypeId: 'roadmap'
     }
   });
 
