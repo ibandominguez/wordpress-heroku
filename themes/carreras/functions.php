@@ -173,7 +173,7 @@ add_action('init', function() {
         from {$wpdb->posts}
         where post_type = 'session'
         and post_parent = %d
-      ", $object['id']), ARRAY_A);
+      ", $object->id), ARRAY_A);
       return !empty($result) ? intval($result['count']) : 0;
     }
   ));
@@ -182,7 +182,8 @@ add_action('init', function() {
     register_rest_field(array('race'), $key, array(
       'schema'          => null,
       'update_callback' => function ($value, $object, $fieldName) {
-        return update_post_meta($object['id'], $fieldName, $value);
+        $object = (array) $object;
+        return update_post_meta($object['ID'], $fieldName, $value);
       },
       'get_callback'    => function($object, $fieldName, $request) {
         return get_post_meta($object['id'], $fieldName, true);
@@ -192,9 +193,10 @@ add_action('init', function() {
 
   foreach (array('average_speed_kmh') as $key):
     register_rest_field(array('session'), $key, array(
-      'schema'          => array('type' => 'number'),
+      'schema'          => null,
       'update_callback' => function ($value, $object, $fieldName) {
-        return update_post_meta($object['id'], $fieldName, $value);
+        $object = (array) $object;
+        return update_post_meta($object['ID'], $fieldName, $value);
       },
       'get_callback'    => function($object, $fieldName, $request) {
         return floatval(get_post_meta($object['id'], $fieldName, true));
@@ -206,7 +208,8 @@ add_action('init', function() {
     register_rest_field(array('race', 'session'), $key, array(
       'schema'          => null,
       'update_callback' => function ($value, $object, $fieldName) {
-        return update_post_meta($object['id'], $fieldName, $value);
+        $object = (array) $object;
+        return update_post_meta($object['ID'], $fieldName, $value);
       },
       'get_callback'    => function($object, $fieldName, $request) {
         return floatval(get_post_meta($object['id'], $fieldName, true));
@@ -226,10 +229,21 @@ add_action('init', function() {
         )
       ),
       'update_callback' => function ($value, $object, $fieldName) {
-        return update_post_meta($object['id'], $fieldName, $value);
+        $object = (array) $object;
+        return update_post_meta($object['ID'], $fieldName, $value);
       },
       'get_callback'    => function($object, $fieldName, $request) {
-        return get_post_meta($object['id'], $fieldName, true);
+        $coordinates = get_post_meta($object['id'], $fieldName, true);
+
+        if (!empty($coordinates)):
+          foreach ($coordinates as &$coordinate):
+            foreach ($coordinate as $key => $value):
+              $coordinate[$key] = floatval($value);
+            endforeach;
+          endforeach;
+        endif;
+
+        return $coordinates ? $coordinates : [];
       }
     ));
   endforeach;
