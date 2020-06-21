@@ -1,8 +1,8 @@
 <?php
 
 // Initial values
-$date = get_post_meta($post->ID, 'date', true);
-$time = get_post_meta($post->ID, 'time', true);
+$date = get_post_meta($post->ID, 'race_date', true);
+$time = get_post_meta($post->ID, 'race_time', true);
 $description = get_post_meta($post->ID, 'description', true);
 $coordinates = get_post_meta($post->ID, 'coordinates', true);
 $key = get_option('race_map_key');
@@ -20,13 +20,13 @@ $key = get_option('race_map_key');
 </style>
 
 <div class="form-group">
-  <label class="form-label" for="date">Fecha</label>
-  <input id="date" class="form-control" type="date" name="date" value="<?= get_post_meta($post->ID, 'date', true); ?>" required>
+  <label class="form-label" for="race_date">Fecha</label>
+  <input id="race_date" class="form-control" type="date" name="race_date" value="<?= get_post_meta($post->ID, 'race_date', true); ?>" required>
 </div><hr>
 
 <div class="form-group">
-  <label class="form-label" for="time">Hora</label>
-  <input id="time" class="form-control" type="time" name="time" value="<?= get_post_meta($post->ID, 'time', true); ?>" required>
+  <label class="form-label" for="race_time">Hora</label>
+  <input id="race_time" class="form-control" type="time" name="race_time" value="<?= get_post_meta($post->ID, 'race_time', true); ?>" required>
 </div><hr>
 
 <div class="form-group">

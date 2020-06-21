@@ -11,7 +11,6 @@ ModifyRestUsersRoutes::boot();
 SetUpRankingRestRoutes::boot();
 
 add_action('init', function() {
-  activate_plugin('rest-api-extensions');
   activate_plugin('wp-rest-filter');
 
   /**
@@ -58,7 +57,7 @@ add_action('init', function() {
     'hierarchical'       => false,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-location',
-    'supports'           => array('title', 'thumbnail', 'custom-fields')
+    'supports'           => array('title', 'thumbnail')
   ));
 
   /**
@@ -78,7 +77,7 @@ add_action('init', function() {
     'hierarchical'       => true,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-randomize',
-    'supports'           => array('custom-fields', 'page-attributes'),
+    'supports'           => array('page-attributes'),
     'capability_type'    => array('session', 'sessions'),
     'map_meta_cap'       => true,
     'delete_with_user'   => true
@@ -128,7 +127,7 @@ add_action('init', function() {
    */
   add_action('save_post', function($postId) {
     $nonce = @$_POST['race_meta_box_nonce'];
-    $fieldKeys = array('date', 'time', 'description', 'distance_km', 'duration_minutes', 'coordinates');
+    $fieldKeys = array('race_date', 'race_time', 'description', 'distance_km', 'duration_minutes', 'coordinates');
 
     if (
       // TODO: Add server side validation
@@ -152,7 +151,7 @@ add_action('init', function() {
   /**
    * Register race rest metas
    */
-  register_rest_field(array('race'), 'featured_image_url', array(
+  register_rest_field('race', 'featured_image_url', array(
     'update_callback' => null,
     'schema'          => null,
     'get_callback'    => function($object, $field_name, $request) {
@@ -164,118 +163,96 @@ add_action('init', function() {
     }
   ));
 
-  register_meta('post', 'date', array(
-    'object_subtype' => 'race',
-    'type' => 'string',
-    'description' => 'Fecha de la carrera',
-    'single' => true,
-    'show_in_rest' => true
+  register_rest_field('race', 'runners_count', array(
+    'update_callback' => null,
+    'schema'          => null,
+    'get_callback'    => function($object, $field_name, $request) {
+      global $wpdb;
+      $result = $wpdb->get_row($wpdb->prepare("
+        select count(distinct(post_author)) as count
+        from {$wpdb->posts}
+        where post_type = 'session'
+        and post_parent = %d
+      ", $object['id']), ARRAY_A);
+      return !empty($result) ? intval($result['count']) : 0;
+    }
   ));
 
-  register_meta('post', 'time', array(
-    'object_subtype' => 'race',
-    'type' => 'string',
-    'description' => 'Hora de la carrera',
-    'single' => true,
-    'show_in_rest' => true
-  ));
+  foreach (array('description', 'race_date', 'race_time') as $key):
+    register_rest_field(array('race'), $key, array(
+      'schema'          => null,
+      'update_callback' => function ($value, $object, $fieldName) {
+        return update_post_meta($object['id'], $fieldName, $value);
+      },
+      'get_callback'    => function($object, $fieldName, $request) {
+        return get_post_meta($object['id'], $fieldName, true);
+      }
+    ));
+  endforeach;
 
-  register_meta('post', 'description', array(
-    'object_subtype' => 'race',
-    'type' => 'string',
-    'description' => 'Descripción de la carrera',
-    'single' => true,
-    'show_in_rest' => true
-  ));
+  foreach (array('average_speed_kmh') as $key):
+    register_rest_field(array('session'), $key, array(
+      'schema'          => array('type' => 'number'),
+      'update_callback' => function ($value, $object, $fieldName) {
+        return update_post_meta($object['id'], $fieldName, $value);
+      },
+      'get_callback'    => function($object, $fieldName, $request) {
+        return floatval(get_post_meta($object['id'], $fieldName, true));
+      }
+    ));
+  endforeach;
 
-  register_meta('post', 'duration_minutes', array(
-    'object_subtype' => 'race',
-    'type' => 'number',
-    'description' => 'Duración en minutos',
-    'single' => true,
-    'show_in_rest' => true
-  ));
+  foreach (array('duration_minutes', 'distance_km') as $key):
+    register_rest_field(array('race', 'session'), $key, array(
+      'schema'          => null,
+      'update_callback' => function ($value, $object, $fieldName) {
+        return update_post_meta($object['id'], $fieldName, $value);
+      },
+      'get_callback'    => function($object, $fieldName, $request) {
+        return floatval(get_post_meta($object['id'], $fieldName, true));
+      }
+    ));
+  endforeach;
 
-  register_meta('post', 'distance_km', array(
-    'object_subtype' => 'race',
-    'type' => 'number',
-    'description' => 'Distancia en kilómetros',
-    'single' => true,
-    'show_in_rest' => true
-  ));
-
-  register_meta('post', 'coordinates', array(
-    'object_subtype' => 'race',
-    'type' => 'array',
-    'description' => 'Ruta de la carrera',
-    'single' => true,
-    'show_in_rest' => array(
-      'schema' => array(
+  foreach (array('coordinates') as $key):
+    register_rest_field(array('race', 'session'), $key, array(
+      'schema'          => array(
+        'type' => 'array',
         'items' => array(
-          'type' => 'object',
-          'properties' => array(
-            'latitude' => array('type' => 'number'),
-            'longitude' => array('type' => 'number')
-          )
+          'latitude' => 'number',
+          'longitude' => 'number',
+          'speed' => 'number',
+          'timestamp' => 'number'
         )
-      )
-    )
-  ));
+      ),
+      'update_callback' => function ($value, $object, $fieldName) {
+        return update_post_meta($object['id'], $fieldName, $value);
+      },
+      'get_callback'    => function($object, $fieldName, $request) {
+        return get_post_meta($object['id'], $fieldName, true);
+      }
+    ));
+  endforeach;
 
-  /**
-   * Register race rest metas
-   */
-  register_meta('post', 'average_speed_kmh', array(
-    'object_subtype' => 'session',
-    'type' => 'number',
-    'description' => 'Velocidad media en kmh',
-    'single' => true,
-    'show_in_rest' => true
-  ));
+  register_rest_field('session', 'parent', array(
+    'update_callback' => null,
+    'schema'          => null,
+    'get_callback'    => function($data) {
+      $meta = get_post_meta($data['parent']);
 
-  register_meta('post', 'duration_minutes', array(
-    'object_subtype' => 'session',
-    'type' => 'number',
-    'description' => 'Duración en minutos',
-    'single' => true,
-    'show_in_rest' => true
-  ));
+      if (!empty($meta)):
+        return [
+          'id' => $data['parent'],
+          'race_date' => $meta['race_date'][0],
+          'race_time' => $meta['race_time'][0],
+          'description' => $meta['description'][0],
+          'distance_km' => floatval($meta['distance_km'][0], 2),
+          'duration_minutes' => floatval($meta['duration_minutes'][0], 2),
+          'coordinates' => unserialize($meta['coordinates'][0])
+        ];
+      endif;
 
-  register_meta('post', 'distance_km', array(
-    'object_subtype' => 'session',
-    'type' => 'number',
-    'description' => 'Distancia en kilómetros',
-    'single' => true,
-    'show_in_rest' => true
+      return 0;
+    }
   ));
-
-  register_meta('post', 'coordinates', array(
-    'object_subtype' => 'session',
-    'type' => 'array',
-    'description' => 'Puntos de la sesión',
-    'single' => true,
-    'show_in_rest' => array(
-      'schema' => array(
-        'items' => array(
-          'type' => 'object',
-          'properties' => array(
-            'latitude' => array('type' => 'number'),
-            'longitude' => array('type' => 'number'),
-            'speed' => array('type' => 'number'),
-            'timestamp' => array('type' => 'number')
-          )
-        )
-      )
-    )
-  ));
-
-  /**
-   * DEBUGGING
-   */
-  if (false):
-    header('content-type: application/json');
-    die(json_encode(get_role('runner')));
-    die(json_encode($GLOBALS['wp_post_types']['session']));
-    die(json_encode(get_user_by('email', 'iban@coduxe.es')));
-  endif;
 });
