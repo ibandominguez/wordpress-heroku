@@ -53,7 +53,7 @@ add_action('init', function() {
     'show_ui'            => true,
     'show_in_menu'       => true,
     'query_var'          => true,
-    'rewrite'            => 'races',
+    'rewrite'            => array('slug' => 'races'),
     'capability_type'    => 'post',
     'show_in_rest'       => true,
     'rest_base'          => 'races',
@@ -61,8 +61,16 @@ add_action('init', function() {
     'hierarchical'       => false,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-location',
-    'supports'           => array('title', 'thumbnail')
+    'supports'           => array('title', 'thumbnail'),
+    'register_meta_box_cb' => function() {
+      add_meta_box('race_meta_box', 'Campos de la carrera', function($post) {
+        wp_nonce_field('race_meta_box', 'race_meta_box_nonce');
+        include_once(__DIR__.'/templates/race-meta.php');
+      }, null, 'advanced', 'high');
+    }
   ));
+
+  add_theme_support('post-thumbnails', array('race'));
 
   /**
    * Races post type
@@ -74,7 +82,7 @@ add_action('init', function() {
     'publicly_queryable' => true,
     'show_in_menu'       => true,
     'query_var'          => true,
-    'rewrite'            => 'sessions',
+    'rewrite'            => array('slug' => 'sessions'),
     'show_in_rest'       => true,
     'rest_base'          => 'sessions',
     'has_archive'        => false,
@@ -121,25 +129,6 @@ add_action('init', function() {
     $role->add_cap('edit_others_sessions');
     $role->add_cap('delete_private_sessions');
   endforeach;
-
-  /**
-   * Add post thumbnail support
-   */
-  add_theme_support('post-thumbnails', array('race'));
-
-  /**
-   * Add meta boxes
-   */
-  add_action('add_meta_boxes', function($currentPostType) {
-    remove_meta_box('postcustom', 'race', 'normal');
-
-    if ($currentPostType === 'race'):
-      add_meta_box('race_meta_box', 'Campos de la carrera', function($post) {
-        wp_nonce_field('race_meta_box', 'race_meta_box_nonce');
-        include_once(__DIR__.'/templates/race-meta.php');
-      }, null, 'advanced', 'high');
-    endif;
-  });
 
   /**
    * Handle meta saving
