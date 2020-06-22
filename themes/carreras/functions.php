@@ -361,8 +361,8 @@ add_action('rest_api_init', function() {
           'race_date' => $meta['race_date'][0],
           'race_time' => $meta['race_time'][0],
           'description' => $meta['description'][0],
-          'distance_km' => floatval($meta['distance_km'][0], 2),
-          'duration_minutes' => floatval($meta['duration_minutes'][0], 2),
+          'distance_km' => floatval($meta['distance_km'][0]),
+          'duration_minutes' => floatval($meta['duration_minutes'][0]),
           'coordinates' => unserialize($meta['coordinates'][0])
         ];
       endif;
