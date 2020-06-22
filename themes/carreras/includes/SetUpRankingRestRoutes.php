@@ -34,47 +34,22 @@ class SetUpRankingRestRoutes
   {
     global $wpdb;
 
-    if ($request['race_id']):
-      $rankings = $wpdb->get_results(
-        $wpdb->prepare("
-          select
-            {$wpdb->users}.display_name as name,
-            truncate(avg(average_speed_kmh.meta_value), 4) as average_speed_kmh,
-            truncate(sum(duration_minutes.meta_value), 2) as duration_minutes,
-            truncate(sum(distance_km.meta_value), 2) as distance_km,
-            count(*) as total_sessions
-          from {$wpdb->posts}
-          join {$wpdb->users} on {$wpdb->posts}.post_author = {$wpdb->users}.ID
-          join {$wpdb->postmeta} as average_speed_kmh on (average_speed_kmh.post_id = {$wpdb->posts}.ID and average_speed_kmh.meta_key = 'average_speed_kmh')
-          join {$wpdb->postmeta} as duration_minutes on (duration_minutes.post_id = {$wpdb->posts}.ID and duration_minutes.meta_key = 'duration_minutes')
-          join {$wpdb->postmeta} as distance_km on (distance_km.post_id = {$wpdb->posts}.ID and distance_km.meta_key = 'distance_km')
-          join {$wpdb->posts} as race on ({$wpdb->posts}.post_parent = race.ID and race.ID = %d)
-          join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = race.ID and race_distance_km.meta_key = 'distance_km')
-          where {$wpdb->posts}.post_type = 'session'
-          and distance_km.meta_value >= race_distance_km.meta_value
-          group by {$wpdb->users}.ID
-          order by average_speed_kmh desc
-        ", $request['race_id']),
-        ARRAY_A
-      );
-    else:
-      $rankings = $wpdb->get_results("
-        select
-          {$wpdb->users}.display_name as name,
-          truncate(avg(average_speed_kmh.meta_value), 4) as average_speed_kmh,
-          truncate(sum(duration_minutes.meta_value), 2) as duration_minutes,
-          truncate(sum(distance_km.meta_value), 2) as distance_km,
-          count(*) as total_sessions
-        from {$wpdb->posts}
-        join {$wpdb->users} on {$wpdb->posts}.post_author = {$wpdb->users}.ID
-        join {$wpdb->postmeta} as average_speed_kmh on (average_speed_kmh.post_id = {$wpdb->posts}.ID and average_speed_kmh.meta_key = 'average_speed_kmh')
-        join {$wpdb->postmeta} as duration_minutes on (duration_minutes.post_id = {$wpdb->posts}.ID and duration_minutes.meta_key = 'duration_minutes')
-        join {$wpdb->postmeta} as distance_km on (distance_km.post_id = {$wpdb->posts}.ID and distance_km.meta_key = 'distance_km')
-        where {$wpdb->posts}.post_type = 'session'
-        group by {$wpdb->users}.ID
-        order by average_speed_kmh desc
-      ", ARRAY_A);
-    endif;
+    $rankings = $wpdb->get_results("
+      select
+        {$wpdb->users}.display_name as name,
+        truncate(avg(average_speed_kmh.meta_value), 4) as average_speed_kmh,
+        truncate(sum(duration_minutes.meta_value), 2) as duration_minutes,
+        truncate(sum(distance_km.meta_value), 2) as distance_km,
+        count(*) as total_sessions
+      from {$wpdb->posts}
+      join {$wpdb->users} on {$wpdb->posts}.post_author = {$wpdb->users}.ID
+      join {$wpdb->postmeta} as average_speed_kmh on (average_speed_kmh.post_id = {$wpdb->posts}.ID and average_speed_kmh.meta_key = 'average_speed_kmh')
+      join {$wpdb->postmeta} as duration_minutes on (duration_minutes.post_id = {$wpdb->posts}.ID and duration_minutes.meta_key = 'duration_minutes')
+      join {$wpdb->postmeta} as distance_km on (distance_km.post_id = {$wpdb->posts}.ID and distance_km.meta_key = 'distance_km')
+      where {$wpdb->posts}.post_type = 'session'
+      group by {$wpdb->users}.ID
+      order by average_speed_kmh desc
+    ", ARRAY_A);
 
     return new WP_REST_Response($rankings, 200);
   }
