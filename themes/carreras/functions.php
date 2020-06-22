@@ -186,6 +186,7 @@ add_action('init', function() {
       return $wpdb->get_results(
         $wpdb->prepare("
           select
+            users.ID as id,
             users.display_name as name,
             truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
             truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
