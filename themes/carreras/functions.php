@@ -72,7 +72,7 @@ add_action('init', function() {
     'label'              => 'Sesiones',
     'public'             => true,
     'publicly_queryable' => true,
-    'show_in_menu'       => false,
+    'show_in_menu'       => true,
     'query_var'          => true,
     'rewrite'            => 'sessions',
     'show_in_rest'       => true,
@@ -81,10 +81,16 @@ add_action('init', function() {
     'hierarchical'       => true,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-randomize',
-    'supports'           => array('page-attributes'),
+    'supports'           => array('title', 'page-attributes'),
     'capability_type'    => array('session', 'sessions'),
     'map_meta_cap'       => true,
-    'delete_with_user'   => true
+    'delete_with_user'   => true,
+    'register_meta_box_cb' => function() {
+      add_meta_box('session_meta_box', 'Campos de la sesión', function($post) {
+        wp_nonce_field('session_meta_box', 'session_meta_box_nonce');
+        include_once(__DIR__.'/templates/session-meta.php');
+      }, null, 'advanced', 'high');
+    }
   ));
 
   add_role('runner', 'Runner', array(
@@ -97,15 +103,24 @@ add_action('init', function() {
     'create_posts' => false
   ));
 
-  $role = get_role('runner');
-  $role->add_cap('read_session');
-  $role->add_cap('edit_session');
-  $role->add_cap('edit_sessions');
-  $role->add_cap('edit_published_sessions');
-  $role->add_cap('publish_sessions');
-  $role->add_cap('delete_published_sessions');
-  $role->add_cap('delete_session');
-  $role->add_cap('delete_sessions');
+  foreach (array('administrator', 'editor', 'runner') as $role):
+    $role = get_role($role);
+    $role->add_cap('read_session');
+    $role->add_cap('edit_session');
+    $role->add_cap('edit_sessions');
+    $role->add_cap('edit_published_sessions');
+    $role->add_cap('publish_sessions');
+    $role->add_cap('delete_published_sessions');
+    $role->add_cap('delete_session');
+    $role->add_cap('delete_sessions');
+  endforeach;
+
+  foreach (array('administrator', 'editor') as $role):
+    $role = get_role($role);
+    $role->add_cap('delete_others_sessions');
+    $role->add_cap('edit_others_sessions');
+    $role->add_cap('delete_private_sessions');
+  endforeach;
 
   /**
    * Add post thumbnail support
