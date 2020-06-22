@@ -10,6 +10,10 @@ SetUpAuthBasic::boot();
 ModifyRestUsersRoutes::boot();
 SetUpRankingRestRoutes::boot();
 
+/**
+ * On init
+ */
+
 add_action('init', function() {
   activate_plugin('wp-rest-filter');
 
@@ -147,9 +151,15 @@ add_action('init', function() {
       endif;
     endforeach;
   });
+});
 
+/**
+ * On rest api
+ */
+
+add_action('rest_api_init', function() {
   /**
-   * Register race rest metas
+   * Rest api fields
    */
   register_rest_field('race', 'featured_image_url', array(
     'update_callback' => null,
@@ -167,14 +177,14 @@ add_action('init', function() {
     'update_callback' => null,
     'schema'          => null,
     'get_callback'    => function($object, $field_name, $request) {
-      global $current_user;
       global $wpdb;
+      global $current_user;
 
       if (empty($current_user->ID)):
         return [];
       endif;
 
-      return $wpdb->get_results($wpdb->prepare("
+      $sessions = $wpdb->get_results($wpdb->prepare("
         select
           truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
           truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
@@ -183,10 +193,12 @@ add_action('init', function() {
         join {$wpdb->postmeta} as session_average_speed_kmh on (session_average_speed_kmh.post_id = sessions.ID and session_average_speed_kmh.meta_key = 'average_speed_kmh')
         join {$wpdb->postmeta} as session_duration_minutes on (session_duration_minutes.post_id = sessions.ID and session_duration_minutes.meta_key = 'duration_minutes')
         join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
-        where post_type = 'session'
-        and post_parent = %d
+        where sessions.post_type = 'session'
+        and sessions.post_parent = %d
         and sessions.post_author = %d
       ", $object['id'], $current_user->ID), ARRAY_A);
+
+      return empty($sessions) ? [] : $sessions;
     }
   ));
 
