@@ -163,6 +163,33 @@ add_action('init', function() {
     }
   ));
 
+  register_rest_field('race', 'auth_sessions', array(
+    'update_callback' => null,
+    'schema'          => null,
+    'get_callback'    => function($object, $field_name, $request) {
+      global $current_user;
+      global $wpdb;
+
+      if (empty($current_user->ID)):
+        return [];
+      endif;
+
+      return $wpdb->get_results($wpdb->prepare("
+        select
+          truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
+          truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
+          truncate(session_distance_km.meta_value, 2) as distance_km
+        from {$wpdb->posts} as sessions
+        join {$wpdb->postmeta} as session_average_speed_kmh on (session_average_speed_kmh.post_id = sessions.ID and session_average_speed_kmh.meta_key = 'average_speed_kmh')
+        join {$wpdb->postmeta} as session_duration_minutes on (session_duration_minutes.post_id = sessions.ID and session_duration_minutes.meta_key = 'duration_minutes')
+        join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
+        where post_type = 'session'
+        and post_parent = %d
+        and sessions.post_author = %d
+      ", $object['id'], $current_user->ID), ARRAY_A);
+    }
+  ));
+
   register_rest_field('race', 'runners_count', array(
     'update_callback' => null,
     'schema'          => null,
@@ -173,12 +200,12 @@ add_action('init', function() {
         from {$wpdb->posts}
         where post_type = 'session'
         and post_parent = %d
-      ", $object->id), ARRAY_A);
+      ", $object['id']), ARRAY_A);
       return !empty($result) ? intval($result['count']) : 0;
     }
   ));
 
-  register_rest_field('race', 'ranking', array(
+  register_rest_field('race', 'rankings', array(
     'schema' => null,
     'update_callback' => null,
     'get_callback' => function($object, $field_name, $request) {
