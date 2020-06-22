@@ -47,6 +47,7 @@ class SetUpRankingRestRoutes
       join {$wpdb->postmeta} as duration_minutes on (duration_minutes.post_id = {$wpdb->posts}.ID and duration_minutes.meta_key = 'duration_minutes')
       join {$wpdb->postmeta} as distance_km on (distance_km.post_id = {$wpdb->posts}.ID and distance_km.meta_key = 'distance_km')
       where {$wpdb->posts}.post_type = 'session'
+      and {$wpdb->posts}.post_status = 'publish'
       group by {$wpdb->users}.ID
       order by average_speed_kmh desc
     ", ARRAY_A);
@@ -67,6 +68,7 @@ class SetUpRankingRestRoutes
           sum(if(sessions.post_parent, 1, 0)) as race
         from {$wpdb->posts} as sessions
         where sessions.post_type = 'session'
+        and sessions.post_status = 'publish'
         and sessions.post_author = %d
       ", $current_user->ID),
       ARRAY_A
@@ -82,6 +84,7 @@ class SetUpRankingRestRoutes
         join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
         join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = races.ID and race_distance_km.meta_key = 'distance_km')
         where sessions.post_type = 'session'
+        and sessions.post_status = 'publish'
         and sessions.post_author = %d
         group by races.ID
       ", $current_user->ID),
@@ -100,6 +103,7 @@ class SetUpRankingRestRoutes
         join {$wpdb->postmeta} as duration_minutes on (duration_minutes.post_id = {$wpdb->posts}.ID and duration_minutes.meta_key = 'duration_minutes')
         join {$wpdb->postmeta} as distance_km on (distance_km.post_id = {$wpdb->posts}.ID and distance_km.meta_key = 'distance_km')
         where {$wpdb->posts}.post_type = 'session'
+        and {$wpdb->posts}.post_status = 'publish'
         and {$wpdb->posts}.post_author = %d
         group by {$wpdb->posts}.post_author
         order by average_speed_kmh desc
