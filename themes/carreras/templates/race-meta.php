@@ -64,7 +64,7 @@ $key = get_option('race_map_key');
   </div>
 <?php endif; ?>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= @$key; ?>&callback=initMap&libraries=places"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= @$key; ?>&callback=initMap&libraries=places,geometry"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
 <script type="text/javascript">
 function initMap() {
@@ -119,41 +119,20 @@ function initMap() {
     markers.push(marker);
   }
 
-  function toRad(v) {
-    return v * Math.PI / 180;
-  }
-
-  function haversine(l1, l2) {
-    var R = 6371; // km
-    var x1 = l2.latitude-l1.latitude;
-    var dLat = toRad(x1);
-    var x2 = l2.longitude-l1.longitude;
-    var dLon = toRad(x2);
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(toRad(l1.latitude)) * Math.cos(toRad(l2.latitude)) *
-    Math.sin(dLon/2) * Math.sin(dLon/2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c;
-    return d;
-  }
-
   // Draw markers on screen and add to hidden input
   function handlePoints () {
     $points.empty();
-    var totalDistanceInKM = 0;
+    var totalDistanceInMeters = 0;
 
     markers.map(function(marker, index) {
       var lat = marker.position.lat();
       var lng = marker.position.lng();
 
       if (markers[index + 1]) {
-        totalDistanceInKM += haversine({
-          latitude: lat,
-          longitude: lng
-        }, {
-          latitude: markers[index + 1].position.lat(),
-          longitude: markers[index + 1].position.lng(),
-        });
+        totalDistanceInMeters += google.maps.geometry.spherical.computeDistanceBetween(
+          markers[index].getPosition(),
+          markers[index + 1].getPosition()
+        );
       }
 
       $points.append([
@@ -167,8 +146,8 @@ function initMap() {
       ].join(''));
     });
 
-    $points.append('<div>Distancia total: <b>' + totalDistanceInKM.toFixed(2) + 'km<b></div>');
-    $points.append('<input type="hidden" name="distance_km" value="' + totalDistanceInKM.toFixed(2) + '">');
+    $points.append('<div>Distancia total: <b>' + (totalDistanceInMeters/1000).toFixed(2) + 'km<b></div>');
+    $points.append('<input type="hidden" name="distance_km" value="' + (totalDistanceInMeters/1000).toFixed(2) + '">');
 
     polyline.setPath(markers.map(function(marker) {
       return { lat: marker.position.lat(), lng: marker.position.lng() };
@@ -180,15 +159,24 @@ function initMap() {
 
     oldMarkers.map(function (marker, index) {
       createMarker({
-        latLng: new google.maps.LatLng(marker.latitude, marker.longitude)
+        latLng: new google.maps.LatLng(
+          parseFloat(marker.latitude),
+          parseFloat(marker.longitude)
+        )
       });
     });
 
     handlePoints();
 
     setTimeout(function() {
-      map.setCenter(new google.maps.LatLng(oldMarkers[0].latitude, oldMarkers[0].longitude));
-      map.setZoom(14);
+      var bounds = new google.maps.LatLngBounds();
+      oldMarkers.map(function(maker) {
+        bounds.extend(new google.maps.LatLng(
+          parseFloat(maker.latitude),
+          parseFloat(maker.longitude)
+        ));
+      });
+      map.fitBounds(bounds);
     }, 1000);
   <?php endif; ?>
 }
