@@ -45,41 +45,37 @@ $key = get_option('race_map_key');
   <input id="race_map_key" type="text" class="form-control" name="race_map_key" value="<?= get_option('race_map_key'); ?>">
 </div><hr>
 
-<?php if (!empty($key)): ?>
-  <div class="form-group">
-    <label class="form-label" for="coordinates">Ruta</label>
-    <div class="row">
-      <div class="flex-full">
-        <input id="search-coordinates" type="text" class="form-control" style="border-radius: 0">
-        <div id="results-coordinates"></div>
-        <div id="map-coordinates" class="form-control"></div>
-      </div>
-      <div id="points-coordinates" class="flex-full">
-        <h2>Haz click en el mapa para fijar un punto</h2>
-        <p>Usa el campo de búsqueda para encontrar la zona que buscas</p>
-        <p>Para hacer zoom usar los signos <b>+</b> y <b>-</b></p>
-        <p>Puedes arrastrar los puntos para modificar su ubicación</p>
-      </div>
-    </div>
-  </div>
-<?php endif; ?>
+<div class="form-group">
+  <label class="form-label" for="description">Importar archivo .gpx</label>
+  <small class="hint">Necesitas especificar una clave de google para poder usar Google maps y crear las rutas</small>
+  <input id="gpx" type="file" accept=".gpx">
+</div><hr>
 
+<div class="form-group">
+  <label id="distance"></label>
+  <small class="hint">Distancia de la ruta</small>
+  <div id="inputs"></div>
+</div><hr>
+
+<div class="form-group">
+  <div id="map" style="height: 500px"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-xml2json@0.0.8/src/xml2json.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= @$key; ?>&callback=initMap&libraries=places,geometry"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
 <script type="text/javascript">
 function initMap() {
-  var $points = jQuery('#points-coordinates');
-  var $input = jQuery('#input-coordinates');
-  var $search = jQuery('#search-coordinates').geocomplete({
-    location: 'Islas canarias',
-    map: '#map-coordinates',
-    mapOptions: {
-      mapTypeId: 'roadmap'
-    }
+  var coordinates = <?= json_encode(get_post_meta($post->ID, 'coordinates', true) ?? []); ?>;
+  var gpxFileInput = document.getElementById('gpx');
+  var $inputs = jQuery('#inputs');
+  var $distance = jQuery('#distance');
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: new google.maps.LatLng(28.3898237, -15.2242274),
+    zoom: 7
   });
 
-  var map = $search.geocomplete('map');
-  var markers = [];
   var polyline = new google.maps.Polyline({
     path: [],
     geodesic: true,
@@ -88,96 +84,82 @@ function initMap() {
     strokeWeight: 2
   });
 
-  polyline.setMap(map);
-
-  map.addListener('click', function (event) {
-    createMarker(event);
-    handlePoints();
-  });
-
-  window.deleteMarker = function (index) {
-    markers[index].setMap(null);
-    markers.splice(index, 1);
-    handlePoints();
-  }
-
-  // create marker on map
-  function createMarker(data) {
-    var marker = new google.maps.Marker({
-      position: data.latLng,
-      draggable: true,
-      animation: google.maps.Animation.DROP,
-      label: markers.length + 1 + '',
-      icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-      map: map
-    });
-
-    marker.addListener('dragend', function (event) {
-      handlePoints();
-    });
-
-    markers.push(marker);
-  }
-
-  // Draw markers on screen and add to hidden input
-  function handlePoints () {
-    $points.empty();
+  var drawCoordinates = function() {
+    var bounds = new google.maps.LatLngBounds();
     var totalDistanceInMeters = 0;
 
-    markers.map(function(marker, index) {
-      var lat = marker.position.lat();
-      var lng = marker.position.lng();
+    $inputs.empty();
 
-      if (markers[index + 1]) {
+    coordinates = coordinates.filter(function(coordinate) {
+      return Boolean(coordinate.latitude && coordinate.longitude)
+    }).map(function(coordinate) {
+      return { latitude: parseFloat(coordinate.latitude), longitude: parseFloat(coordinate.longitude) };
+    });
+
+    polyline.setPath(coordinates.map(function(coordinate) {
+      return { lat: coordinate.latitude, lng: coordinate.longitude };
+    }));
+
+    polyline.setMap(map);
+
+    coordinates.map(function(coordinate, index) {
+      $inputs.append([
+        '<input type="hidden" name="coordinates[' + index + '][latitude]" value="' + coordinate.latitude + '">',
+        '<input type="hidden" name="coordinates[' + index + '][longitude]" value="' + coordinate.longitude + '">'
+      ]);
+
+      bounds.extend(new google.maps.LatLng(
+        coordinate.latitude,
+        coordinate.longitude
+      ));
+
+      if (coordinates[index + 1]) {
         totalDistanceInMeters += google.maps.geometry.spherical.computeDistanceBetween(
-          markers[index].getPosition(),
-          markers[index + 1].getPosition()
+          new google.maps.LatLng(coordinate.latitude, coordinate.longitude),
+          new google.maps.LatLng(coordinates[index+1].latitude, coordinates[index+1].longitude)
         );
       }
-
-      $points.append([
-        '<div style="padding: 15px">',
-          '<input type="hidden" name="coordinates[' + index + '][latitude]" value="' + lat + '">',
-          '<input type="hidden" name="coordinates[' + index + '][longitude]" value="' + lng + '">',
-          '<span style="cursor: pointer" class="dashicons dashicons-trash" onclick="deleteMarker(' + index + ')"></span>',
-          '<b>Punto ' + (index + 1) + '</b><br>',
-           'Lat: '+ lat + '. Lng:' + lng,
-        '</div>'
-      ].join(''));
     });
 
-    $points.append('<div>Distancia total: <b>' + (totalDistanceInMeters/1000).toFixed(2) + 'km<b></div>');
-    $points.append('<input type="hidden" name="distance_km" value="' + (totalDistanceInMeters/1000).toFixed(2) + '">');
-
-    polyline.setPath(markers.map(function(marker) {
-      return { lat: marker.position.lat(), lng: marker.position.lng() };
-    }));
+    $distance.empty().text((totalDistanceInMeters / 1000).toFixed(2) + 'km');
+    $distance.append('<input type="hidden" name="distance_km" value="' + (totalDistanceInMeters/1000).toFixed(2) + '">');
+    map.fitBounds(bounds);
   }
 
-  <?php if (!empty($coordinates)): ?>
-    var oldMarkers = <?= json_encode($coordinates); ?>;
+  gpxFileInput.addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    var ext = file ? file.name.substr(file.name.length - 4) : null;
+    var reader = new FileReader();
 
-    oldMarkers.map(function (marker, index) {
-      createMarker({
-        latLng: new google.maps.LatLng(
-          parseFloat(marker.latitude),
-          parseFloat(marker.longitude)
-        )
-      });
+    if (ext !== '.gpx') {
+      return alert('La extensión debe ser .gpx');
+    }
+
+    reader.addEventListener('load', function(event) {
+      var gpxObject = jQuery.xml2json(reader.result)
+
+      if (
+        typeof gpxObject === 'object' && gpxObject.gpx &&
+        gpxObject.gpx.trk && gpxObject.gpx.trk.trkseg && gpxObject.gpx.trk.trkseg.trkpt &&
+        typeof gpxObject.gpx.trk.trkseg.trkpt === 'object'
+      ) {
+        coordinates = Object.keys(gpxObject.gpx.trk.trkseg.trkpt).map(function(item, index) {
+          var coordinate = gpxObject.gpx.trk.trkseg.trkpt[item].$;
+          return { latitude: parseFloat(coordinate.lat), longitude: parseFloat(coordinate.lon) }
+        }).filter(function(coordinate) {
+          return Boolean(
+            coordinate.latitude &&
+            coordinate.longitude
+          )
+        });
+
+        drawCoordinates();
+      }
     });
 
-    handlePoints();
+    reader.readAsText(file);
+  });
 
-    setTimeout(function() {
-      var bounds = new google.maps.LatLngBounds();
-      oldMarkers.map(function(maker) {
-        bounds.extend(new google.maps.LatLng(
-          parseFloat(maker.latitude),
-          parseFloat(maker.longitude)
-        ));
-      });
-      map.fitBounds(bounds);
-    }, 1000);
-  <?php endif; ?>
+  drawCoordinates();
 }
 </script>

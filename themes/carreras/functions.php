@@ -137,6 +137,8 @@ add_action('init', function() {
     $nonce = @$_POST['race_meta_box_nonce'];
     $fieldKeys = array('race_date', 'race_time', 'description', 'distance_km', 'duration_minutes', 'coordinates');
 
+    // TODO: Sanitize input data
+
     if (
       // TODO: Add server side validation
       !wp_verify_nonce($nonce, 'race_meta_box') || // Verify nonce
