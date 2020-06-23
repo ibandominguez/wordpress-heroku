@@ -163,7 +163,7 @@ add_action('init', function() {
     global $current_user;
 
     if (
-      $query->query['post_type'] === 'session' &&
+      @$query->query['post_type'] === 'session' &&
       !current_user_can('edit_others_posts')
     ):
       $query->set('author', $current_user->ID);
