@@ -86,5 +86,5 @@ require_once(ABSPATH.'wp-settings.php');
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
 if (defined('S3_UPLOADS_BUCKET')):
-	activate_plugin('s3-uploads');
+	activate_plugin('s3-uploads/s3-uploads.php');
 endif;
