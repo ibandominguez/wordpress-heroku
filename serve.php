@@ -9,11 +9,11 @@ function rmdir_recursive($directory) {
   rmdir($directory);
 }
 
-foreach (array(
+foreach ([
   __DIR__.'/config/wp-config.php' => __DIR__.'/public/wp-config.php',
   __DIR__.'/plugins' => __DIR__.'/public/wp-content/plugins',
   __DIR__.'/themes' => __DIR__.'/public/wp-content/themes'
-) as $key => $value):
+] as $key => $value):
   if (is_link($value)):
     continue;
   endif;
@@ -27,4 +27,10 @@ foreach (array(
   @symlink($key, $value);
 endforeach;
 
-exec('php -S 0.0.0.0:8000 -t '.__DIR__.'/public');
+exec(implode([
+  'DISALLOW_FILE_EDIT=false',
+  'DISALLOW_FILE_MODS=false',
+  'WP_DEBUG=true',
+  'WP_DEBUG_DISPLAY=true',
+  'php -S 0.0.0.0:8000 -t '.__DIR__.'/public'
+], ' '));

@@ -7,7 +7,16 @@
 
 function getEnvOr($key, $default = null) {
 	$value = getenv($key);
-	return !empty($value) ? $value : $default;
+
+	if (!empty($value)):
+		switch ($value) {
+			case 'true': return true;
+			case 'false': return false;
+			default: return $value;
+		}
+	endif;
+
+	return $default;
 }
 
 if (!empty(getenv('JAWSDB_URL'))):
