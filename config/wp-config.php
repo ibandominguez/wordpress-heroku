@@ -1,31 +1,52 @@
 <?php
 
-define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://');
-define('HOST', $_SERVER['HTTP_HOST']);
-define('PREFIX', preg_replace(array('/\:/', '/\./', '/-/'), '_', HOST).'_');
-define('URL', PROTOCOL.HOST);
+/**
+ * Enviroment bootstraping
+ * Based on heroku addons
+ */
 
-function getEnvOr($key, $default) {
+function getEnvOr($key, $default = null) {
 	$value = getenv($key);
 	return !empty($value) ? $value : $default;
 }
 
 if (!empty(getenv('JAWSDB_URL'))):
 	$url = parse_url(getenv('JAWSDB_URL'));
-
-	define('DB_NAME', substr($url['path'], 1));
-	define('DB_USER', $url['user']);
-	define('DB_PASSWORD', $url['pass']);
-	define('DB_HOST', $url['host']);
-else:
-	define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
-	define('DB_USER', getEnvOr('DB_USER', 'root'));
-	define('DB_PASSWORD', getEnvOr('DB_PASSWORD', ''));
-	define('DB_HOST', getEnvOr('DB_HOST', '127.0.0.1'));
+	putenv('DB_NAME='.substr($url['path'], 1));
+	putenv('DB_USER='.$url['user']);
+	putenv('DB_PASSWORD='.$url['pass']);
+	putenv('DB_HOST='.$url['host']);
 endif;
+
+if (!empty(getenv('CLOUDCUBE_URL'))):
+	$url = parse_url(getenv('CLOUDCUBE_URL'));
+	$bucket = explode('.', $url['host'])[0];
+	$path = $url['path'].'/'.$_SERVER['HTTP_HOST'];
+	define('S3_UPLOADS_BUCKET', $bucket.$path);
+	define('S3_UPLOADS_REGION', 'us-east-1');
+	define('S3_UPLOADS_KEY', getenv('CLOUDCUBE_ACCESS_KEY_ID'));
+	define('S3_UPLOADS_SECRET', getenv('CLOUDCUBE_SECRET_ACCESS_KEY'));
+endif;
+
+/**
+ * Define contansts
+ * to be used through out the app
+ */
+
+if (!defined('ABSPATH')):
+	define('ABSPATH', dirname(__FILE__) . '/');
+endif;
+
+define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://');
+define('HOST', $_SERVER['HTTP_HOST']);
+define('URL', PROTOCOL.HOST);
 
 define('DB_CHARSET', getEnvOr('DB_CHARSET', 'utf8mb4'));
 define('DB_COLLATE', getEnvOr('DB_COLLATE', ''));
+define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
+define('DB_USER', getEnvOr('DB_USER', 'root'));
+define('DB_PASSWORD', getEnvOr('DB_PASSWORD', ''));
+define('DB_HOST', getEnvOr('DB_HOST', '127.0.0.1'));
 
 define('AUTH_KEY', getEnvOr('AUTH_KEY', 'uKa(B9 slREej&K-gsUKvl=2R457a9`eZp0_Ib %H+TChCC/0V)$@s&C{ga}`6J`'));
 define('SECURE_AUTH_KEY', getEnvOr('SECURE_AUTH_KEY', 'd@B;=}pf]x$(B]&,LL?oL3Ap;wsJI}wfgzjf9c$:r+R}en$^b$Nt]:Sk  (FJO4$'));
@@ -44,57 +65,26 @@ define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
 define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'default'));
 
-// File Settings
-// See doc · https://deliciousbrains.com/wp-offload-media/doc/settings-constants/
-if (!empty(getenv('CLOUDCUBE_URL'))):
-	$url = parse_url(getenv('CLOUDCUBE_URL'));
+define('WP_DEBUG', getEnvOr('DEBUG', false));
+define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));
+define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
 
-	define('AS3CF_SETTINGS', serialize(array(
-		'provider' => 'aws',
-		'access-key-id' => getenv('CLOUDCUBE_ACCESS_KEY_ID'),
-		'secret-access-key' => getenv('CLOUDCUBE_SECRET_ACCESS_KEY'),
-		'bucket' => explode('.', $url['host'])[0],
-		'region' => '',
-		'domain' => 'cloudfront', // Bucket URL format to use ('path', 'cloudfront')
-		'cloudfront' => $url['host'], // Set cdn
-		'enable-object-prefix' => true, // Enable object prefix, useful if you use your bucket for other files
-		'object-prefix' => str_replace('/', '', $url['path']), // Object prefix to use if 'enable-object-prefix' is 'true'
-		'copy-to-s3' => true, // Automatically copy files to bucket on upload
-		'serve-from-s3' => true, // Rewrite file URLs to bucket
-		'use-yearmonth-folders' => true, // Organize bucket files into YYYY/MM directories
-		'object-versioning' => true // Append a timestamped folder to path of files offloaded to bucket
-	)));
+/**
+ * Table prefixing
+ * Based on the requestted host
+ * So one database can be used for multiple sites
+ */
+
+$table_prefix = preg_replace(['/\:/', '/\./', '/-/'], '_', HOST).'_';
+
+/**
+ * Conditional plugin activation
+ * Check if an external file system is required
+ */
+
+require_once(ABSPATH.'wp-settings.php');
+require_once(ABSPATH.'wp-admin/includes/plugin.php');
+
+if (defined('S3_UPLOADS_BUCKET')):
+	activate_plugin('s3-uploads');
 endif;
-
-define('WP_DEBUG', getEnvOr('DEBUG', true));
-define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/../site.logs'));
-define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', true));
-
-$table_prefix = PREFIX;
-
-if (!defined('ABSPATH')):
-	define('ABSPATH', dirname(__FILE__) . '/');
-endif;
-
-require_once(ABSPATH . 'wp-settings.php');
-
-// Options config
-global $wp_rewrite;
-
-foreach (array(
-	'permalink_structure' => '/%postname%/', // change the permalink structure
-	// ...
-) as $key => $value):
-	update_option($key, $value);
-endforeach;
-
-$wp_rewrite->flush_rules();
-
-// Plugins activation
-include_once(ABSPATH . 'wp-admin/includes/plugin.php');
-
-foreach (array(
-	'amazon-s3-and-cloudfront/wordpress-s3.php'
-) as $plugin):
-	activate_plugin($plugin);
-endforeach;
