@@ -262,6 +262,7 @@ add_action('rest_api_init', function() {
           join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = race.ID and race_distance_km.meta_key = 'distance_km')
           where sessions.post_type = 'session'
           and sessions.post_status = 'publish'
+          # and session_distance_km.meta_value >= race_distance_km.meta_value
           order by session_average_speed_kmh.meta_value desc
         ", $object['id']),
         ARRAY_A
