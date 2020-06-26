@@ -4,7 +4,7 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "5.4.1",
+        "version": "5.4.2",
         "dist": {
           "url": "https://es.wordpress.org/latest-es_ES.zip",
           "type": "zip"
