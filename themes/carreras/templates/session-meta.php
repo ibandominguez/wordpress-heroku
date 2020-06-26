@@ -13,7 +13,13 @@
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= get_option('race_map_key'); ?>&callback=initMap&libraries=places,geometry"></script>
 <script type="text/javascript">
 function initMap() {
-  var coordinates = <?= json_encode(get_post_meta($post->ID, 'coordinates', true)); ?>;
+  var coordinates = <?= json_encode(array_map(function($coordinate) {
+    return [
+      'lat' => floatval($coordinate['latitude']),
+      'lng' => floatval($coordinate['longitude'])
+    ];
+  }, get_post_meta($post->ID, 'coordinates', true))); ?>;
+
   var bounds = new google.maps.LatLngBounds();
 
   var map = new google.maps.Map(document.getElementById("map"), {
@@ -31,14 +37,12 @@ function initMap() {
 
   polyline.setMap(map);
 
-  polyline.setPath(coordinates.map(function(coordinate) {
-    return { lat: parseFloat(coordinate.latitude), lng: parseFloat(coordinate.longitude) };
-  }));
+  polyline.setPath(coordinates);
 
   coordinates.map(function(coordinate) {
     bounds.extend(new google.maps.LatLng(
-      parseFloat(coordinate.latitude),
-      parseFloat(coordinate.longitude)
+      parseFloat(coordinate.lat),
+      parseFloat(coordinate.lng)
     ));
   });
 
