@@ -36,6 +36,8 @@
 
       var bounds = new google.maps.LatLngBounds();
 
+      var infoWindow = new google.maps.InfoWindow();
+
       var map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
@@ -48,13 +50,27 @@
         ));
 
         if (coordinates[index + 1]) {
-          new google.maps.Polyline({
+          var polyline = new google.maps.Polyline({
             path: [coordinate, coordinates[index + 1]],
             geodesic: true,
             strokeColor: 'steelblue',
             strokeOpacity: parseFloat((coordinate.speed / 10) + 0.05),
             strokeWeight: 5,
             map: map
+          });
+
+          google.maps.event.addListener(polyline, 'mouseover', function(e) {
+            infoWindow.setPosition(e.latLng);
+            infoWindow.setContent([
+              '<h6>Detalles cordenada</h6>',
+              '<div>Velocidad: ' + coordinate.speed.toFixed(2) + 'km/h<div>',
+              '<div>Hora: ' + new Date(coordinate.timestamp).toLocaleString('es-ES', { timeZone: 'Atlantic/Canary' }) + '</div>'
+            ].join(''));
+            infoWindow.open(map);
+          });
+
+          google.maps.event.addListener(polyline, 'mouseout', function() {
+            infoWindow.close();
           });
         }
       });
