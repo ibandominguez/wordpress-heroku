@@ -10,7 +10,6 @@
   <div id="map" class="map"></div>
 </div>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= get_option('race_map_key'); ?>&callback=initMap&libraries=places,geometry"></script>
 <script type="text/javascript">
 function initMap() {
   var coordinates = <?= json_encode(array_map(function($coordinate) {
@@ -49,3 +48,4 @@ function initMap() {
   map.fitBounds(bounds);
 }
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?= get_option('race_map_key'); ?>&callback=initMap&libraries=places,geometry"></script>

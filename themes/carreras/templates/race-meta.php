@@ -62,7 +62,6 @@ $key = get_option('race_map_key');
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-xml2json@0.0.8/src/xml2json.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= @$key; ?>&callback=initMap&libraries=places,geometry"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
 <script type="text/javascript">
 function initMap() {
@@ -163,3 +162,4 @@ function initMap() {
   drawCoordinates();
 }
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?= @$key; ?>&callback=initMap&libraries=places,geometry"></script>
