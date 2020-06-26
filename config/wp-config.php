@@ -97,3 +97,13 @@ require_once(ABSPATH.'wp-admin/includes/plugin.php');
 if (defined('S3_UPLOADS_BUCKET')):
 	activate_plugin('s3-uploads/s3-uploads.php');
 endif;
+
+/**
+ * Permalink default
+ * Enables rest api
+ */
+
+global $wp_rewrite;
+
+$wp_rewrite->set_permalink_structure('/%postname%/');
+$wp_rewrite->flush_rules();
