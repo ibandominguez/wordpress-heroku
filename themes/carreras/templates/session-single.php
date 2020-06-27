@@ -43,6 +43,22 @@
         zoom: 8
       });
 
+      <?php if ($wp_query->post->post_parent): ?>
+        new google.maps.Polyline({
+          path: <?= json_encode(
+            get_post_meta($wp_query->post->post_parent, 'coordinates', true) ?? []
+          ); ?>.map(function(coordinate) {
+            coordinate.lat = parseFloat(coordinate.latitude);
+            coordinate.lng = parseFloat(coordinate.longitude);
+            return coordinate;
+          }),
+          geodesic: true,
+          strokeColor: '#555',
+          strokeWeight: 2.5,
+          map: map
+        });
+      <?php endif; ?>
+
       coordinates.map(function(coordinate, index) {
         bounds.extend(new google.maps.LatLng(
           parseFloat(coordinate.lat),

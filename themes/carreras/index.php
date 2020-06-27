@@ -13,6 +13,7 @@ switch (true) {
   case $wp_query->is_page:
   case $wp_query->is_single:
   case $wp_query->is_page:
+  case $wp_query->is_404:
   default:
     header('Content-Type: application/json');
     die(json_encode($wp_query, JSON_PRETTY_PRINT));

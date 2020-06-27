@@ -58,7 +58,7 @@ add_action('init', function() {
     'show_in_rest'       => true,
     'rest_base'          => 'races',
     'has_archive'        => true,
-    'hierarchical'       => false,
+    'hierarchical'       => true,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-location',
     'supports'           => array('title', 'thumbnail'),
@@ -86,10 +86,10 @@ add_action('init', function() {
     'show_in_rest'       => true,
     'rest_base'          => 'sessions',
     'has_archive'        => false,
-    'hierarchical'       => true,
+    'hierarchical'       => false,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-randomize',
-    'supports'           => array('title', 'page-attributes'),
+    'supports'           => array('title'),
     'capability_type'    => array('session', 'sessions'),
     'map_meta_cap'       => true,
     'delete_with_user'   => true,
@@ -98,6 +98,17 @@ add_action('init', function() {
         wp_nonce_field('session_meta_box', 'session_meta_box_nonce');
         include_once(__DIR__.'/templates/session-meta.php');
       }, null, 'advanced', 'high');
+
+      add_meta_box('session-parent', 'Carrera', function($post) {
+        return wp_dropdown_pages([
+          'post_type' => 'race',
+          'selected' => $post->post_parent,
+          'name' => 'parent_id',
+          'show_option_none' => __('(no parent)'),
+          'sort_column' => 'menu_order, post_title',
+          'echo' => true
+        ]);
+      }, 'session', 'side', 'high');
     }
   ));
 
