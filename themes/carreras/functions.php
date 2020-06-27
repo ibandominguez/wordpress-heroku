@@ -72,6 +72,23 @@ add_action('init', function() {
 
   add_theme_support('post-thumbnails', array('race'));
 
+  add_filter('manage_race_posts_columns', function($columns) {
+    $dateColumn = $columns['date'];
+    unset($columns['date']);
+    $columns['distance_km'] = 'Distancia (km)';
+    $columns['duration_minutes'] = 'Duración (minutos)';
+    $columns['date'] = $dateColumn;
+    return $columns;
+  });
+
+  add_action('manage_race_posts_custom_column', function($column, $postId) {
+    if (in_array($column, ['distance_km', 'duration_minutes'])):
+      $value = get_post_meta($postId, $column, true);
+      $style = 'font-size: 20px; padding: 10px; background: #fff; box-shadow: #555 0 0 1px 0px;';
+      echo '<div style="'.$style.'">'.($value ? $value : 'n/a').'</div>';
+    endif;
+  }, 10, 2);
+
   /**
    * Races post type
    * Registering and api activation
@@ -89,7 +106,7 @@ add_action('init', function() {
     'hierarchical'       => false,
     'menu_position'      => null,
     'menu_icon'          => 'dashicons-randomize',
-    'supports'           => array('title'),
+    'supports'           => array('title', 'author'),
     'capability_type'    => array('session', 'sessions'),
     'map_meta_cap'       => true,
     'delete_with_user'   => true,
@@ -111,6 +128,29 @@ add_action('init', function() {
       }, 'session', 'side', 'high');
     }
   ));
+
+  add_filter('manage_session_posts_columns', function($columns) {
+    $dateColumn = $columns['date'];
+    unset($columns['date']);
+    $columns['parent'] = 'Carrera';
+    $columns['average_speed_kmh'] = 'Velocidad media (kmh)';
+    $columns['distance_km'] = 'Distancia (km)';
+    $columns['duration_minutes'] = 'Duración (minutos)';
+    $columns['date'] = $dateColumn;
+    return $columns;
+  });
+
+  add_action('manage_session_posts_custom_column', function($column, $postId) {
+    if (in_array($column, ['average_speed_kmh', 'distance_km', 'duration_minutes'])):
+      $style = 'font-size: 20px; padding: 10px; background: #fff; box-shadow: #555 0 0 1px 0px;';
+      echo '<div style="'.$style.'">'.get_post_meta($postId, $column, true).'</div>';
+    endif;
+
+    if ($column === 'parent'):
+      $parentId = get_post($postId)->post_parent;
+      echo $parentId ? get_the_title($parentId) : 'n/a';
+    endif;
+  }, 10, 2);
 
   add_role('runner', 'Runner', array(
     'read' => true,
