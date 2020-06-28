@@ -231,9 +231,18 @@ add_action('init', function() {
  */
 
 add_action('rest_api_init', function() {
-  /**
-   * Rest api fields
-   */
+  register_rest_field('user', 'profile_image_url', array(
+    'schema'          => null,
+    'update_callback' => function ($value, $object, $fieldName) {
+      $object = (array) $object;
+      return update_user_meta($object['ID'], $fieldName, $value);
+    },
+    'get_callback'    => function($object, $fieldName, $request) {
+      $image = get_user_meta($object['id'], $fieldName, true);
+      return $image ? $image : $object['avatar_urls']['96'];
+    }
+  ));
+
   register_rest_field('race', 'featured_image_url', array(
     'update_callback' => null,
     'schema'          => null,
