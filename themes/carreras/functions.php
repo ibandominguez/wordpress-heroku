@@ -172,6 +172,7 @@ add_action('init', function() {
     $role->add_cap('delete_published_sessions');
     $role->add_cap('delete_session');
     $role->add_cap('delete_sessions');
+    $role->add_cap('upload_files');
   endforeach;
 
   foreach (array('administrator', 'editor') as $role):
