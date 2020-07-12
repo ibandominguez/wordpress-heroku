@@ -1,14 +1,10 @@
 <?php
-
-// Initial values
-$date = get_post_meta($post->ID, 'race_date', true);
-$time = get_post_meta($post->ID, 'race_time', true);
-$description = get_post_meta($post->ID, 'description', true);
+$mapKey = get_option('race_map_key');
 $coordinates = get_post_meta($post->ID, 'coordinates', true);
-$key = get_option('race_map_key');
 ?>
 
 <style media="screen">
+@import url("https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css");
 .form-label { display: block; margin-bottom: 5px; }
 .form-control { width: 100%; }
 .row { display: flex; }
@@ -17,22 +13,8 @@ $key = get_option('race_map_key');
 #map-coordinates { height: 500px; }
 #points-coordinates { flex: 0.5; padding: 15px; background: #eee; }
 .hint { display: block; padding-bottom: 5px; }
+small { color: #aaa; }
 </style>
-
-<div class="form-group">
-  <label class="form-label" for="race_date">Fecha</label>
-  <input id="race_date" class="form-control" type="date" name="race_date" value="<?= get_post_meta($post->ID, 'race_date', true); ?>" required>
-</div><hr>
-
-<div class="form-group">
-  <label class="form-label" for="race_time">Hora</label>
-  <input id="race_time" class="form-control" type="time" name="race_time" value="<?= get_post_meta($post->ID, 'race_time', true); ?>" required>
-</div><hr>
-
-<div class="form-group">
-  <label class="form-label" for="duration_minutes">Duración en minutos</label>
-  <input id="duration_minutes" class="form-control" type="number" step="0.01" name="duration_minutes" value="<?= get_post_meta($post->ID, 'duration_minutes', true); ?>" required>
-</div><hr>
 
 <div class="form-group">
   <label class="form-label" for="description">Descripción</label>
@@ -40,9 +22,31 @@ $key = get_option('race_map_key');
 </div><hr>
 
 <div class="form-group">
-  <label class="form-label" for="description">Clave Google maps api</label>
-  <small class="hint">Necesitas especificar una clave de google para poder usar Google maps y crear las rutas</small>
-  <input id="race_map_key" type="text" class="form-control" name="race_map_key" value="<?= get_option('race_map_key'); ?>">
+  <label class="form-label" for="start_datetime">Fecha y hora de comienzo</label>
+  <input id="start_datetime" class="form-control datetimepicker" name="start_datetime" type="text" value="<?= get_post_meta($post->ID, 'start_datetime', true); ?>">
+  <small>La carrera podrá realizarse desde esta fecha.<br>* Si dejas este campo vacío la carrera podrá realizarse en cualquier momento.</small>
+</div><hr>
+
+<div class="form-group">
+  <label class="form-label" for="end_datetime">Fecha y hora de finalización</label>
+  <input id="end_datetime" class="form-control datetimepicker" name="end_datetime" type="text" value="<?= get_post_meta($post->ID, 'end_datetime', true); ?>">
+  <small>La carrera podrá realizarse hasta esta fecha.<br>* Si dejas este campo vacío la carrera podrá realizarse hasta cualquier momento.</small>
+</div><hr>
+
+<div class="form-group">
+  <label class="form-label" for="duration_minutes">Duración en minutos</label>
+  <input id="duration_minutes" class="form-control" type="number" step="0.01" name="duration_minutes" value="<?= get_post_meta($post->ID, 'duration_minutes', true); ?>" required>
+  <small>La carrera finalizará cuando se alcance dicho tiempo.<br>* Si dejas este campo vacío la carrera se podrá finalizar cuando quiera el usuario.</small>
+</div><hr>
+
+<div class="form-group">
+  <label class="form-label" for="distance_km">Distancia en kilómetros</label>
+  <input id="distance_km" class="form-control" type="number" step="0.01" name="distance_km" value="<?= get_post_meta($post->ID, 'distance_km', true); ?>" required>
+  <small>
+    La carrera finalizará cuando se alcance dicha distancia.<br>
+    * Si dejas este campo vacío la carrera podrá alcanzar cualquier distancia.<br>
+    * En el caso de existir ruta, la carrera finalizará cuando se alcance dicha distancia y se esté cerca del último punto.
+  </small>
 </div><hr>
 
 <div class="form-group">
@@ -65,10 +69,11 @@ $key = get_option('race_map_key');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
 <script type="text/javascript">
 function initMap() {
-  var coordinates = <?= json_encode(get_post_meta($post->ID, 'coordinates', true) ?? []); ?>;
+  var coordinates = <?= json_encode(!empty($coordinates) ? $coordinates : []); ?>;
   var gpxFileInput = document.getElementById('gpx');
   var $inputs = jQuery('#inputs');
   var $distance = jQuery('#distance');
+  var $distanceKmInput = jQuery('[name=distance_km]');
 
   var map = new google.maps.Map(document.getElementById('map'), {
     center: new google.maps.LatLng(28.3898237, -15.2242274),
@@ -121,7 +126,7 @@ function initMap() {
     });
 
     $distance.empty().text((totalDistanceInMeters / 1000).toFixed(2) + 'km');
-    $distance.append('<input type="hidden" name="distance_km" value="' + (totalDistanceInMeters/1000).toFixed(2) + '">');
+    $distanceKmInput.val((totalDistanceInMeters/1000).toFixed(2));
     map.fitBounds(bounds);
   }
 
@@ -162,4 +167,12 @@ function initMap() {
   drawCoordinates();
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=<?= @$key; ?>&callback=initMap&libraries=places,geometry"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<?= @$mapKey; ?>&callback=initMap&libraries=places,geometry"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  var $startsAt = jQuery('.datetimepicker').datetimepicker({
+    lang:'es'
+  });
+});
+</script>

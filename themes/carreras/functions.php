@@ -67,6 +67,14 @@ add_action('init', function() {
         wp_nonce_field('race_meta_box', 'race_meta_box_nonce');
         include_once(__DIR__.'/templates/race-meta.php');
       }, null, 'advanced', 'high');
+
+      add_meta_box('race-gkey', 'Clave de Google maps', function($post) { ?>
+        <div class="form-group">
+          <label class="form-label" for="description">Clave Google maps api</label>
+          <small class="hint">Necesitas especificar una clave de google para poder usar Google maps y crear las rutas</small>
+          <input id="race_map_key" type="text" class="form-control" name="race_map_key" value="<?= get_option('race_map_key'); ?>">
+        </div>
+      <?php }, 'race', 'side', 'high');
     }
   ));
 
@@ -187,7 +195,10 @@ add_action('init', function() {
    */
   add_action('save_post', function($postId) {
     $nonce = @$_POST['race_meta_box_nonce'];
-    $fieldKeys = array('race_date', 'race_time', 'description', 'distance_km', 'duration_minutes', 'coordinates');
+    $fieldKeys = array(
+      'race_date', 'race_time', 'description', 'distance_km', 'duration_minutes', 'coordinates',
+      'start_datetime', 'end_datetime'
+    );
 
     // TODO: Sanitize input data
 
@@ -331,7 +342,7 @@ add_action('rest_api_init', function() {
     }
   ));
 
-  foreach (array('description', 'race_date', 'race_time') as $key):
+  foreach (array('description', 'race_date', 'race_time', 'start_datetime', 'end_datetime') as $key):
     register_rest_field(array('race'), $key, array(
       'schema'          => null,
       'update_callback' => function ($value, $object, $fieldName) {
@@ -339,7 +350,8 @@ add_action('rest_api_init', function() {
         return update_post_meta($object['ID'], $fieldName, $value);
       },
       'get_callback'    => function($object, $fieldName, $request) {
-        return get_post_meta($object['id'], $fieldName, true);
+        $value = get_post_meta($object['id'], $fieldName, true);
+        return !empty($value) ? $value : null;
       }
     ));
   endforeach;
