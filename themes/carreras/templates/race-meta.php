@@ -35,13 +35,13 @@ small { color: #aaa; }
 
 <div class="form-group">
   <label class="form-label" for="duration_minutes">Duración en minutos</label>
-  <input id="duration_minutes" class="form-control" type="number" step="0.01" name="duration_minutes" value="<?= get_post_meta($post->ID, 'duration_minutes', true); ?>" required>
+  <input id="duration_minutes" class="form-control" type="number" step="0.01" name="duration_minutes" value="<?= get_post_meta($post->ID, 'duration_minutes', true); ?>">
   <small>La carrera finalizará cuando se alcance dicho tiempo.<br>* Si dejas este campo vacío la carrera se podrá finalizar cuando quiera el usuario.</small>
 </div><hr>
 
 <div class="form-group">
   <label class="form-label" for="distance_km">Distancia en kilómetros</label>
-  <input id="distance_km" class="form-control" type="number" step="0.01" name="distance_km" value="<?= get_post_meta($post->ID, 'distance_km', true); ?>" required>
+  <input id="distance_km" class="form-control" type="number" step="0.01" name="distance_km" value="<?= get_post_meta($post->ID, 'distance_km', true); ?>">
   <small>
     La carrera finalizará cuando se alcance dicha distancia.<br>
     * Si dejas este campo vacío la carrera podrá alcanzar cualquier distancia.<br>
