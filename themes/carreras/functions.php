@@ -247,7 +247,7 @@ add_action('init', function() {
     global $current_user;
 
     if (
-      @$query->query['post_type'] === 'session' &&
+      in_array($query->query['post_type'], ['session', 'attachment']) &&
       !current_user_can('edit_others_posts')
     ):
       $query->set('author', $current_user->ID);
@@ -468,7 +468,6 @@ add_action('login_enqueue_scripts', function() {
       <script>
       window.onload = function() {
         document.getElementById('backtoblog').remove();
-        document.getElementById('nav').remove();
         document.querySelector('body.login div#login h1 a').href = window.location.href;
       }
       </script>
