@@ -172,7 +172,8 @@ function initMap() {
 <script type="text/javascript">
 jQuery(document).ready(function() {
   var $startsAt = jQuery('.datetimepicker').datetimepicker({
-    lang:'es'
+    lang:'es',
+    format: 'Y-m-d H:i:s'
   });
 });
 </script>
