@@ -221,6 +221,25 @@ add_action('init', function() {
     endforeach;
   });
 
+  add_action('save_post', function($postId) {
+    $nonce = @$_POST['session_meta_box_nonce'];
+    // TODO: Sanitize input data
+
+    if (
+      // TODO: Add server side validation
+      !wp_verify_nonce($nonce, 'session_meta_box') || // Verify nonce
+      (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) // Check for autosave
+    ) {
+      return $postId;
+    }
+
+    foreach ($_POST as $key => $value):
+      if (in_array($key, ['distance_km', 'duration_minutes', 'coordinates', 'average_speed_kmh'])):
+        update_post_meta($postId, $key, $value);
+      endif;
+    endforeach;
+  });
+
   /**
    * Get only user sessions
    */
