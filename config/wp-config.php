@@ -72,7 +72,7 @@ define('WP_HOME', getEnvOr('WP_HOME', URL));
 define('DISALLOW_FILE_EDIT', getEnvOr('DISALLOW_FILE_EDIT', true));
 define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
-define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'default'));
+define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'wphh-default'));
 
 define('WP_DEBUG', getEnvOr('DEBUG', false));
 define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));

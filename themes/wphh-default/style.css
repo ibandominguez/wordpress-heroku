@@ -1,15 +1,17 @@
-/**
+/*
 Theme Name: Default theme
 Theme URI: https://github.com/ibandominguez/wordpress-heroku/tree/master/themes/default
 Author: Ibán Domínguez
 Author URI: https://github.com/ibandominguez
-Description: This is the default theme
+Description: Default theme currently on development
+Tags: custom-logo
 Version: 0.1.0
+Requires at least: 5.0
+Tested up to: 5.4
+Requires PHP: 7.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
-Text Domain: default
+Text Domain: wphh-default
 Domain Path: /languages
-Tags: custom-menu, custom-logo
-
-This theme is currently being developed. This sections and their functionailities will be explained in this document soon.
+Currently on development
 */
