@@ -23,13 +23,13 @@ small { color: #aaa; }
 
 <div class="form-group">
   <label class="form-label" for="start_datetime">Fecha y hora de comienzo</label>
-  <input id="start_datetime" class="form-control datetimepicker" name="start_datetime" type="text" value="<?= get_post_meta($post->ID, 'start_datetime', true); ?>">
+  <input id="start_datetime" class="form-control datetimepicker" autocomplete="off" name="start_datetime" type="text" value="<?= get_post_meta($post->ID, 'start_datetime', true); ?>">
   <small>La carrera podrá realizarse desde esta fecha.<br>* Si dejas este campo vacío la carrera podrá realizarse en cualquier momento.</small>
 </div><hr>
 
 <div class="form-group">
   <label class="form-label" for="end_datetime">Fecha y hora de finalización</label>
-  <input id="end_datetime" class="form-control datetimepicker" name="end_datetime" type="text" value="<?= get_post_meta($post->ID, 'end_datetime', true); ?>">
+  <input id="end_datetime" class="form-control datetimepicker" autocomplete="off" name="end_datetime" type="text" value="<?= get_post_meta($post->ID, 'end_datetime', true); ?>">
   <small>La carrera podrá realizarse hasta esta fecha.<br>* Si dejas este campo vacío la carrera podrá realizarse hasta cualquier momento.</small>
 </div><hr>
 
