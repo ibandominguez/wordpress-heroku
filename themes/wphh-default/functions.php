@@ -1,12 +1,6 @@
 <?php
 
-require_once __DIR__.'/includes/navwalker.php';
-
-add_action('init', function() {
-  register_nav_menus([
-    'menu' => __('Menu')
-  ]);
-});
+require_once __DIR__.'/includes/Bootstrap_NavWalker.php';
 
 add_action('wp_enqueue_scripts', function() {
   wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', false, null, 'all');
@@ -15,13 +9,8 @@ add_action('wp_enqueue_scripts', function() {
 });
 
 add_action('after_setup_theme', function() {
-  add_theme_support('custom-logo', [
-    'height'      => 100,
-    'width'       => 400,
-    'flex-height' => true,
-    'flex-width'  => true,
-    'header-text' => ['site-title', 'site-description']
-  ]);
+  register_nav_menu('primary', __('Primary Menu', 'wphh-default'));
+  add_theme_support('custom-logo', ['height' => 75, 'width' => 75]);
 });
 
 add_action('admin_menu', function() {
@@ -31,7 +20,7 @@ add_action('admin_menu', function() {
 add_action('wp_dashboard_setup', function() {
   // TODO: Custom welcome panel full width
   // remove_action('welcome_panel', 'wp_welcome_panel');
-  // add_action('welcome_panel', <MY_CALLABLE>);
+  // add_action('welcome_panel', <callable>);
 
   wp_add_dashboard_widget('theme_support', 'Theme Support', function() { ?>
     <h4>Theme support</h4>
