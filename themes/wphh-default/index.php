@@ -7,15 +7,14 @@
     <?php wp_head(); ?>
   </head>
   <body>
+    <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
         <?php the_custom_logo(); ?>
       <?php else: ?>
-        <h2 class="p-2">
-          <a href="<?php echo esc_url(home_url('/')); ?>" rel="home" title="<?php bloginfo('name'); ?>">
-            <?php bloginfo( 'name' ); ?>
-          </a>
-        </h2>
+        <a href="<?= esc_url(home_url('/')); ?>" rel="home" title="<?php bloginfo('name'); ?>" class="navbar-brand">
+          <?php bloginfo('name'); ?>
+        </a>
       <?php endif; ?>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#wphh-default-navbar" aria-controls="wphh-default-navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,13 +27,15 @@
     			'menu_id'        => 'primary-menu',
     			'container'      => false,
     			'depth'          => 2,
-    			'menu_class'     => 'nav navbar-nav ml-auto',
+    			'menu_class'     => 'navbar-nav ml-auto',
     			'walker'         => new Bootstrap_NavWalker(),
     			'fallback_cb'    => 'Bootstrap_NavWalker::fallback',
   		  ]); ?>
       </div>
     </nav>
+    <!-- /Header -->
 
+    <!-- Content -->
     <div class="container-fluid py-3">
       <?php /* Post listing */ ?>
       <?php if (have_posts()): while (have_posts()): the_post(); ?>
@@ -58,6 +59,7 @@
         </div>
       <?php endif; ?>
     </div>
+    <!-- /Content -->
 
     <?php wp_footer(); ?>
   </body>
