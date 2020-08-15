@@ -1,4 +1,3 @@
-<?php global $wp_query; ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
   <head>
@@ -8,14 +7,14 @@
     <title><?php wp_title('&laquo;', true, 'right'); ?> <?php bloginfo('name'); ?></title>
     <?php wp_head(); ?>
   </head>
-  <body>
-    <div class="container py-5">
-      <?php if (have_posts()): while (have_posts()): the_post(); ?>
-        <h2><?php the_title(); ?></h2>
-        <div><?php the_content(); ?></div>
-      <?php endwhile; endif; ?>
-    </div>
+  <body class="d-flex flex-column justify-content-center align-items-center vh-100">
+    <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
+      <?php the_custom_logo(); ?>
+    <?php endif; ?>
 
-    <?php wp_footer(); ?>
+    <a class="d-block my-3" href="<?= esc_url(home_url('/')); ?>" rel="home" title="<?php bloginfo('name'); ?>">
+      <?php bloginfo('name'); ?>
+    </a>
+    <p><?php bloginfo('description'); ?></p>
   </body>
 </html>
