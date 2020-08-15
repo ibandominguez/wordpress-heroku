@@ -4,9 +4,9 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "5.4.2",
+        "version": "5.5.0",
         "dist": {
-          "url": "https://es.wordpress.org/latest-es_ES.zip",
+          "url": "https://es.wordpress.org/wordpress-5.5-es_ES.zip",
           "type": "zip"
         }
       }
@@ -15,7 +15,7 @@
   "require": {
     "php": "~7.2.0",
     "ext-gd": "*",
-    "wordpress/wordpress": "5.4.*"
+    "wordpress/wordpress": "^5.5.0"
   },
   "scripts": {
     "rm-public": "rm -rf public",
@@ -24,6 +24,8 @@
     "cp-plugins": "rm -rf public/wp-content/plugins/* && cp -r plugins/* public/wp-content/plugins",
     "cp-themes": "rm -rf public/wp-content/themes/* && cp -r themes/* public/wp-content/themes",
     "pre-install-cmd": "composer rm-public",
-    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer cp-themes && composer cp-plugins"
+    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer cp-themes && composer cp-plugins",
+    "pre-update-cmd": "composer rm-public",
+    "post-update-cmd": "composer cp-config && composer cp-wpcore && composer cp-themes && composer cp-plugins"
   }
 }
