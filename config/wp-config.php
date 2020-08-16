@@ -84,7 +84,7 @@ define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
  * So one database can be used for multiple sites
  */
 
-$table_prefix = md5(HOST);
+$table_prefix = md5(HOST).'_';
 
 /**
  * Conditional plugin activation
