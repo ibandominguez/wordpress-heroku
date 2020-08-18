@@ -357,7 +357,19 @@ add_action('rest_api_init', function() {
     }
   ));
 
-  foreach (array('description', 'race_date', 'race_time', 'start_datetime', 'end_datetime', 'price', 'category', 'organization_details') as $key):
+  register_rest_field(array('race'), 'price', array(
+    'schema'          => null,
+    'update_callback' => function ($value, $object, $fieldName) {
+      $object = (array) $object;
+      return update_post_meta($object['ID'], $fieldName, $value);
+    },
+    'get_callback'    => function($object, $fieldName, $request) {
+      $value = get_post_meta($object['id'], $fieldName, true);
+      return !empty($value) ? floatval($value) : null;
+    }
+  ));
+
+  foreach (array('description', 'race_date', 'race_time', 'start_datetime', 'end_datetime', 'category', 'organization_details') as $key):
     register_rest_field(array('race'), $key, array(
       'schema'          => null,
       'update_callback' => function ($value, $object, $fieldName) {
