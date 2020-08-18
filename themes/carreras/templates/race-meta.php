@@ -28,9 +28,9 @@ small { color: #aaa; }
 </div><hr>
 
 <div class="form-group">
-  <label class="form-label" for="price">Cupones de descuento</label>
+  <label class="form-label" for="price">Cupones de descuento (opcional, solo se usará si la carrera tiene precio)</label>
   <input type="file" accept=".txt" onchange="getCoupons(this.files ? this.files[0] : null)">
-  <textarea style="max-height: 100px; overflow: scroll" id="coupons" class="form-control" name="coupons"><?= get_post_meta($post->ID, 'coupons', true); ?></textarea>
+  <textarea id="coupons" class="form-control" name="coupons"><?= get_post_meta($post->ID, 'coupons', true); ?></textarea>
   <small>
     Añade aquí todos los cupones.
     <br>* Los cupones deberán estar en un archivo .txt y separados por líneas.

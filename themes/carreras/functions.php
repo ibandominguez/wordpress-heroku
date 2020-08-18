@@ -234,27 +234,70 @@ add_action('init', function() {
  */
 
 add_action('rest_api_init', function() {
-
   /**
    * Rest api routes
    */
   register_rest_route('wp/v2', '/payments', [
-    'methods'  => ['GET', 'POST'],
+    'methods'  => ['POST'],
     'callback' => function (WP_REST_Request $request) {
       global $current_user;
 
-      $body = $request->get_body();
-      $price = get_post_meta($body->race_id, 'price', true);
-      $coupons = get_post_meta($body->race_id, 'coupons', true);
+      return $current_user;
 
-      // TODO: Validate required fields, race_id=(Id de la carrera)
-      // TODO: Validate current user
-      // TODO: Validate it havent bought this subscription yet
-      // TODO: execute payment with stripe
-      // TODO: Save user subscription
+      $body = $request->get_json_params();
+      $racePrice = floatval(get_post_meta($body['race_id'], 'price', true));
+      $raceCoupons = preg_split("/\r\n|\n|\r/", get_post_meta($body['race_id'], 'coupons', true));
+      $stripeSettings = get_option('stripe_settings');
+
+      if (empty($current_user->ID)):
+        return new WP_REST_Response(['message' => 'Necesitas iniciar sesión para hacer un pago'], 400);
+      endif;
+
+      if (empty($body['token'])):
+        return new WP_REST_Response(['message' => 'Un token de pago es requerido'], 400);
+      endif;
+
+      if (empty($racePrice)):
+        return new WP_REST_Response(['message' => 'La carrera es inválida'], 400);
+      endif;
+
+      if (!empty($body['coupon']) && !in_array($body['coupon'], $raceCoupons)):
+        return new WP_REST_Response(['message' => 'Cupón inválido'], 400);
+      endif;
+
+      if (in_array($body['race_id'], get_user_meta($current_user->ID, 'race_payments'))):
+        return new WP_REST_Response(['message' => 'Ya has comprado esta subscripción'], 400);
+      endif;
+
+      if (empty($stripeSettings['STRIPE_PRIVATE_KEY'])):
+        return new WP_REST_Response(['message' => 'El sistema de pagos no ha sido configurado'], 400);
+      endif;
+
+      $response = wp_remote_post('https://api.stripe.com/v1/charges', [
+        'method' => 'POST',
+        'headers' => ['Authorization' => "Bearer {$stripeSettings['STRIPE_PRIVATE_KEY']}"],
+        'body'   => [
+          'amount'   => intval($racePrice * 100),
+          'currency' => 'eur',
+          'source'   => $body['token'],
+          'description' => "Subscripción de {$current_user->data->display_name} a la carrera #{$body['race_id']}"
+          // TODO: billing details for sending products
+        ]
+      ]);
+
+      if (is_wp_error($response)):
+        return new WP_REST_Response([
+          'message' => $response->get_error_message(),
+        ], 400);
+      endif;
+
+      if ($response['response']['code'] == 200):
+        add_user_meta($current_user->ID, 'race_payments', $body['race_id']);
+      endif;
 
       return new WP_REST_Response(
-        get_class_methods($request)
+        json_decode($response['body']),
+        $response['response']['code']
       );
     }
   ]);
@@ -271,6 +314,13 @@ add_action('rest_api_init', function() {
     'get_callback'    => function($object, $fieldName, $request) {
       $image = get_user_meta($object['id'], $fieldName, true);
       return $image ? $image : $object['avatar_urls']['96'];
+    }
+  ));
+
+  register_rest_field('user', 'race_payments', array(
+    'schema'          => null,
+    'get_callback'    => function($object, $fieldName, $request) {
+      return get_user_meta($object['id'], $fieldName, false);
     }
   ));
 
