@@ -17,6 +17,38 @@ small { color: #aaa; }
 </style>
 
 <div class="form-group">
+  <label class="form-label" for="price">Precio (opcional)</label>
+  <input id="price" class="form-control" type="number" step="0.01" name="price" value="<?= get_post_meta($post->ID, 'price', true); ?>">
+  <small>
+    Este campo define si la carrera es de pago o libre.
+    <br>* Si dejas este campo vacío la carrera podrá correrse libremenete.
+    <br>* Si rellenas este campo la carrera podrá correrse libremente antes de la fecha de inicio y requeríra del pago tras la fecha de inicio.
+    <br>* Los corredores que realizen el pago de la carrera se listarán en el ranking.
+  </small>
+</div><hr>
+
+<div class="form-group">
+  <label class="form-label" for="price">Cupones de descuento</label>
+  <input type="file" accept=".txt" onchange="getCoupons(this.files ? this.files[0] : null)">
+  <textarea style="max-height: 100px; overflow: scroll" id="coupons" class="form-control" name="coupons"><?= get_post_meta($post->ID, 'coupons', true); ?></textarea>
+  <small>
+    Añade aquí todos los cupones.
+    <br>* Los cupones deberán estar en un archivo .txt y separados por líneas.
+    <br>* El wizard de importación te informará del número de códigos para que confirmes si es correcta la importación.
+    <br>* También puedes añadir los códigos manualmente si lo deseas pero es importante que los códigos estén separados entre líneas, sin dejar ninguna en blanco.
+  </small>
+</div><hr>
+
+<div class="form-group">
+  <label class="form-label" for="category">Categoría</label>
+  <input id="category" class="form-control" name="category" type="text" value="<?= get_post_meta($post->ID, 'category', true); ?>">
+  <small>
+    Describe quiénes deberán participar o alistarse en la carrera.
+    <br>* Por eje: Senior masculino (entre "x" y  "y" años)
+  </small>
+</div><hr>
+
+<div class="form-group">
   <label class="form-label" for="description">Descripción</label>
   <textarea id="description" class="form-control" name="description"><?= get_post_meta($post->ID, 'description', true); ?></textarea>
 </div><hr>
@@ -46,6 +78,15 @@ small { color: #aaa; }
     La carrera finalizará cuando se alcance dicha distancia.<br>
     * Si dejas este campo vacío la carrera podrá alcanzar cualquier distancia.<br>
     * En el caso de existir ruta, la carrera finalizará cuando se alcance dicha distancia y se esté cerca del último punto.
+  </small>
+</div><hr>
+
+<div class="form-group">
+  <label class="form-label" for="organization_details">Detalles del organizador</label>
+  <textarea id="organization_details" class="form-control" name="organization_details"><?= get_post_meta($post->ID, 'organization_details', true); ?></textarea>
+  <small>
+    Añade separados por líneas los detalles de el organizador.<br>
+    * Generalmente deberías incluir al menos email, nombre y teléfono.
   </small>
 </div><hr>
 
@@ -165,6 +206,25 @@ function initMap() {
   });
 
   drawCoordinates();
+}
+
+function getCoupons(file) {
+  if (!file || (file && file.name.indexOf('.txt') === -1)) {
+    return alert('El archivo es inválido, debe ser un .txt');
+  }
+
+  var reader = new FileReader();
+
+  reader.onload = function() {
+    if (!reader.result || reader.result.length === 0) {
+      return alert('El archivo está vacío');
+    }
+    if (confirm('Confirmación requerida\nNúmeros de cupones:' + reader.result.trim().split('\n').length)) {
+      jQuery('[name=coupons]').val(reader.result.trim());
+    }
+  }
+
+  reader.readAsText(file);
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>

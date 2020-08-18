@@ -4,8 +4,6 @@ require_once(__DIR__.'/includes/SetUpAuthBasic.php');
 require_once(__DIR__.'/includes/ModifyRestUsersRoutes.php');
 require_once(__DIR__.'/includes/SetUpRankingRestRoutes.php');
 
-include_once(ABSPATH.'wp-admin/includes/plugin.php');
-
 SetUpAuthBasic::boot();
 ModifyRestUsersRoutes::boot();
 SetUpRankingRestRoutes::boot();
@@ -15,8 +13,6 @@ SetUpRankingRestRoutes::boot();
  */
 
 add_action('init', function() {
-  activate_plugin('wp-rest-filter');
-
   /**
    * Races post type
    * Registering and api activation
@@ -197,7 +193,7 @@ add_action('init', function() {
     $nonce = @$_POST['race_meta_box_nonce'];
     $fieldKeys = array(
       'race_date', 'race_time', 'description', 'distance_km', 'duration_minutes', 'coordinates',
-      'start_datetime', 'end_datetime'
+      'start_datetime', 'end_datetime', 'price', 'category', 'organization_details', 'coupons'
     );
 
     // TODO: Sanitize input data
@@ -361,7 +357,7 @@ add_action('rest_api_init', function() {
     }
   ));
 
-  foreach (array('description', 'race_date', 'race_time', 'start_datetime', 'end_datetime') as $key):
+  foreach (array('description', 'race_date', 'race_time', 'start_datetime', 'end_datetime', 'price', 'category', 'organization_details') as $key):
     register_rest_field(array('race'), $key, array(
       'schema'          => null,
       'update_callback' => function ($value, $object, $fieldName) {
