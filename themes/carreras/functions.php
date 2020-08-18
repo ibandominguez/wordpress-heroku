@@ -3,6 +3,7 @@
 require_once(__DIR__.'/includes/SetUpAuthBasic.php');
 require_once(__DIR__.'/includes/ModifyRestUsersRoutes.php');
 require_once(__DIR__.'/includes/SetUpRankingRestRoutes.php');
+require_once(__DIR__.'/includes/StripeSetUp.php');
 
 SetUpAuthBasic::boot();
 ModifyRestUsersRoutes::boot();
@@ -18,32 +19,7 @@ add_action('init', function() {
    * Registering and api activation
    */
   register_post_type('race', array(
-    'labels' => array(
-      'name'                  => 'Carreras',
-      'singular_name'         => 'Carrera',
-      'menu_name'             => 'Carreras',
-      'name_admin_bar'        => 'Carrera',
-      'add_new'               => 'Nueva carrera',
-      'add_new_item'          => 'Nueva carrera',
-      'new_item'              => 'Nueva carrera',
-      'edit_item'             => 'Editar carrera',
-      'view_item'             => 'Ver carrera',
-      'all_items'             => 'Todas las carreras',
-      'search_items'          => 'Buscar carreras',
-      'parent_item_colon'     => 'Tipos parentales',
-      'not_found'             => 'No encontrada',
-      'not_found_in_trash'    => 'No encontrada en la papelera',
-      'featured_image'        => 'Imagen destacada de la carrera',
-      'set_featured_image'    => 'Elegir imagen destacada',
-      'remove_featured_image' => 'Quitar imagen destacada',
-      'use_featured_image'    => 'Usar imagen destacada',
-      'archives'              => 'Archivo de carreras',
-      'insert_into_item'      => 'Insertar en carrera',
-      'uploaded_to_this_item' => 'Subir a carrera',
-      'filter_items_list'     => 'Filtrar carreras',
-      'items_list_navigation' => 'Navegación de carreras',
-      'items_list'            => 'Listado de carreras',
-    ),
+    'label'              => 'Carreras',
     'public'             => true,
     'publicly_queryable' => true,
     'show_ui'            => true,
@@ -258,6 +234,34 @@ add_action('init', function() {
  */
 
 add_action('rest_api_init', function() {
+
+  /**
+   * Rest api routes
+   */
+  register_rest_route('wp/v2', '/payments', [
+    'methods'  => ['GET', 'POST'],
+    'callback' => function (WP_REST_Request $request) {
+      global $current_user;
+
+      $body = $request->get_body();
+      $price = get_post_meta($body->race_id, 'price', true);
+      $coupons = get_post_meta($body->race_id, 'coupons', true);
+
+      // TODO: Validate required fields, race_id=(Id de la carrera)
+      // TODO: Validate current user
+      // TODO: Validate it havent bought this subscription yet
+      // TODO: execute payment with stripe
+      // TODO: Save user subscription
+
+      return new WP_REST_Response(
+        get_class_methods($request)
+      );
+    }
+  ]);
+
+  /**
+   * Rest api fields
+   */
   register_rest_field('user', 'profile_image_url', array(
     'schema'          => null,
     'update_callback' => function ($value, $object, $fieldName) {
