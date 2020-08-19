@@ -111,6 +111,18 @@ register_rest_field('race', 'description', array(
   }
 ));
 
+register_rest_field('race', 'share_link', array(
+  'schema'          => null,
+  'update_callback' => function ($value, $object, $fieldName) {
+    $object = (array) $object;
+    return update_post_meta($object['ID'], $fieldName, $value);
+  },
+  'get_callback'    => function($object, $fieldName, $request) {
+    $value = get_post_meta($object['id'], $fieldName, true);
+    return !empty($value) ? $value : null;
+  }
+));
+
 register_rest_field('race', 'start_datetime', array(
   'schema'          => null,
   'update_callback' => function ($value, $object, $fieldName) {

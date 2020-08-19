@@ -105,6 +105,14 @@ small { color: #aaa; }
 </div><hr>
 
 <div class="form-group">
+  <label class="form-label" for="share_link">Enlace para compartir</label>
+  <input id="share_link" type="url" class="form-control" name="share_link" value="<?= get_post_meta($post->ID, 'share_link', true); ?>">
+  <small>
+    Añade este enlace si quieres que se muestre el botón de compartir en la app
+  </small>
+</div><hr>
+
+<div class="form-group">
   <label class="form-label" for="description">Importar archivo .gpx</label>
   <small class="hint">Necesitas especificar una clave de google para poder usar Google maps y crear las rutas</small>
   <input id="gpx" type="file" accept=".gpx">
