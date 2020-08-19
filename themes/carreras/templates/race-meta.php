@@ -28,15 +28,29 @@ small { color: #aaa; }
 </div><hr>
 
 <div class="form-group">
-  <label class="form-label" for="price">Cupones de descuento (opcional, solo se usará si la carrera tiene precio)</label>
-  <input type="file" accept=".txt" onchange="getCoupons(this.files ? this.files[0] : null)">
-  <textarea id="coupons" class="form-control" name="coupons"><?= get_post_meta($post->ID, 'coupons', true); ?></textarea>
-  <small>
-    Añade aquí todos los cupones.
-    <br>* Los cupones deberán estar en un archivo .txt y separados por líneas.
-    <br>* El wizard de importación te informará del número de códigos para que confirmes si es correcta la importación.
-    <br>* También puedes añadir los códigos manualmente si lo deseas pero es importante que los códigos estén separados entre líneas, sin dejar ninguna en blanco.
-  </small>
+  <div class="row">
+    <div class="flex-full" style="padding-right: 10px">
+      <label class="form-label" for="coupons">Cupones de descuento (opcional)</label>
+      <input type="file" accept=".txt" onchange="getCoupons(this.files ? this.files[0] : null)">
+      <textarea id="coupons" class="form-control" name="coupons"><?= get_post_meta($post->ID, 'coupons', true); ?></textarea>
+      <small>
+        Añade aquí todos los cupones.
+        <br>* Los cupones deberán estar en un archivo .txt y separados por líneas.
+        <br>* El wizard de importación te informará del número de códigos para que confirmes si es correcta la importación.
+        <br>* También puedes añadir los códigos manualmente si lo deseas pero es importante que los códigos estén separados entre líneas, sin dejar ninguna en blanco.
+        <br>* Los cupones solo se usarán si la carrera tiene precio.
+      </small>
+    </div>
+    <div class="flex-half">
+      <label class="form-label" for="coupons_discount">Descuento cupón (requerido)</label>
+      <input id="coupons_discount" class="form-control" type="number" step="0.01" name="coupons_discount" value="<?= get_post_meta($post->ID, 'coupons_discount', true); ?>">
+      <small>
+        Este campo debería rellenarse si hay cupones
+        <br>* Este es el descuento que se le restará al precio de la carrera para subscribiese.
+        <br>* Si no añades este campo no tendrá sentido tener cupones.
+      </small>
+    </div>
+  </div>
 </div><hr>
 
 <div class="form-group">
