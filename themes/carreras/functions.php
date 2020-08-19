@@ -1,5 +1,7 @@
 <?php
 
+// TODO: Add language support and translate theme
+
 require_once __DIR__.'/includes/logo.php';
 require_once __DIR__.'/includes/authbasic.php';
 

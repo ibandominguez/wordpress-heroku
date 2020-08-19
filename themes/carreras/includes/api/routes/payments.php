@@ -1,15 +1,18 @@
 <?php
 
+/**
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @since
+ */
 register_rest_route('wp/v2', '/payments', [
   'methods'  => ['POST'],
   'callback' => function (WP_REST_Request $request) {
     global $current_user;
 
-    return $current_user;
-
     $body = $request->get_json_params();
     $racePrice = floatval(get_post_meta($body['race_id'], 'price', true));
     $raceCoupons = preg_split("/\r\n|\n|\r/", get_post_meta($body['race_id'], 'coupons', true));
+    $raceCouponsDiscount = floatval(get_post_meta($body['race_id'], 'coupons_discount', true));
     $stripeSettings = get_option('stripe_settings');
 
     if (empty($current_user->ID)):
@@ -40,11 +43,11 @@ register_rest_route('wp/v2', '/payments', [
       'method' => 'POST',
       'headers' => ['Authorization' => "Bearer {$stripeSettings['STRIPE_PRIVATE_KEY']}"],
       'body'   => [
-        'amount'   => intval($racePrice * 100),
+        'amount'   => intval((!empty($body['coupon']) ? $racePrice - $raceCouponsDiscount : $racePrice) * 100),
         'currency' => 'eur',
         'source'   => $body['token'],
-        'description' => "Subscripción de {$current_user->data->display_name} a la carrera #{$body['race_id']}"
-        // TODO: billing details for sending products
+        'description' => "Subscripción de {$current_user->data->display_name} a la carrera #{$body['race_id']}",
+        'receipt_email' => $current_user->data->user_email
       ]
     ]);
 
