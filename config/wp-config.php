@@ -8,15 +8,11 @@
 function getEnvOr($key, $default = null) {
 	$value = getenv($key);
 
-	if (!empty($value)):
-		switch ($value) {
-			case 'true': return true;
-			case 'false': return false;
-			default: return $value;
-		}
+	if (!empty($value) && in_array($value, ['true', 'false'])):
+		return json_decode($value);
 	endif;
 
-	return $default;
+	return !empty($value) ? $value : $default;
 }
 
 if (!empty(getenv('JAWSDB_URL'))):
@@ -74,7 +70,7 @@ define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
 define('AUTOMATIC_UPDATER_DISABLED', getEnvOr('AUTOMATIC_UPDATER_DISABLED', true));
 define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'wphh-default'));
 
-define('WP_DEBUG', getEnvOr('DEBUG', false));
+define('WP_DEBUG', getEnvOr('WP_DEBUG', false));
 define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));
 define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
 
