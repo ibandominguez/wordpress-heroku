@@ -94,9 +94,7 @@ $table_prefix = preg_replace(['/\:/', '/\./', '/-/'], '_', HOST).'_';
 require_once(ABSPATH.'wp-settings.php');
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
-if (defined('S3_UPLOADS_BUCKET')):
-	activate_plugin('s3-uploads/s3-uploads.php');
-endif;
+activate_plugin('wordpress-heroku-hosting/wordpress-heroku-hosting.php');
 
 /**
  * Permalink default
