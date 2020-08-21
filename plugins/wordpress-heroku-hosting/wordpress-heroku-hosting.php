@@ -3,10 +3,10 @@
 /*
 Plugin Name: Wordpress heroku hosting
 Plugin URI: https://github.com/ibandominguez/wordpress-heroku/tree/master/plugins/wordpress-heroku-hosting/
-Description: Set ups heroku for multisite web hosting. Add s3 uploads support
+Description: Provide web hosting within the Heroku.
 Author: Ibán Dominguez Noda
 Author URI: https://github.com/ibandominguez
-Version: 0.1.1
+Version: 0.1.2
 */
 
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
@@ -16,10 +16,18 @@ define('WPHH_PLUGINS', [
   's3-uploads/s3-uploads.php' => defined('S3_UPLOADS_BUCKET')
 ]);
 
+/**
+ * Setup enviroments widgets
+ * @link https://codex.wordpress.org/Plugin_API/Action_Reference/init
+ */
 add_action('init', function() {
   // TODO: Check current site status
 });
 
+/**
+ * Setup enviroments widgets
+ * @link https://codex.wordpress.org/Plugin_API/Action_Reference/wp_dashboard_setup
+ */
 add_action('wp_dashboard_setup', function() {
   // TODO: Custom welcome panel full width
   // remove_action('welcome_panel', 'wp_welcome_panel');
