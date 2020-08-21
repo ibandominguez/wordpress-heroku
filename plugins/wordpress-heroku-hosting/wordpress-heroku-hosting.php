@@ -21,6 +21,8 @@ define('WPHH_PLUGINS', [
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/init
  */
 add_action('init', function() {
+  require_once(__DIR__.'/includes/api/meta-filters.php');
+  require_once(__DIR__.'/includes/smtp-settings.php');
   // TODO: Check current site status
 });
 

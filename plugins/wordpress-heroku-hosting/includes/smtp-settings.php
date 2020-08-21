@@ -1,13 +1,5 @@
 <?php
 
-/*
-Plugin Name: SMTP Settings
-Description: Configure an smtp account to be used 
-Author: Ibán Dominguez Noda
-Author URI: https://github.com/ibandominguez
-Version: 0.1.0
-*/
-
 /**
  * @action
  *

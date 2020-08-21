@@ -1,14 +1,5 @@
 <?php
 
-/*
-Plugin Name: Rest Meta filters
-Plugin URI: https://github.com/ibandominguez/wordpress-heroku/tree/master/plugins/meta-filters/rest-meta-filters.php
-Description: Add rest api meta filter support
-Author: Ibán Dominguez Noda
-Author URI: https://github.com/ibandominguez
-Version: 0.1.0
-*/
-
 /**
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/
  */
