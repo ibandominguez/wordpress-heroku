@@ -8,7 +8,7 @@ require_once __DIR__.'/includes/authbasic.php';
 add_action('init', function () {
   require_once __DIR__.'/includes/types/race.php';
   require_once __DIR__.'/includes/types/session.php';
-  require_once __DIR__.'/includes/types/media.php';
+  require_once __DIR__.'/includes/types/attachment.php';
   require_once __DIR__.'/includes/roles/runner.php';
   require_once __DIR__.'/includes/settings/stripe.php';
 });
