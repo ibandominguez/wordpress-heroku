@@ -2,6 +2,10 @@
 
 register_rest_route('wp/v2', '/users/me/stadistics', [
   'methods' => ['GET'],
+  'permission_callback' => function (WP_REST_Request $request) {
+    global $current_user;
+    return !empty($current_user->ID);
+  },
   'callback' => function (WP_REST_Request $request) {
     global $wpdb;
     global $current_user;
@@ -67,15 +71,6 @@ register_rest_route('wp/v2', '/users/me/stadistics', [
       'total_goals' => !empty($goals) ? $goals['total_goals'] : '0',
       'completed_goals' => !empty($goals) ? $goals['completed_goals'] : '0'
     ], 200);
-  },
-  'permission_callback' => function (WP_REST_Request $request) {
-    global $current_user;
-
-    if (empty($current_user->ID)):
-      return false;
-    endif;
-
-    return true;
   }
 ]);
 
@@ -111,6 +106,10 @@ register_rest_route('wp/v2', '/users', [
 register_rest_route('wp/v2', '/users/me', [
   'methods' => WP_REST_Server::DELETABLE,
   'args' => (new WP_REST_Users_Controller())->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
+  'permission_callback' => function (WP_REST_Request $request) {
+    global $current_user;
+    return !empty($current_user->ID);
+  },
   'callback' => function ($request) {
     global $current_user;
 
@@ -122,18 +121,5 @@ register_rest_route('wp/v2', '/users/me', [
       'status' => 204,
       'response' => ['success' => $deleted]
     ));
-  },
-  'permission_callback' => function ($request) {
-    global $current_user;
-
-    if (empty($current_user)):
-      return new WP_Error(
-        'rest_cannot_delete_user',
-        __('Sorry, you must be signed in to remove your account.'),
-        array('status' => rest_authorization_required_code())
-      );
-    endif;
-
-    return true;
   }
 ]);

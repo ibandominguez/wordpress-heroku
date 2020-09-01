@@ -2,6 +2,7 @@
 
 register_rest_route('wp/v2', '/rankings', [
   'methods' => ['GET'],
+  'permission_callback' => '__return_true',
   'callback' => function (WP_REST_Request $request) {
     global $wpdb;
 

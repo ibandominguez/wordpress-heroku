@@ -6,6 +6,10 @@
  */
 register_rest_route('wp/v2', '/payments', [
   'methods'  => ['POST'],
+  'permission_callback' => function (WP_REST_Request $request) {
+    global $current_user;
+    return !empty($current_user->ID);
+  },
   'callback' => function (WP_REST_Request $request) {
     global $current_user;
 
