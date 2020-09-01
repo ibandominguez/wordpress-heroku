@@ -68,7 +68,7 @@ add_action('manage_race_posts_custom_column', function($column, $postId) {
  * @link https://developer.wordpress.org/reference/hooks/save_post/
  */
 add_action('save_post', function($postId) {
-  $nonce  = $_POST['race_meta_box_nonce'];
+  $nonce  = @$_POST['race_meta_box_nonce'];
 
   $fields = [
     'description', 'distance_km', 'duration_minutes', 'coordinates', 'start_datetime', 'end_datetime',
@@ -103,11 +103,11 @@ add_action('save_post', function($postId) {
  * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
  */
 register_taxonomy('modality', ['race', 'session'], [
-  'hierarchical' => true,
+  'hierarchical' => !strpos($_SERVER['REQUEST_URI'], 'edit-tags.php'),
   'label' => 'Modalidades',
   'public' => true,
   'show_ui' => true,
-  'show_in_menu' => isset($_GET['post_type']) && $_GET['post_type'] === 'race',
+  'show_in_menu' => strpos($_SERVER['REQUEST_URI'], 'post_type=race'),
   'show_admin_column' => true,
   'show_in_nav_menus' => true,
   'query_var' => true,
