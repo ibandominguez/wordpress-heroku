@@ -60,8 +60,7 @@ add_filter('manage_race_posts_columns', function($columns) {
 add_action('manage_race_posts_custom_column', function($column, $postId) {
   if (in_array($column, ['distance_km', 'duration_minutes'])):
     $value = get_post_meta($postId, $column, true);
-    $style = 'font-size: 20px; padding: 10px; background: #fff; box-shadow: #555 0 0 1px 0px;';
-    echo '<div style="'.$style.'">'.($value ? $value : 'n/a').'</div>';
+    print($value ? $value : 'n/a');
   endif;
 }, 10, 2);
 
@@ -73,7 +72,7 @@ add_action('save_post', function($postId) {
 
   $fields = [
     'description', 'distance_km', 'duration_minutes', 'coordinates', 'start_datetime', 'end_datetime',
-    'price', 'category', 'organization_details', 'coupons', 'coupons_discount', 'share_link'
+    'price', 'organization_details', 'coupons', 'coupons_discount', 'share_link'
   ];
 
   if (!wp_verify_nonce($nonce, 'race_meta_box') || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)):
@@ -98,4 +97,26 @@ add_action('save_post', function($postId) {
       update_post_meta($postId, $key, $value);
     endif;
   endforeach;
+});
+
+/**
+ * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
+ */
+register_taxonomy('modality', ['race', 'session'], [
+  'hierarchical' => true,
+  'label' => 'Modalidades',
+  'public' => true,
+  'show_ui' => true,
+  'show_in_menu' => isset($_GET['post_type']) && $_GET['post_type'] === 'race',
+  'show_admin_column' => true,
+  'show_in_nav_menus' => true,
+  'query_var' => true,
+  'show_in_rest' => true,
+  'rest_base' => 'modalities',
+  'default_term' => ['name' => 'General', 'slug' => 'general']
+]);
+
+add_filter('post_edit_category_parent_dropdown_args', function($args) {
+  print('<style>#newmodality_parent { display: none; }</style>');
+  return $args;
 });

@@ -49,13 +49,13 @@ add_filter('manage_session_posts_columns', function($columns) {
 
 add_action('manage_session_posts_custom_column', function($column, $postId) {
   if (in_array($column, ['average_speed_kmh', 'distance_km', 'duration_minutes'])):
-    $style = 'font-size: 20px; padding: 10px; background: #fff; box-shadow: #555 0 0 1px 0px;';
-    echo '<div style="'.$style.'">'.get_post_meta($postId, $column, true).'</div>';
+    $value = get_post_meta($postId, $column, true);
+    print($value ? $value : 'n/a');
   endif;
 
   if ($column === 'parent'):
     $parentId = get_post($postId)->post_parent;
-    echo $parentId ? get_the_title($parentId) : 'n/a';
+    print($parentId ? get_the_title($parentId) : 'n/a');
   endif;
 }, 10, 2);
 

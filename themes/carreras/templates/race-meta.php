@@ -54,15 +54,6 @@ small { color: #aaa; }
 </div><hr>
 
 <div class="form-group">
-  <label class="form-label" for="category">Categoría</label>
-  <input id="category" class="form-control" name="category" type="text" value="<?= get_post_meta($post->ID, 'category', true); ?>">
-  <small>
-    Describe quiénes deberán participar o alistarse en la carrera.
-    <br>* Por eje: Senior masculino (entre "x" y  "y" años)
-  </small>
-</div><hr>
-
-<div class="form-group">
   <label class="form-label" for="description">Descripción</label>
   <textarea id="description" class="form-control" name="description"><?= get_post_meta($post->ID, 'description', true); ?></textarea>
 </div><hr>
