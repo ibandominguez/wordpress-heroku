@@ -2,10 +2,7 @@
 global $post;
 
 $meta = array_map(function($item) {
-  if (count($item) === 1):
-    $item = $item[0];
-  endif;
-  return $item;
+  return (count($item) === 1) ? $item[0] : $item;
 }, get_post_meta($post->ID));
 ?>
 <!DOCTYPE html>
@@ -20,43 +17,42 @@ $meta = array_map(function($item) {
 </head>
 <body class="bg-light">
   <main class="container py-5" style="max-width: 600px">
-    <!-- TODO: race details -->
+    <!-- Race details -->
     <div class="card mb-1">
       <div class="d-flex">
-        <img src="https://fakeimg.pl/100x100/?text=<?= $meta['price']; ?>€&font=Roboto">
+        <div class="p-5 bg-light">
+          <h2 class="m-0 p-0"><?= $meta['price']; ?> €</h2>
+        </div>
         <div class="card-body">
           <h5 class="card-title"><?= $post->post_title; ?></h5>
           <p class="card-text"><?= $meta['description']; ?></p>
         </div>
       </div>
     </div>
-    <!-- end TODO: race details -->
+    <!-- /Race details -->
 
-    <!-- Payment form -->
-    <form id="payment-form">
-      <div id="payment-elements">
+    <?php if (!empty($_GET['user_id'])): ?>
+      <!-- Payment form -->
+      <form id="payment-form" class="mb-1">
         <div id="card-element" class="form-control"></div>
         <button id="submit" class="btn btn-outline-primary w-100 mt-1">
           <div id="spinner" class="spinner-border text-primary" role="status"></div>
           <span id="button-text">Pagar</span>
         </button>
-      </div>
-      <p id="card-error" role="alert" class="alert"></p>
-      <p class="alert alert-success result-message hidden">Pago completado correctamente</p>
-    </form>
-    <!-- Payment form -->
+      </form>
+      <p id="message" class="alert" style="background: none; border: 0;"></p>
+      <!-- /Payment form -->
+    <?php endif; ?>
   </main>
 
   <script type="text/javascript">
   jQuery(document).ready(function() {
     var stripe = Stripe('<?= get_option('stripe_settings')['STRIPE_PUBLIC_KEY']; ?>');
-    var $form = jQuery("#payment-form");
+    var $form = jQuery("#payment-form").hide();
     var $submitButton = jQuery('button').attr('disabled', true);
     var $submitButtonText = $submitButton.find('#button-text');
-    var $resultMessage = jQuery(".result-message").hide();
     var $spinner = jQuery("#spinner").hide();
-    var $cardError = jQuery('#card-error');
-    var $paymentElements = jQuery('#payment-elements').hide();
+    var $message = jQuery('#message');
 
     /**
      * Create payment intent
@@ -64,7 +60,7 @@ $meta = array_map(function($item) {
      */
     jQuery.ajax('/wp-json/wp/v2/payment_intents', {
       method: 'POST',
-      data: JSON.stringify({ user_id: 1, race_id: <?= $post->ID; ?> }),
+      data: JSON.stringify({ user_id: <?= @$_GET['user_id']; ?>, race_id: <?= $post->ID; ?> }),
       headers: { 'Content-type': 'application/json' },
       error: function(response) {
         if (response.responseJSON && response.responseJSON.message) {
@@ -77,7 +73,7 @@ $meta = array_map(function($item) {
         var card = elements.create("card", { style: style });
 
         // show payment elements
-        $paymentElements.show();
+        $form.show();
 
         // Stripe injects an iframe into the DOM
         card.mount("#card-element");
@@ -85,7 +81,7 @@ $meta = array_map(function($item) {
         // Card "on change" event
         card.on("change", function (event) {
           $submitButton.attr('disabled', event.empty);
-          $cardError.text(event.error ? event.error.message : '');
+          $message.addClass('alert-danger').removeClass('alert-success').text(event.error ? event.error.message : '');
         });
 
         // Form "on submit" event
@@ -113,9 +109,9 @@ $meta = array_map(function($item) {
     // Shows a success message when the payment is complete
     var orderComplete = function(paymentIntentId) {
       loading(false);
-      $resultMessage.show();
+      $message.addClass('alert-success').removeClass('alert-danger').text('El pago se ha realizado con éxito');
       $submitButton.attr('disabled', true);
-      $paymentElements.hide();
+      $form.hide();
 
       jQuery.ajax('/wp-json/wp/v2/payment_intents/' + paymentIntentId, {
         method: 'GET',
@@ -127,8 +123,7 @@ $meta = array_map(function($item) {
     // Show the customer the error from Stripe if their card fails to charge
     var showError = function(errorMsgText) {
       loading(false);
-      $cardError.text(errorMsgText);
-      setTimeout($cardError.empty.bind($cardError), 4000);
+      $message.addClass('alert-danger').removeClass('alert-success').text(errorMsgText);
     };
 
     // Show a spinner on payment submission
