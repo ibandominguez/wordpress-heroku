@@ -21,7 +21,7 @@ $meta = array_map(function($item) {
     <div class="card mb-1">
       <div class="d-flex">
         <div class="p-5 bg-light">
-          <h2 class="m-0 p-0"><?= $meta['price']; ?> €</h2>
+          <h2 class="m-0 p-0"><?= $meta['price']; ?>€</h2>
         </div>
         <div class="card-body">
           <h5 class="card-title"><?= $post->post_title; ?></h5>
