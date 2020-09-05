@@ -156,7 +156,7 @@ add_action('modality_edit_form_fields', function($term) { ?>
 <?php });
 
 /**
- * @link https://developer.wordpress.org/reference/hooks/taxonomy_edit_form_fields/
+ * @link https://developer.wordpress.org/reference/hooks/taxonomy_add_form_fields/
  */
 add_action('modality_add_form_fields', function($term) { ?>
   <?php wp_nonce_field('modality_termmeta', 'modality_termmeta_nonce'); ?>
