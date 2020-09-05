@@ -116,7 +116,61 @@ register_taxonomy('modality', ['race', 'session'], [
   'default_term' => ['name' => 'General', 'slug' => 'general']
 ]);
 
+/**
+ * @link https://developer.wordpress.org/reference/hooks/post_edit_category_parent_dropdown_args/
+ */
 add_filter('post_edit_category_parent_dropdown_args', function($args) {
   print('<style>#newmodality_parent { display: none; }</style>');
   return $args;
+});
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/taxonomy_edit_form_fields/
+ */
+add_action('modality_edit_form_fields', function($term) { ?>
+  <?php wp_nonce_field('modality_termmeta', 'modality_termmeta_nonce'); ?>
+  <table class="form-table">
+    <tbody>
+      <tr class="form-field term-name-wrap">
+    		<th scope="row"><label for="from_age">Edad (desde)</label></th>
+    		<td><input name="from_age" id="from_age" type="number" value="<?= get_term_meta($term->term_id, 'from_age', true); ?>">
+    		<p class="description">La edad mínima para participar.</p></td>
+    	</tr>
+      <tr class="form-field term-name-wrap">
+    		<th scope="row"><label for="until_age">Edad (hasta)</label></th>
+    		<td><input name="until_age" id="until_age" type="number" value="<?= get_term_meta($term->term_id, 'until_age', true); ?>">
+    		<p class="description">La edad máxima para participar.</p></td>
+    	</tr>
+      <tr class="form-field term-name-wrap">
+    		<th scope="row"><label for="from_year">Año (desde)</label></th>
+    		<td><input name="from_year" id="from_year" type="number" value="<?= get_term_meta($term->term_id, 'from_year', true); ?>">
+    		<p class="description">El año mínimo para participar.</p></td>
+    	</tr>
+      <tr class="form-field term-name-wrap">
+    		<th scope="row"><label for="until_year">Año (hasta)</label></th>
+    		<td><input name="until_year" id="until_year" type="number" value="<?= get_term_meta($term->term_id, 'until_year', true); ?>">
+    		<p class="description">El año máximo para participar.</p></td>
+    	</tr>
+    </tbody>
+  </table>
+<?php });
+
+add_action('edit_modality', function($term_id) {
+  if (!wp_verify_nonce(@$_POST['modality_termmeta_nonce'], 'modality_termmeta')):
+    return $term_id;
+  endif;
+
+  foreach (['from_age', 'until_age', 'from_year', 'until_year'] as $meta):
+    update_term_meta($term_id, $meta, sanitize_text_field($_POST[$meta]));
+  endforeach;
+});
+
+add_action('create_modality', function($term_id) {
+  if (!wp_verify_nonce(@$_POST['modality_termmeta_nonce'], 'modality_termmeta')):
+    return $term_id;
+  endif;
+
+  foreach (['from_age', 'until_age', 'from_year', 'until_year'] as $meta):
+    update_term_meta($term_id, $meta, sanitize_text_field($_POST[$meta]));
+  endforeach;
 });
