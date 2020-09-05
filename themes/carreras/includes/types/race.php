@@ -107,7 +107,7 @@ register_taxonomy('modality', ['race', 'session'], [
   'label' => 'Modalidades',
   'public' => true,
   'show_ui' => true,
-  'show_in_menu' => strpos($_SERVER['REQUEST_URI'], 'post_type=race'),
+  'show_in_menu' => true,
   'show_admin_column' => true,
   'show_in_nav_menus' => true,
   'query_var' => true,
@@ -120,7 +120,7 @@ register_taxonomy('modality', ['race', 'session'], [
  * @link https://developer.wordpress.org/reference/hooks/post_edit_category_parent_dropdown_args/
  */
 add_filter('post_edit_category_parent_dropdown_args', function($args) {
-  print('<style>#newmodality_parent { display: none; }</style>');
+  print('<style>#modality-add-toggle { display: none; }</style>');
   return $args;
 });
 
@@ -153,6 +153,33 @@ add_action('modality_edit_form_fields', function($term) { ?>
     	</tr>
     </tbody>
   </table>
+<?php });
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/taxonomy_edit_form_fields/
+ */
+add_action('modality_add_form_fields', function($term) { ?>
+  <?php wp_nonce_field('modality_termmeta', 'modality_termmeta_nonce'); ?>
+  <div class="form-field term-description-wrap">
+  	<label for="from_age">Edad (desde)</label>
+  	<input name="from_age" id="from_age" type="number" value="<?= get_term_meta($term->term_id, 'from_age', true); ?>">
+  	<p>La edad mínima para participar.</p>
+  </div>
+  <div class="form-field term-description-wrap">
+  	<label for="until_age">Edad (hasta)</label>
+  	<input name="until_age" id="until_age" type="number" value="<?= get_term_meta($term->term_id, 'until_age', true); ?>">
+  	<p>La edad máxima para participar.</p>
+  </div>
+  <div class="form-field term-description-wrap">
+  	<label for="from_year">Año (desde)</label>
+  	<input name="from_year" id="from_year" type="number" value="<?= get_term_meta($term->term_id, 'from_year', true); ?>">
+  	<p>El año mínimo para participar.</p>
+  </div>
+  <div class="form-field term-description-wrap">
+  	<label for="until_year">Año (hasta)</label>
+  	<input name="until_year" id="until_year" type="number" value="<?= get_term_meta($term->term_id, 'until_year', true); ?>">
+  	<p>El año máximo para participar.</p>
+  </div>
 <?php });
 
 add_action('edit_modality', function($term_id) {
