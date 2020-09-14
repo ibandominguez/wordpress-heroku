@@ -12,15 +12,18 @@ add_role('runner', 'Runner', [
 
 foreach (['administrator', 'editor', 'runner'] as $role):
   $role = get_role($role);
-  $role->add_cap('read_session');
-  $role->add_cap('edit_session');
-  $role->add_cap('edit_sessions');
-  $role->add_cap('edit_published_sessions');
-  $role->add_cap('publish_sessions');
-  $role->add_cap('delete_published_sessions');
-  $role->add_cap('delete_session');
-  $role->add_cap('delete_sessions');
-  $role->add_cap('upload_files');
+
+  if ($role):
+    $role->add_cap('read_session');
+    $role->add_cap('edit_session');
+    $role->add_cap('edit_sessions');
+    $role->add_cap('edit_published_sessions');
+    $role->add_cap('publish_sessions');
+    $role->add_cap('delete_published_sessions');
+    $role->add_cap('delete_session');
+    $role->add_cap('delete_sessions');
+    $role->add_cap('upload_files');
+  endif;
 endforeach;
 
 foreach (['administrator', 'editor'] as $role):
