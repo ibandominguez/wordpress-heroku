@@ -10,9 +10,10 @@ function rmdir_recursive($directory) {
 }
 
 foreach ([
-  __DIR__.'/config/wp-config.php' => __DIR__.'/public/wp-config.php',
-  __DIR__.'/plugins' => __DIR__.'/public/wp-content/plugins',
-  __DIR__.'/themes' => __DIR__.'/public/wp-content/themes'
+  __DIR__.'/src/config/wp-config.php' => __DIR__.'/public/wp-config.php',
+  __DIR__.'/src/plugins' => __DIR__.'/public/wp-content/plugins',
+  __DIR__.'/src/themes' => __DIR__.'/public/wp-content/themes',
+  __DIR__.'/src/languages' => __DIR__.'/public/wp-content/languages'
 ] as $key => $value):
   if (is_link($value)):
     continue;

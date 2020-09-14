@@ -6,7 +6,7 @@
         "name": "wordpress/wordpress",
         "version": "5.5.1",
         "dist": {
-          "url": "https://es.wordpress.org/wordpress-5.5.1-es_ES.zip",
+          "url": "https://wordpress.org/wordpress-5.5.1.zip",
           "type": "zip"
         }
       }
@@ -19,13 +19,14 @@
   },
   "scripts": {
     "rm-public": "rm -rf public",
-    "cp-config": "cp -r config public",
+    "cp-config": "cp -r src/config public",
     "cp-wpcore": "cp -r vendor/wordpress/wordpress/* public",
-    "cp-plugins": "rm -rf public/wp-content/plugins/* && cp -r plugins/* public/wp-content/plugins",
-    "cp-themes": "rm -rf public/wp-content/themes/* && cp -r themes/* public/wp-content/themes",
+    "cp-plugins": "rm -rf public/wp-content/plugins/* && cp -r src/plugins/* public/wp-content/plugins",
+    "cp-themes": "rm -rf public/wp-content/themes/* && cp -r src/themes/* public/wp-content/themes",
+    "cp-languages": "cp -r src/languages public/wp-content/languages",
     "pre-install-cmd": "composer rm-public",
-    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer cp-themes && composer cp-plugins",
+    "post-install-cmd": "composer cp-config && composer cp-wpcore && composer cp-plugins && composer cp-themes && composer cp-languages",
     "pre-update-cmd": "composer rm-public",
-    "post-update-cmd": "composer cp-config && composer cp-wpcore && composer cp-themes && composer cp-plugins"
+    "post-update-cmd": "composer cp-config && composer cp-wpcore && composer cp-plugins && composer cp-themes && composer cp-languages"
   }
 }
