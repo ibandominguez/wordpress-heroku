@@ -28,7 +28,10 @@ endforeach;
 
 foreach (['administrator', 'editor'] as $role):
   $role = get_role($role);
-  $role->add_cap('delete_others_sessions');
-  $role->add_cap('edit_others_sessions');
-  $role->add_cap('delete_private_sessions');
+
+  if ($role):
+    $role->add_cap('delete_others_sessions');
+    $role->add_cap('edit_others_sessions');
+    $role->add_cap('delete_private_sessions');
+  endif;
 endforeach;
