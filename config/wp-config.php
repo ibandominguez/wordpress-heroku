@@ -45,6 +45,7 @@ endif;
 define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://');
 define('HOST', $_SERVER['HTTP_HOST']);
 define('URL', PROTOCOL.HOST);
+define('PREFIX', preg_replace(['/\:/', '/\./', '/-/'], '', HOST).'_');
 
 define('DB_CHARSET', getEnvOr('DB_CHARSET', 'utf8mb4'));
 define('DB_COLLATE', getEnvOr('DB_COLLATE', ''));
@@ -82,7 +83,7 @@ define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
  * So one database can be used for multiple sites
  */
 
-$table_prefix = preg_replace(['/\:/', '/\./', '/-/'], '_', HOST).'_';
+$table_prefix = PREFIX;
 
 /**
  * Conditional plugin activation
