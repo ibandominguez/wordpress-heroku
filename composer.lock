@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca30d09b5c035196a858f691999fa1d3",
+    "content-hash": "76024fccada911d197a02116b0894788",
     "packages": [
         {
             "name": "wordpress/wordpress",
-            "version": "5.5.0",
+            "version": "5.5.1",
             "dist": {
                 "type": "zip",
-                "url": "https://es.wordpress.org/wordpress-5.5-es_ES.zip"
+                "url": "https://es.wordpress.org/wordpress-5.5.1-es_ES.zip"
             },
             "type": "library"
         }
@@ -23,7 +23,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~7.2.0",
+        "php": "~7.4.9",
         "ext-gd": "*"
     },
     "platform-dev": [],

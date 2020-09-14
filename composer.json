@@ -4,18 +4,18 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "5.5.0",
+        "version": "5.5.1",
         "dist": {
-          "url": "https://es.wordpress.org/wordpress-5.5-es_ES.zip",
+          "url": "https://es.wordpress.org/wordpress-5.5.1-es_ES.zip",
           "type": "zip"
         }
       }
     }
   ],
   "require": {
-    "php": "~7.2.0",
+    "php": "~7.4.9",
     "ext-gd": "*",
-    "wordpress/wordpress": "^5.5.0"
+    "wordpress/wordpress": "^5.5.1"
   },
   "scripts": {
     "rm-public": "rm -rf public",
