@@ -24,8 +24,11 @@ In less that a minute you should have wordpress up and running.
 
 ## Serving locally
 
+To make it the easiest to setup, we are using the php built in web server and mysql installed locally
+
 ```sh
-php serve.php
+mysql.server start # requires mysql installed locally
+php serve.php # requires php installed locally
 ```
 
 ## LICENSE
