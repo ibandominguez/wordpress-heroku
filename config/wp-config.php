@@ -45,11 +45,11 @@ endif;
 define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://');
 define('HOST', $_SERVER['HTTP_HOST']);
 define('URL', PROTOCOL.HOST);
-define('PREFIX', preg_replace(['/\:/', '/\./', '/-/'], '', HOST).'_');
+define('PREFIX', getEnvOr('PREFIX', 'wphh_'));
 
 define('DB_CHARSET', getEnvOr('DB_CHARSET', 'utf8mb4'));
 define('DB_COLLATE', getEnvOr('DB_COLLATE', ''));
-define('DB_NAME', getEnvOr('DB_NAME', 'wordpress'));
+define('DB_NAME', getEnvOr('DB_NAME', md5(HOST)));
 define('DB_USER', getEnvOr('DB_USER', 'root'));
 define('DB_PASSWORD', getEnvOr('DB_PASSWORD', ''));
 define('DB_HOST', getEnvOr('DB_HOST', '127.0.0.1'));
@@ -78,10 +78,18 @@ define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));
 define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
 
 /**
- * Table prefixing
- * Based on the requestted host
- * So one database can be used for multiple sites
+ * Dinamic database check
+ * This would only work if you can create new
+ * databases, check your mysql server and permissions
+ *
+ * When using this option DB_NAME should not be defined on
+ * heroku env vars
  */
+
+if (defined('DB_NAME') && DB_NAME === md5(HOST)):
+	$connection = new PDO('mysql:host='.DB_HOST, DB_USER, DB_PASSWORD);
+	$connection->query('CREATE DATABASE IF NOT EXISTS '.DB_NAME);
+endif;
 
 $table_prefix = PREFIX;
 
