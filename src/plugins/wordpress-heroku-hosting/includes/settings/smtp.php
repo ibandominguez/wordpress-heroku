@@ -6,7 +6,7 @@
  * Settings page config
  */
 add_action('admin_menu', function() {
-  add_options_page('Settings Admin', 'SMTP Settings', 'manage_options', 'smtp-settings-page', function() { ?>
+  add_options_page('Settings Admin', 'SMTP', 'manage_options', 'smtp-settings-page', function() { ?>
     <div class="wrap">
       <h1>Configure your smtp account</h1>
       <form method="post" action="options.php">
@@ -52,18 +52,18 @@ add_action('admin_init', function() {
 
   foreach (['Host', 'Username', 'Password', 'From', 'FromName'] as $key):
     add_settings_field($key, $key, function() use ($key, $options) { ?>
-      <input type="text" name="smtp_settings[<?= $key; ?>]" value="<?= $options[$key]; ?>">
+      <input type="text" name="smtp_settings[<?= $key; ?>]" value="<?= @$options[$key]; ?>">
     <?php }, 'smtp-settings-page', 'smtp_settings');
   endforeach;
 
   add_settings_field('Port', 'Port', function() use ($options) { ?>
-    <input type="number" name="smtp_settings[Port]" value="<?= $options['Port']; ?>">
+    <input type="number" name="smtp_settings[Port]" value="<?= @$options['Port']; ?>">
   <?php }, 'smtp-settings-page', 'smtp_settings');
 
   add_settings_field('SMTPSecure', 'SMTPSecure', function() use ($options) { ?>
     <select name="smtp_settings[SMTPSecure]">
       <?php foreach (['none', 'ssl', 'tls'] as $value): ?>
-        <option value="<?= $value; ?>" <?= $options['SMTPSecure'] === $value ? 'selected': ''; ?>>
+        <option value="<?= $value; ?>" <?= @$options['SMTPSecure'] === $value ? 'selected': ''; ?>>
           <?= $value; ?>
         </option>
       <?php endforeach; ?>
@@ -71,7 +71,7 @@ add_action('admin_init', function() {
   <?php }, 'smtp-settings-page', 'smtp_settings');
 
   add_settings_field('SMTPAuth', 'SMTPAuth', function() use ($options) { ?>
-    <input type="checkbox" name="smtp_settings[SMTPAuth]" value="1" <?= checked(1, $options['SMTPAuth'], false); ?>>
+    <input type="checkbox" name="smtp_settings[SMTPAuth]" value="1" <?= checked(1, @$options['SMTPAuth'], false); ?>>
   <?php }, 'smtp-settings-page', 'smtp_settings');
 });
 

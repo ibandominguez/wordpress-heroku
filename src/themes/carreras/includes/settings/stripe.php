@@ -6,7 +6,7 @@
  * Settings page config
  */
 add_action('admin_menu', function() {
-  add_options_page('Stripe settings', 'Stripe settings', 'manage_options', 'stripe-settings', function() { ?>
+  add_options_page('Stripe settings', 'Stripe', 'manage_options', 'stripe-settings', function() { ?>
     <div class="wrap">
       <h1>Configure your stripe credentials</h1>
       <form method="post" action="options.php">
@@ -41,7 +41,7 @@ add_action('admin_init', function() {
 
   foreach (['STRIPE_PUBLIC_KEY', 'STRIPE_PRIVATE_KEY'] as $key):
     add_settings_field($key, $key, function() use ($key, $options) { ?>
-      <input type="text" placeholder="Enter your key" name="stripe_settings[<?= $key; ?>]" value="<?= $options[$key]; ?>">
+      <input type="text" placeholder="Enter your key" name="stripe_settings[<?= $key; ?>]" value="<?= @$options[$key]; ?>">
     <?php }, 'stripe-settings', 'stripe_settings');
   endforeach;
 });
