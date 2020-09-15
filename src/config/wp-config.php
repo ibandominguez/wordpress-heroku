@@ -76,6 +76,7 @@ define('WP_DEFAULT_THEME', getEnvOr('WP_DEFAULT_THEME', 'wphh-default'));
 define('WP_DEBUG', getEnvOr('WP_DEBUG', false));
 define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));
 define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
+define('SAVEQUERIES', getEnvOr('WP_DEBUG_DISPLAY', false));
 
 /**
  * Dinamic database check
@@ -110,5 +111,7 @@ activate_plugin('wordpress-heroku-hosting/wordpress-heroku-hosting.php');
 
 global $wp_rewrite;
 
-$wp_rewrite->set_permalink_structure('/%postname%/');
-$wp_rewrite->flush_rules();
+if ($wp_rewrite->permalink_structure !== '/%postname%/'):
+	$wp_rewrite->set_permalink_structure('/%postname%/');
+	$wp_rewrite->flush_rules();
+endif;
