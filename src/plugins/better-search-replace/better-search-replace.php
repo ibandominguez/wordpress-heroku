@@ -50,24 +50,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since    1.0.0
  */
-function run_better_search_replace() {
-
-	// Allows for overriding the capability required to run the plugin.
-	$cap = apply_filters( 'bsr_capability', 'install_plugins' );
-
-	// Only load for admins.
-	if ( current_user_can( $cap ) ) {
-
-		// Defines the path to the main plugin file.
+add_action('after_setup_theme', function() {
+	if ( current_user_can( 'edit_others_posts' ) ) {
 		define( 'BSR_FILE', __FILE__ );
-
-		// Defines the path to be used for includes.
 		define( 'BSR_PATH', plugin_dir_path( BSR_FILE ) );
-
-		// Defines the URL to the plugin.
 		define( 'BSR_URL', plugin_dir_url( BSR_FILE ) );
-
-		// Defines the current version of the plugin.
 		define( 'BSR_VERSION', '1.3.3' );
 
 		/**
@@ -77,8 +64,5 @@ function run_better_search_replace() {
 		require BSR_PATH . 'includes/class-bsr-main.php';
 		$plugin = new Better_Search_Replace();
 		$plugin->run();
-
 	}
-
-}
-add_action( 'after_setup_theme', 'run_better_search_replace' );
+});
