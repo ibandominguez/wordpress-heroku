@@ -31,7 +31,9 @@ endforeach;
 exec(implode([
   'DISALLOW_FILE_EDIT=false',
   'DISALLOW_FILE_MODS=false',
+  'DEBUG=true',
   'WP_DEBUG=true',
   'WP_DEBUG_DISPLAY=true',
+  'SAVEQUERIES=true',
   'php -S 0.0.0.0:8000 -t '.__DIR__.'/public'
 ], ' '));

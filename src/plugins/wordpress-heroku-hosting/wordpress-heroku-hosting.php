@@ -73,3 +73,13 @@ add_action('admin_enqueue_scripts', function() {
     endif;
   endforeach;
 });
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/shutdown/
+ */
+add_action('shutdown', function() {
+  global $wpdb;
+
+  // $wpdb->queries
+  // Stores all the queries perform on the request
+});
