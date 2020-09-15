@@ -52,7 +52,8 @@ add_action('wp_dashboard_setup', function() {
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/plugins_loaded
  */
 add_action('plugins_loaded', function() {
-  foreach (WPHH_PLUGINS as $plugin => $activate):
+  $plugins = defined('THEME_PLUGINS') ? array_merge(WPHH_PLUGINS, THEME_PLUGINS) : WPHH_PLUGINS;
+  foreach ($plugins as $plugin => $activate):
     if ($activate):
       activate_plugin($plugin);
     endif;
@@ -65,7 +66,8 @@ add_action('plugins_loaded', function() {
  * @link https://developer.wordpress.org/reference/hooks/admin_enqueue_scripts/
  */
 add_action('admin_enqueue_scripts', function() {
-  foreach (WPHH_PLUGINS as $plugin => $activate):
+  $plugins = defined('THEME_PLUGINS') ? array_merge(WPHH_PLUGINS, THEME_PLUGINS) : WPHH_PLUGINS;
+  foreach ($plugins as $plugin => $activate):
     if ($activate):
       print("<style>[data-plugin='{$plugin}'] .deactivate { display: none; }</style>");
     endif;
