@@ -18,9 +18,9 @@ In less that a minute you should have wordpress up and running.
 
 * STMP Settings: provided by worpress-heroku-hosting.
 * Google analytics: provided by google-site-kit.
+* DB Search and replace: provided by better-search-replace.
 * Multilingual: [TODO {Polylang, WPML}]. + Translate support.
 * Contact forms: [TODO {Contact form 7}].
-* DB Search and replace: [TODO {Easy Search and Replace}].
 * Seo: [TODO {Yoast}].
 * E-commerce: [TODO {Woocommerce}] + (Stripe, paypal support).
 * Livechat: [TODO].
