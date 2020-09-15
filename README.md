@@ -11,8 +11,26 @@ In less that a minute you should have wordpress up and running.
 
 ## Features
 
-* Uses a single database and creates dynamic tables based on the url prefix so that the same core can be used for multiple backends.
+* Uses a single mysql connection and creates dynamic databases based on the requested url so that the same core can be reused and easily maintained.
 * Uses s3 for file storage, since Heroku doesn't support file persistence.
+
+## Plugins and functionalities
+
+* STMP Settings: provided by worpress-heroku-hosting.
+* Google analytics: provided by google-site-kit.
+* Multilingual: [TODO {Polylang, WPML}]. + Translate support.
+* Contact forms: [TODO {Contact form 7}].
+* DB Search and replace: [TODO {Easy Search and Replace}].
+* Seo: [TODO {Yoast}].
+* E-commerce: [TODO {Woocommerce}] + (Stripe, paypal support).
+* Livechat: [TODO].
+* Newsletter: [TODO].
+* Backup: [TODO].
+* Pagebuilder (drag & drop): [TODO: {BeaverBuilder, Elemetor}].
+* Social network autopublish: [TODO].
+
+> Plugins should be compatible between each other. For example multilingual support should
+expand across all different plugins.
 
 ## Getting started
 
