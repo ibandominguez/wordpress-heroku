@@ -79,6 +79,14 @@ define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
 define('SAVEQUERIES', getEnvOr('WP_DEBUG_DISPLAY', false));
 
 /**
+ * Handle Heroku ssl
+ */
+
+if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
+	$_SERVER['HTTPS']='on';
+endif;
+
+/**
  * Dinamic database check
  * This would only work if you can create new
  * databases, check your mysql server and permissions

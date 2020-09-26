@@ -1,6 +1,12 @@
 RewriteEngine On
 RewriteBase /
+
+# Wordpress front contoller
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
+
+# Force SSL on Heroku
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
