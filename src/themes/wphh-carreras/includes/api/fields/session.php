@@ -83,3 +83,13 @@ register_rest_field('session', 'parent', array(
     return 0;
   }
 ));
+
+register_rest_field('session', 'modality', [
+  'schema'          => null,
+  'get_callback'    => function($object, $fieldName, $request) {
+    return wp_get_object_terms($object['id'], $fieldName)[0];
+  },
+  'update_callback' => function($value, $object, $fieldName) {
+    return wp_set_object_terms((int) $object->ID, (int) $value, 'modality');
+  }
+]);
