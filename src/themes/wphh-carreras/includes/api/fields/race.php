@@ -221,3 +221,9 @@ register_rest_field('race', 'coordinates', array(
     return $coordinates ? $coordinates : [];
   }
 ));
+
+register_rest_field('race', 'modalities', array(
+  'get_callback'    => function($object, $fieldName, $request) {
+    return wp_get_object_terms($object['id'], 'modality');
+  }
+));
