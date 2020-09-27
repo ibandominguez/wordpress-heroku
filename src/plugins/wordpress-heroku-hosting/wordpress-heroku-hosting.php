@@ -47,20 +47,12 @@ add_filter('wp_prepare_themes_for_js', function($themes) {
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/wp_dashboard_setup
  */
 add_action('wp_dashboard_setup', function() {
-  // TODO: Custom welcome panel full width
-  // remove_action('welcome_panel', 'wp_welcome_panel');
-  // add_action('welcome_panel', <MY_CALLABLE>);
-
-  wp_add_dashboard_widget('plugins', 'Plugins', function() {
-    $activePlugins = get_option('active_plugins');
-    $plugins = get_plugins();
-    require_once(__DIR__.'/views/plugins.widget.php');
+  /* TODO: Custom welcome panel full width
+  remove_action('welcome_panel', 'wp_welcome_panel');
+  add_action('welcome_panel', function() {
+   require_once(__DIR__.'/views/welcome-panel.php');
   });
-
-  wp_add_dashboard_widget('themes', 'Themes', function() {
-    $themes = get_themes();
-    require_once(__DIR__.'/views/themes.widget.php');
-  });
+  */
 });
 
 /**
