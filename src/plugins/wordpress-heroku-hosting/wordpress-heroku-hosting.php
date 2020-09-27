@@ -27,6 +27,22 @@ add_action('init', function() {
 });
 
 /**
+ * Allow to create custom theme based on the host
+ * @link https://developer.wordpress.org/reference/hooks/wp_prepare_themes_for_js/
+ */
+add_filter('wp_prepare_themes_for_js', function($themes) {
+  foreach ($themes as $key => $value):
+    if (
+      strpos($key, 'wphh-') !== 0 &&
+      strpos($key, $_SERVER['HTTP_HOST']) !== 0
+    ):
+      unset($themes[$key]);
+    endif;
+  endforeach;
+  return $themes;
+});
+
+/**
  * Setup enviroments widgets
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/wp_dashboard_setup
  */
