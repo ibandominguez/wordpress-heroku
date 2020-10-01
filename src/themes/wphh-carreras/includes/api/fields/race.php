@@ -51,6 +51,7 @@ register_rest_field('race', 'runners_count', array(
       select count(distinct(post_author)) as count
       from {$wpdb->posts}
       where post_type = 'session'
+      and post_status = 'publish'
       and post_parent = %d
     ", $object['id']), ARRAY_A);
     return !empty($result) ? intval($result['count']) : 0;
