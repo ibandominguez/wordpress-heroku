@@ -57,33 +57,48 @@ register_rest_field('race', 'runners_count', array(
   }
 ));
 
+register_rest_field('race', 'modalities', array(
+  'get_callback'    => function($object, $fieldName, $request) {
+    return wp_get_object_terms($object['id'], 'modality');
+  }
+));
+
 register_rest_field('race', 'rankings', array(
   'schema' => null,
   'update_callback' => null,
   'get_callback' => function($object, $field_name, $request) {
     global $wpdb;
-    return $wpdb->get_results(
-      $wpdb->prepare("
-        select
-          users.ID as id,
-          users.display_name as name,
-          truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
-          truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
-          truncate(session_distance_km.meta_value, 2) as distance_km
-        from {$wpdb->posts} as sessions
-        join {$wpdb->users} as users on sessions.post_author = users.ID
-        join {$wpdb->posts} as race on (sessions.post_parent = race.ID and race.ID = %d)
-        join {$wpdb->postmeta} as session_average_speed_kmh on (session_average_speed_kmh.post_id = sessions.ID and session_average_speed_kmh.meta_key = 'average_speed_kmh')
-        join {$wpdb->postmeta} as session_duration_minutes on (session_duration_minutes.post_id = sessions.ID and session_duration_minutes.meta_key = 'duration_minutes')
-        join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
-        join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = race.ID and race_distance_km.meta_key = 'distance_km')
-        where sessions.post_type = 'session'
-        and sessions.post_status = 'publish'
-        # and session_distance_km.meta_value >= race_distance_km.meta_value
-        order by session_average_speed_kmh.meta_value desc
-      ", $object['id']),
-      ARRAY_A
-    );
+    $rankings = [];
+
+    foreach ($object['modalities'] as $modality):
+      // TODO:
+      // 1. Only count sessions from paying users
+      // 2. Filter session based on the modality
+      $rankings[$modality->slug] = $wpdb->get_results(
+        $wpdb->prepare("
+          select
+            users.ID as id,
+            users.display_name as name,
+            truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
+            truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
+            truncate(session_distance_km.meta_value, 2) as distance_km
+          from {$wpdb->posts} as sessions
+          join {$wpdb->users} as users on sessions.post_author = users.ID
+          join {$wpdb->posts} as race on (sessions.post_parent = race.ID and race.ID = %d)
+          join {$wpdb->postmeta} as session_average_speed_kmh on (session_average_speed_kmh.post_id = sessions.ID and session_average_speed_kmh.meta_key = 'average_speed_kmh')
+          join {$wpdb->postmeta} as session_duration_minutes on (session_duration_minutes.post_id = sessions.ID and session_duration_minutes.meta_key = 'duration_minutes')
+          join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
+          join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = race.ID and race_distance_km.meta_key = 'distance_km')
+          where sessions.post_type = 'session'
+          and sessions.post_status = 'publish'
+          # and session_distance_km.meta_value >= race_distance_km.meta_value
+          order by session_average_speed_kmh.meta_value desc
+        ", $object['id']),
+        ARRAY_A
+      );
+    endforeach;
+
+    return $rankings;
   }
 ));
 
@@ -219,11 +234,5 @@ register_rest_field('race', 'coordinates', array(
     endif;
 
     return $coordinates ? $coordinates : [];
-  }
-));
-
-register_rest_field('race', 'modalities', array(
-  'get_callback'    => function($object, $fieldName, $request) {
-    return wp_get_object_terms($object['id'], 'modality');
   }
 ));
