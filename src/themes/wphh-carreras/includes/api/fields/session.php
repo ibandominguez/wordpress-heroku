@@ -63,8 +63,15 @@ register_rest_field('session', 'coordinates', array(
 ));
 
 register_rest_field('session', 'parent', array(
-  'update_callback' => null,
   'schema'          => null,
+  'update_callback' => function($value, $object, $fieldName) {
+    if (!empty($value)):
+      wp_update_post([
+        'ID' => $object->ID,
+        'post_parent' => $value
+      ]);
+    endif;
+  },
   'get_callback'    => function($data) {
     $meta = get_post_meta($data['parent']);
 
