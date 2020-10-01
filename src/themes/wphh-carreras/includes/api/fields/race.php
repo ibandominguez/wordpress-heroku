@@ -71,9 +71,7 @@ register_rest_field('race', 'rankings', array(
     $rankings = [];
 
     foreach ($object['modalities'] as $modality):
-      // TODO:
-      // 1. Only count sessions from paying users
-      // 2. Filter session based on the modality
+      // TODO: Fix filters (See sql query todos)
       $rankings[$modality->slug] = $wpdb->get_results(
         $wpdb->prepare("
           select
@@ -84,14 +82,18 @@ register_rest_field('race', 'rankings', array(
             truncate(session_distance_km.meta_value, 2) as distance_km
           from {$wpdb->posts} as sessions
           join {$wpdb->users} as users on sessions.post_author = users.ID
-          join {$wpdb->posts} as race on (sessions.post_parent = race.ID and race.ID = %d)
+          join {$wpdb->posts} as race on sessions.post_parent = race.ID
           join {$wpdb->postmeta} as session_average_speed_kmh on (session_average_speed_kmh.post_id = sessions.ID and session_average_speed_kmh.meta_key = 'average_speed_kmh')
           join {$wpdb->postmeta} as session_duration_minutes on (session_duration_minutes.post_id = sessions.ID and session_duration_minutes.meta_key = 'duration_minutes')
           join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
           join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = race.ID and race_distance_km.meta_key = 'distance_km')
           where sessions.post_type = 'session'
           and sessions.post_status = 'publish'
-          # and session_distance_km.meta_value >= race_distance_km.meta_value
+          and sessions.post_parent = %d
+          # DEBUG: and session_distance_km.meta_value >= race_distance_km.meta_value
+          # TODO 1: and session.date >= race.start_datetime
+          # TODO 2: and UserHasPaidInscription
+          # TODO 3: Filter by modality
           order by session_average_speed_kmh.meta_value desc
         ", $object['id']),
         ARRAY_A
