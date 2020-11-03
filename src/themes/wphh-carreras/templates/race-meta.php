@@ -129,6 +129,11 @@ function initMap() {
   var $distance = jQuery('#distance');
   var $distanceKmInput = jQuery('[name=distance_km]');
 
+  // Prevent map from rendering
+  if (!coordinates.length) {
+    return
+  }
+
   var map = new google.maps.Map(document.getElementById('map'), {
     center: new google.maps.LatLng(28.3898237, -15.2242274),
     zoom: 7
