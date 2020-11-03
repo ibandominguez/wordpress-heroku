@@ -4,9 +4,9 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "5.5.1",
+        "version": "5.5.3",
         "dist": {
-          "url": "https://wordpress.org/wordpress-5.5.1.zip",
+          "url": "https://wordpress.org/wordpress-5.5.3.zip",
           "type": "zip"
         }
       }

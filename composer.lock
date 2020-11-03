@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78f9c9f58fe122d616c309bbf39a174a",
+    "content-hash": "3432257c64c6b8b9156f1a8a5bf241ba",
     "packages": [
         {
             "name": "wordpress/wordpress",
-            "version": "5.5.1",
+            "version": "5.5.3",
             "dist": {
                 "type": "zip",
-                "url": "https://wordpress.org/wordpress-5.5.1.zip"
+                "url": "https://wordpress.org/wordpress-5.5.3.zip"
             },
             "type": "library"
         }
