@@ -17,40 +17,14 @@ small { color: #aaa; }
 </style>
 
 <div class="form-group">
-  <label class="form-label" for="price">Precio (opcional)</label>
-  <input id="price" class="form-control" type="number" step="0.01" name="price" value="<?= get_post_meta($post->ID, 'price', true); ?>">
+  <input id="price" type="hidden" name="price" value="<?= get_post_meta($post->ID, 'price', true); ?>">
+  <label class="form-label" for="stripe_product">Referencia stripe</label>
+  <input id="stripe_product" class="form-control" type="text" name="stripe_product" value="<?= get_post_meta($post->ID, 'stripe_product', true); ?>">
+  <div class="message"></div>
   <small>
-    Este campo define si la carrera es de pago o libre.
-    <br>* Si dejas este campo vacío la carrera podrá correrse libremenete.
-    <br>* Si rellenas este campo la carrera podrá correrse libremente antes de la fecha de inicio y requeríra del pago tras la fecha de inicio.
-    <br>* Los corredores que realizen el pago de la carrera se listarán en el ranking.
+    Especifica aquí el identificador único del producto.
+    <br>* Podrás gestionar cupones, precios y productos en stripe.
   </small>
-</div><hr>
-
-<div class="form-group">
-  <div class="row">
-    <div class="flex-full" style="padding-right: 10px">
-      <label class="form-label" for="coupons">Cupones de descuento (opcional)</label>
-      <input type="file" accept=".txt" onchange="getCoupons(this.files ? this.files[0] : null)">
-      <textarea id="coupons" class="form-control" name="coupons"><?= get_post_meta($post->ID, 'coupons', true); ?></textarea>
-      <small>
-        Añade aquí todos los cupones.
-        <br>* Los cupones deberán estar en un archivo .txt y separados por líneas.
-        <br>* El wizard de importación te informará del número de códigos para que confirmes si es correcta la importación.
-        <br>* También puedes añadir los códigos manualmente si lo deseas pero es importante que los códigos estén separados entre líneas, sin dejar ninguna en blanco.
-        <br>* Los cupones solo se usarán si la carrera tiene precio.
-      </small>
-    </div>
-    <div class="flex-half">
-      <label class="form-label" for="coupons_discount">Descuento cupón (requerido)</label>
-      <input id="coupons_discount" class="form-control" type="number" step="0.01" name="coupons_discount" value="<?= get_post_meta($post->ID, 'coupons_discount', true); ?>">
-      <small>
-        Este campo debería rellenarse si hay cupones
-        <br>* Este es el descuento que se le restará al precio de la carrera para subscribiese.
-        <br>* Si no añades este campo no tendrá sentido tener cupones.
-      </small>
-    </div>
-  </div>
 </div><hr>
 
 <div class="form-group">
@@ -252,6 +226,27 @@ jQuery(document).ready(function() {
   var $startsAt = jQuery('.datetimepicker').datetimepicker({
     lang:'es',
     format: 'Y-m-d H:i:s'
+  });
+
+  jQuery('#stripe_product').on('change', function () {
+    var $this = jQuery(this);
+    var $message = $this.next('.message');
+
+    jQuery.ajax({
+      url: '/wp-json/wp/v2/products/' + $this.val() + '/prices',
+      success: function (response) {
+        if (Array.isArray(response) && response.length) {
+          jQuery('#price').val((response[0].unit_amount / 100).toFixed(2));
+          return $message.css({ color: 'green' }).text('Producto verificado.');
+        }
+        $this.val('');
+        $message.css({ color: 'red' }).text('No podemos obtener precios de este producto, configuralo en Stripe');
+      },
+      error: function () {
+        $this.val('');
+        $message.css({ color: 'red' }).text('Ha habido un error verificando tu producto.');
+      }
+    });
   });
 });
 </script>

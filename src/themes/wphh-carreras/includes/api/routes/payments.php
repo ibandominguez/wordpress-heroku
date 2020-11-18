@@ -103,7 +103,7 @@ register_rest_route('wp/v2', '/products/(?P<id>.+)/prices', [
     $id = (string) $request['id'];
     $stripeSettings = get_option('stripe_settings');
 
-    $response = wp_remote_get("https://api.stripe.com/v1/prices?product={$id}", [
+    $response = wp_remote_get("https://api.stripe.com/v1/prices?product={$id}&active=true&type=one_time", [
       'method' => 'GET',
       'headers' => ['Authorization' => "Bearer {$stripeSettings['STRIPE_PRIVATE_KEY']}"]
     ]);
