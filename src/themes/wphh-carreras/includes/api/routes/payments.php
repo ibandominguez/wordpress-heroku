@@ -163,10 +163,9 @@ register_rest_route('wp/v2', '/webhooks', [
     ):
       $meta = json_decode($body['data']['object']['client_reference_id']);
       add_user_meta($meta->user_id, 'race_payments', $meta->race_id);
-      return new WP_REST_Response(
-        'message' => "Added user:{$meta->user_id} to race:{$meta->race_id}",
-        201
-      );
+      return new WP_REST_Response([
+        'message' => "Added user:{$meta->user_id} to race:{$meta->race_id}"
+      ], 201);
     endif;
 
     return new WP_REST_Response([
