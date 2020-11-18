@@ -12,6 +12,7 @@ namespace Google\Site_Kit\Core\Authentication;
 
 use Google\Site_Kit\Context;
 use Google\Site_Kit\Core\Authentication\Clients\OAuth_Client;
+use Google\Site_Kit\Core\Authentication\User_Input_State;
 use Google\Site_Kit\Core\Permissions\Permissions;
 use Google\Site_Kit\Core\REST_API\REST_Route;
 use Google\Site_Kit\Core\REST_API\REST_Routes;
@@ -21,6 +22,7 @@ use Google\Site_Kit\Core\Storage\User_Options;
 use Google\Site_Kit\Core\Storage\Transients;
 use Google\Site_Kit\Core\Admin\Notice;
 use Google\Site_Kit\Core\Util\Method_Proxy_Trait;
+use Google\Site_Kit\Core\Util\User_Input_Settings;
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -62,6 +64,24 @@ final class Authentication {
 	 * @var User_Options
 	 */
 	private $user_options = null;
+
+	/**
+	 * User_Input_State object.
+	 *
+	 * @since 1.20.0
+	 *
+	 * @var User_Input_State
+	 */
+	private $user_input_state = null;
+
+	/**
+	 * User_Input_Settings
+	 *
+	 * @since 1.20.0
+	 *
+	 * @var User_Input_Settings
+	 */
+	private $user_input_settings = null;
 
 	/**
 	 * Transients object.
@@ -188,6 +208,8 @@ final class Authentication {
 		$this->options              = $options ?: new Options( $this->context );
 		$this->user_options         = $user_options ?: new User_Options( $this->context );
 		$this->transients           = $transients ?: new Transients( $this->context );
+		$this->user_input_state     = new User_Input_State( $this->user_options );
+		$this->user_input_settings  = new User_Input_Settings( $context, $this, $transients );
 		$this->google_proxy         = new Google_Proxy( $this->context );
 		$this->credentials          = new Credentials( new Encrypted_Options( $this->options ) );
 		$this->verification         = new Verification( $this->user_options );
@@ -214,6 +236,7 @@ final class Authentication {
 		$this->owner_id->register();
 		$this->connected_proxy_url->register();
 		$this->disconnected_reason->register();
+		$this->user_input_state->register();
 
 		add_filter( 'allowed_redirect_hosts', $this->get_method_proxy( 'allowed_redirect_hosts' ) );
 		add_filter( 'googlesitekit_admin_data', $this->get_method_proxy( 'inline_js_admin_data' ) );
@@ -223,6 +246,25 @@ final class Authentication {
 
 		add_action( 'init', $this->get_method_proxy( 'handle_oauth' ) );
 		add_action( 'admin_init', $this->get_method_proxy( 'check_connected_proxy_url' ) );
+		add_action(
+			'admin_init',
+			function() {
+				$this->verify_user_input_settings();
+			}
+		);
+		add_action(
+			'admin_init',
+			function() {
+
+				if (
+					'googlesitekit-dashboard' === $this->context->input()->filter( INPUT_GET, 'page', FILTER_SANITIZE_STRING )
+					&& User_Input_State::VALUE_REQUIRED === $this->user_input_state->get()
+					) {
+						wp_safe_redirect( $this->context->admin_url( 'user-input' ) );
+						exit;
+				}
+			}
+		);
 		// Google_Proxy::ACTION_SETUP is called from the proxy as an intermediate step.
 		add_action( 'admin_action_' . Google_Proxy::ACTION_SETUP, $this->get_method_proxy( 'verify_proxy_setup_nonce' ), -1 );
 		// Google_Proxy::ACTION_SETUP is called from Site Kit to redirect to the proxy initially.
@@ -235,6 +277,13 @@ final class Authentication {
 
 				$this->handle_site_code( $code, $site_code );
 				$this->redirect_to_proxy( $code );
+			}
+		);
+
+		add_action(
+			'admin_action_' . Google_Proxy::ACTION_PERMISSIONS,
+			function () {
+				$this->handle_proxy_permissions();
 			}
 		);
 
@@ -271,6 +320,14 @@ final class Authentication {
 
 				$user['verified'] = $this->verification->has();
 
+				return $user;
+			}
+		);
+
+		add_filter(
+			'googlesitekit_user_data',
+			function( $user ) {
+				$user['userInputState'] = $this->user_input_state->get();
 				return $user;
 			}
 		);
@@ -385,6 +442,17 @@ final class Authentication {
 	}
 
 	/**
+	 * Gets the Google Proxy instance.
+	 *
+	 * @since 1.19.0
+	 *
+	 * @return Google_Proxy An instance of Google Proxy.
+	 */
+	public function get_google_proxy() {
+		return $this->google_proxy;
+	}
+
+	/**
 	 * Revokes authentication along with user options settings.
 	 *
 	 * @since 1.0.0
@@ -457,7 +525,6 @@ final class Authentication {
 
 		return ! empty( $access_token );
 	}
-
 	/**
 	 * Checks whether the Site Kit setup is considered complete.
 	 *
@@ -597,7 +664,7 @@ final class Authentication {
 		if ( $this->credentials->using_proxy() ) {
 			$auth_client                 = $this->get_oauth_client();
 			$data['proxySetupURL']       = esc_url_raw( $this->get_proxy_setup_url() );
-			$data['proxyPermissionsURL'] = esc_url_raw( $auth_client->get_proxy_permissions_url() );
+			$data['proxyPermissionsURL'] = esc_url_raw( $this->get_proxy_permissions_url() );
 			$data['usingProxy']          = true;
 		}
 
@@ -1013,7 +1080,7 @@ final class Authentication {
 	 * @since 1.17.0
 	 */
 	private function set_connected_proxy_url() {
-		$this->connected_proxy_url->set( home_url() );
+		$this->connected_proxy_url->set( $this->context->get_canonical_home_url() );
 	}
 
 	/**
@@ -1023,7 +1090,7 @@ final class Authentication {
 	 * @since 1.17.0
 	 */
 	private function check_connected_proxy_url() {
-		if ( $this->connected_proxy_url->matches_url( home_url() ) ) {
+		if ( $this->connected_proxy_url->matches_url( $this->context->get_canonical_home_url() ) ) {
 			return;
 		}
 
@@ -1094,4 +1161,70 @@ final class Authentication {
 		);
 	}
 
+	/**
+	 * Handles proxy permissions.
+	 *
+	 * @since 1.18.0
+	 */
+	private function handle_proxy_permissions() {
+		$nonce = $this->context->input()->filter( INPUT_GET, 'nonce' );
+		if ( ! wp_verify_nonce( $nonce, Google_Proxy::ACTION_PERMISSIONS ) ) {
+			wp_die( esc_html__( 'Invalid nonce.', 'google-site-kit' ) );
+		}
+
+		if ( ! current_user_can( Permissions::AUTHENTICATE ) ) {
+			wp_die( esc_html__( 'You have insufficient permissions to manage Site Kit permissions.', 'google-site-kit' ) );
+		}
+
+		if ( ! $this->credentials->using_proxy() ) {
+			wp_die( esc_html__( 'Site Kit is not configured to use the authentication proxy.', 'google-site-kit' ) );
+		}
+
+		wp_safe_redirect( $this->get_oauth_client()->get_proxy_permissions_url() );
+		exit;
+
+	}
+
+	/**
+	 * Gets the proxy permission URL.
+	 *
+	 * @since 1.18.0
+	 *
+	 * @return string Proxy permission URL.
+	 */
+	private function get_proxy_permissions_url() {
+		return add_query_arg(
+			array(
+				'action' => Google_Proxy::ACTION_PERMISSIONS,
+				'nonce'  => wp_create_nonce( Google_Proxy::ACTION_PERMISSIONS ),
+			),
+			admin_url( 'index.php' )
+		);
+	}
+
+
+	/**
+	 * Verifies the user input settings
+	 *
+	 * @since 1.20.0
+	 */
+	private function verify_user_input_settings() {
+		if (
+			! empty( $this->user_input_state->get() )
+			|| ! $this->is_authenticated()
+			|| ! $this->credentials()->has()
+			|| ! $this->credentials->using_proxy()
+		) {
+			return;
+		}
+		$settings = $this->user_input_settings->get_settings();
+
+		$empty_settings = array_filter(
+			$settings,
+			function( $setting ) {
+				return empty( $setting['values'] );
+			}
+		);
+		$this->user_input_state->set( 0 === count( $empty_settings ) ? User_Input_State::VALUE_COMPLETED : User_Input_State::VALUE_MISSING );
+	}
 }
