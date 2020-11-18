@@ -89,3 +89,74 @@ register_rest_route('wp/v2', '/payment_intents/(?P<id>.+)', [
     );
   }
 ]);
+
+/**
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @since
+ */
+register_rest_route('wp/v2', '/products/(?P<id>.+)/prices', [
+  'methods'  => ['GET'],
+  'permission_callback' => function (WP_REST_Request $request) {
+    return true;
+  },
+  'callback' => function (WP_REST_Request $request) {
+    $id = (string) $request['id'];
+    $stripeSettings = get_option('stripe_settings');
+
+    $response = wp_remote_get("https://api.stripe.com/v1/prices?product={$id}", [
+      'method' => 'GET',
+      'headers' => ['Authorization' => "Bearer {$stripeSettings['STRIPE_PRIVATE_KEY']}"]
+    ]);
+
+    $responseBody = json_decode($response['body']);
+
+    return new WP_REST_Response(
+      !empty($responseBody) && !empty($responseBody->data) ? $responseBody->data : [],
+      200
+    );
+  }
+]);
+
+/**
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @since
+ */
+register_rest_route('wp/v2', '/products/(?P<id>.+)', [
+  'methods'  => ['GET'],
+  'permission_callback' => function (WP_REST_Request $request) {
+    return true;
+  },
+  'callback' => function (WP_REST_Request $request) {
+    $id = (string) $request['id'];
+    $stripeSettings = get_option('stripe_settings');
+
+    $response = wp_remote_get("https://api.stripe.com/v1/products/{$id}", [
+      'method' => 'GET',
+      'headers' => ['Authorization' => "Bearer {$stripeSettings['STRIPE_PRIVATE_KEY']}"]
+    ]);
+
+    $responseBody = json_decode($response['body']);
+
+    return new WP_REST_Response(
+      !empty($responseBody) && !empty($responseBody->data) ? $responseBody->data : [],
+      $response['response']['code']
+    );
+  }
+]);
+
+/**
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @since
+ */
+register_rest_route('wp/v2', '/webhooks', [
+  'methods'  => ['POST'],
+  'permission_callback' => function (WP_REST_Request $request) {
+    return true;
+  },
+  'callback' => function (WP_REST_Request $request) {
+    return new WP_REST_Response(
+      $request,
+      $response['response']['code']
+    );
+  }
+]);
