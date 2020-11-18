@@ -155,7 +155,7 @@ register_rest_route('wp/v2', '/webhooks', [
   },
   'callback' => function (WP_REST_Request $request) {
     return new WP_REST_Response(
-      $request,
+      $request->get_json_params(),
       $response['response']['code']
     );
   }
