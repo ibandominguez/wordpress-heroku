@@ -169,7 +169,7 @@ register_rest_route('wp/v2', '/webhooks', [
     endif;
 
     return new WP_REST_Response([
-      'message' => "Received event $body['type']"
+      'message' => "Received event {$body['type']}"
     ], 200);
   }
 ]);
