@@ -1,6 +1,6 @@
 <?php
 
-register_post_type('session', array(
+register_post_type('session', [
   'label'              => 'Sesiones',
   'public'             => true,
   'publicly_queryable' => true,
@@ -16,25 +16,8 @@ register_post_type('session', array(
   'supports'           => array('title', 'author'),
   'capability_type'    => array('session', 'sessions'),
   'map_meta_cap'       => true,
-  'delete_with_user'   => true,
-  'register_meta_box_cb' => function() {
-    add_meta_box('session_meta_box', 'Campos de la sesión', function($post) {
-      wp_nonce_field('session_meta_box', 'session_meta_box_nonce');
-      include_once(get_template_directory().'/templates/session-meta.php');
-    }, null, 'advanced', 'high');
-
-    add_meta_box('session-parent', 'Carrera', function($post) {
-      return wp_dropdown_pages([
-        'post_type' => 'race',
-        'selected' => $post->post_parent,
-        'name' => 'parent_id',
-        'show_option_none' => __('(no parent)'),
-        'sort_column' => 'menu_order, post_title',
-        'echo' => true
-      ]);
-    }, 'session', 'side', 'high');
-  }
-));
+  'delete_with_user'   => true
+]);
 
 add_filter('manage_session_posts_columns', function($columns) {
   $dateColumn = $columns['date'];
@@ -58,25 +41,6 @@ add_action('manage_session_posts_custom_column', function($column, $postId) {
     print($parentId ? get_the_title($parentId) : 'n/a');
   endif;
 }, 10, 2);
-
-add_action('save_post', function($postId) {
-  $nonce = @$_POST['session_meta_box_nonce'];
-  // TODO: Sanitize input data
-
-  if (
-    // TODO: Add server side validation
-    !wp_verify_nonce($nonce, 'session_meta_box') || // Verify nonce
-    (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) // Check for autosave
-  ) {
-    return $postId;
-  }
-
-  foreach ($_POST as $key => $value):
-    if (in_array($key, ['distance_km', 'duration_minutes', 'coordinates', 'average_speed_kmh'])):
-      update_post_meta($postId, $key, $value);
-    endif;
-  endforeach;
-});
 
 add_filter('pre_get_posts', function($query) {
   global $current_user;

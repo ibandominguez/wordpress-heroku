@@ -15,11 +15,11 @@ foreach (['administrator', 'editor', 'runner'] as $role):
 
   if ($role):
     $role->add_cap('read_session');
-    $role->add_cap('edit_session');
+    $role->remove_cap('edit_session');
     $role->add_cap('edit_sessions');
-    $role->add_cap('edit_published_sessions');
+    $role->remove_cap('edit_published_sessions');
     $role->add_cap('publish_sessions');
-    $role->add_cap('delete_published_sessions');
+    $role->remove_cap('delete_published_sessions');
     $role->add_cap('delete_session');
     $role->add_cap('delete_sessions');
     $role->add_cap('upload_files');
