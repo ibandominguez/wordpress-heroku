@@ -80,13 +80,7 @@ add_action('save_post', function($postId) {
   endif;
 
   // TODO: Validate all cases
-  if (!empty($_POST['price']) && !is_numeric($_POST['price'])):
-    return wp_die('El precio de la carrera debe ser un valor númerico');
-  elseif (!empty($_POST['coupons_discount']) && !is_numeric($_POST['coupons_discount'])):
-    return wp_die('El descuento de los cupones debe ser un valor númerico');
-  elseif (!empty($_POST['price']) && !empty($_POST['coupons']) && empty($_POST['coupons_discount'])):
-    return wp_die('Debes añadir un descuento si la carrera tiene precio y cupones');
-  endif;
+
 
   if (!empty($_POST['race_map_key'])):
     update_option('race_map_key', $_POST['race_map_key']);
