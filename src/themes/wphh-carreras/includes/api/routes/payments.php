@@ -205,7 +205,7 @@ register_rest_route('wp/v2', '/checkouts', [
       ],
       'body' => [
         'success_url' => "{$postUrl}?user_id={$body['user_id']}",
-        'cancel_url' => "{$postUrl}?cancel={$body['user_id']}",
+        'cancel_url' => "{$postUrl}?user_id={$body['user_id']}",
         'payment_method_types' => ['card'],
         'line_items' => [
           ['price' => $body['price_id'], 'quantity' => 1],
