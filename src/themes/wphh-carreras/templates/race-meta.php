@@ -231,12 +231,20 @@ jQuery(document).ready(function() {
   jQuery('#stripe_product').on('change', function () {
     var $this = jQuery(this);
     var $message = $this.next('.message');
+    var $price = jQuery('#price');
+
+    if (!$this.val() || $this.val() === '') {
+      return $price.val('');
+    }
 
     jQuery.ajax({
       url: '/wp-json/wp/v2/products/' + $this.val() + '/prices',
       success: function (response) {
         if (Array.isArray(response) && response.length) {
-          jQuery('#price').val((response[0].unit_amount / 100).toFixed(2));
+          var lowestPrice = ((response.sort(function (a, b) {
+            return a.unit_amount - b.unit_amount;
+          })[0]).unit_amount / 100).toFixed(2);
+          $price.val(lowestPrice);
           return $message.css({ color: 'green' }).text('Producto verificado.');
         }
         $this.val('');
@@ -244,6 +252,7 @@ jQuery(document).ready(function() {
       },
       error: function () {
         $this.val('');
+        $price.val('');
         $message.css({ color: 'red' }).text('Ha habido un error verificando tu producto.');
       }
     });
