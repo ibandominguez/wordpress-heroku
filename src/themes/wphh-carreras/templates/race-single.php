@@ -27,31 +27,27 @@ endif;
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center">
 
-  <?php if (isset($_GET['success'])): ?>
-    <p class="alert alert-success my-5">EL pago se ha realizado con éxito</p>
-  <?php else: ?>
-    <div class="card mx-auto my-5" style="max-width: 450px; width: 100%">
-      <?php if (has_post_thumbnail()) : ?>
-        <?php the_post_thumbnail('thumbnail', ['class' => 'w-100', 'style' => 'height: auto']); ?>
+  <div class="card mx-auto my-5" style="max-width: 450px; width: 100%">
+    <?php if (has_post_thumbnail()) : ?>
+      <?php the_post_thumbnail('thumbnail', ['class' => 'w-100', 'style' => 'height: auto']); ?>
+    <?php endif; ?>
+    <div class="card-body">
+      <h5 class="card-title"><?= $post->post_title; ?></h5>
+      <p class="card-text"><?= $meta['description']; ?></p>
+      <?php if (!empty($_GET['user_id'])): ?>
+        <ul class="list-group">
+          <?php foreach ($prices as $price): ?>
+            <li style="cursor: pointer" onclick="checkout('<?= $price->id; ?>')" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+              <?= !empty($price->nickname) ? $price->nickname : 'Inscripción'; ?>
+              <span class="badge badge-primary badge-pill">
+                <?= number_format($price->unit_amount / 100, 2); ?> <?= $price->currency; ?>
+              </span>
+            </li>
+          <?php endforeach; ?>
+        </ul>
       <?php endif; ?>
-      <div class="card-body">
-        <h5 class="card-title"><?= $post->post_title; ?></h5>
-        <p class="card-text"><?= $meta['description']; ?></p>
-        <?php if (!empty($_GET['user_id'])): ?>
-          <ul class="list-group">
-            <?php foreach ($prices as $price): ?>
-              <li style="cursor: pointer" onclick="checkout('<?= $price->id; ?>')" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                <?= !empty($price->nickname) ? $price->nickname : 'Inscripción'; ?>
-                <span class="badge badge-primary badge-pill">
-                  <?= number_format($price->unit_amount / 100, 2); ?> <?= $price->currency; ?>
-                </span>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        <?php endif; ?>
-      </div>
     </div>
-  <?php endif; ?>
+  </div>
 
   <?php if (!empty($_GET['user_id'])): ?>
   <script type="text/javascript">

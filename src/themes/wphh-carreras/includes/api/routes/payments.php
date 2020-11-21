@@ -204,8 +204,8 @@ register_rest_route('wp/v2', '/checkouts', [
         'Authorization' => "Bearer {$stripeSettings['STRIPE_PRIVATE_KEY']}"
       ],
       'body' => [
-        'success_url' => "{$postUrl}?success=true",
-        'cancel_url' => "{$postUrl}?cancel=true",
+        'success_url' => "{$postUrl}?user_id={$body['user_id']}",
+        'cancel_url' => "{$postUrl}?cancel={$body['user_id']}",
         'payment_method_types' => ['card'],
         'line_items' => [
           ['price' => $body['price_id'], 'quantity' => 1],
