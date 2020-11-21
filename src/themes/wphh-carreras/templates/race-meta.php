@@ -22,12 +22,12 @@ small { color: #aaa; }
 <div class="wrapper">
   <div class="form-group">
     <input id="price" type="hidden" name="price" value="<?= get_post_meta($post->ID, 'price', true); ?>">
-    <label class="form-label" for="stripe_product">Referencia stripe</label>
+    <label class="form-label" for="stripe_product">Referencia stripe (Gestiona tus productos en stripe: <a href="https://dashboard.stripe.com/products">https://dashboard.stripe.com/products</a>)</label>
     <input id="stripe_product" class="form-control" type="text" name="stripe_product" value="<?= get_post_meta($post->ID, 'stripe_product', true); ?>">
     <div class="message"></div>
     <small>
       Especifica aquí el identificador único del producto.
-      <br>* Podrás gestionar cupones, precios y productos en stripe.
+      <br>* Podrás <b>gestionar cupones, precios y productos</b> en stripe.
     </small>
   </div><hr>
 

@@ -80,7 +80,23 @@ add_action('save_post', function($postId) {
   endif;
 
   // TODO: Validate all cases
-
+  if (
+    (!empty($_POST['start_datetime']) && empty($_POST['end_datetime'])) ||
+    (empty($_POST['start_datetime']) && !empty($_POST['end_datetime']))
+  ):
+    wp_die('
+      <h2>Error de validación</h2>
+      <p>Si añades fehca de inicio/fin deberías añadir la otra fecha también.</p>
+      <a href="#" onclick="history.back()">Volver a el formulario</a>
+    ');
+  elseif (!empty($_POST['stripe_product']) && (empty($_POST['start_datetime']) || empty($_POST['end_datetime']))):
+    wp_die('
+      <h2>Error de validación</h2>
+      <p>Si añades una referencia a un producto. Deberás añadir también fechas de inicio y fin. Ya que estas servirán
+      para marcar los plazos de entrenamiento gratuito.</p>
+      <a href="#" onclick="history.back()">Volver a el formulario</a>
+    ');
+  endif;
 
   if (!empty($_POST['race_map_key'])):
     update_option('race_map_key', $_POST['race_map_key']);
