@@ -1,11 +1,6 @@
 <?php
 global $post;
 
-$currentUrl = (
-  (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
-  "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"
-);
-
 $meta = array_map(function($item) {
   return (count($item) === 1) ? $item[0] : $item;
 }, get_post_meta($post->ID));
@@ -28,6 +23,7 @@ endif;
   <title><?php wp_title('&laquo;', true, 'right'); ?> <?php bloginfo('name'); ?></title>
   <?php wp_head(); ?>
   <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center">
 
@@ -57,28 +53,32 @@ endif;
     </div>
   <?php endif; ?>
 
+  <?php if (!empty($_GET['user_id'])): ?>
   <script type="text/javascript">
   var stripe = Stripe('<?= get_option('stripe_settings')['STRIPE_PUBLIC_KEY']; ?>');
 
   function checkout (priceId) {
-    stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'payment',
-      successUrl: '<?= $currentUrl; ?>&success=true',
-      cancelUrl: '<?= $currentUrl; ?>&cancel=true',
-      clientReferenceId: JSON.stringify({
-        race_id: <?= $post->ID; ?>,
-        user_id: <?= !empty($_GET['user_id']) ? $_GET['user_id'] : 'null'; ?>
-      }),
-      shippingAddressCollection: {
-        allowedCountries: ['ES']
-      }
-    }).then(function (result) {
-      if (result.error && result.error.message) {
-        alert(result.error.message)
+    return jQuery.ajax({
+      url: '/wp-json/wp/v2/checkouts',
+      method: 'POST',
+      data: JSON.stringify({ price_id: priceId, race_id: <?= $post->ID; ?>, user_id: <?= @$_GET['user_id']; ?> }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      success: function (response) {
+        stripe.redirectToCheckout({ sessionId: response.session_id }).then(function (response) {
+          console.log(response);
+        }).catch(function (response) {
+          console.log(response);
+        });
+      },
+      error: function (response) {
+        console.log(response);
       }
     });
   };
   </script>
+  <?php endif; ?>
 </body>
 </html>
