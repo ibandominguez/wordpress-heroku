@@ -96,6 +96,12 @@ add_action('save_post', function($postId) {
       para marcar los plazos de entrenamiento gratuito.</p>
       <a href="#" onclick="history.back()">Volver a el formulario</a>
     ');
+  elseif (!empty($_POST['duration_minutes']) && !empty($_POST['distance_km'])):
+    wp_die('
+      <h2>Error de validación</h2>
+      <p>La carrera solo puede tener uno de los dos (duración o distancia).</p>
+      <a href="#" onclick="history.back()">Volver a el formulario</a>
+    ');
   endif;
 
   if (!empty($_POST['race_map_key'])):

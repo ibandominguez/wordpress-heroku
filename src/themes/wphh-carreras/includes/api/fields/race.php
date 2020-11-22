@@ -281,28 +281,35 @@ register_rest_field('race', 'specification', array(
 
     if (empty($object['stripe_product']) && !empty($object['duration_minutes'])):
       $specification['type'] = 'offcharge-duration';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es gratuita podrás participar cuando quieras y puntuar en el ranking.';
+      $specification['message'] .= 'Esta carrera es por duración y puntuará aquel corredor/a que alcanze la mayor distancia.';
     elseif (empty($object['stripe_product']) && !empty($object['distance_km']) && empty($object['coordinates'])):
       $specification['type'] = 'offcharge-distance';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es gratuita podrás participar cuando quieras y puntuar en el ranking.';
+      $specification['message'] .= 'Esta carrera es por distancia y puntuará aquel corredor/a que alcanze la meta en la menor duración.';
     elseif (empty($object['stripe_product']) && !empty($object['distance_km']) && !empty($object['coordinates'])):
       $specification['type'] = 'offcharge-route';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es gratuita podrás participar cuando quieras y puntuar en el ranking.';
+      $specification['message'] .= 'Esta carrera es por recorrido y puntuará aquel corredor/a que alcanze la meta (siguiendo la ruta) en la menor duración.';
     elseif (empty($object['stripe_product']) && empty($object['duration_minutes']) && empty($object['distance_km']) && empty($object['coordinates'])):
       $specification['type'] = 'offcharge-free';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es gratuita podrás participar cuando quieras y puntuar en el ranking.';
+      $specification['message'] .= 'Esta carrera es libre y no puntuará en el ranking.';
     elseif (!empty($object['stripe_product']) && !empty($object['duration_minutes'])):
       $specification['type'] = 'oncharge-duration';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es de pago. Podrás entrenar gratuitamente hasta la fecha de inicio';
+      $specification['message'] .= 'Esta carrera es por duración y puntuará aquel corredor/a que alcanze la mayor distancia.';
     elseif (!empty($object['stripe_product']) && !empty($object['distance_km']) && empty($object['coordinates'])):
       $specification['type'] = 'oncharge-distance';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es de pago. Podrás entrenar gratuitamente hasta la fecha de inicio';
+      $specification['message'] .= 'Esta carrera es por distancia y puntuará aquel corredor/a que alcanze la meta en la menor duración.';
     elseif (!empty($object['stripe_product']) && !empty($object['distance_km']) && !empty($object['coordinates'])):
       $specification['type'] = 'oncharge-route';
-      $specification['message'] = '...';
+      $specification['message'] = 'Esta carrera es de pago. Podrás entrenar gratuitamente hasta la fecha de inicio';
+      $specification['message'] .= 'Esta carrera es por recorrido y puntuará aquel corredor/a que alcanze la meta (siguiendo la ruta) en la menor duración.';
     elseif (!empty($object['stripe_product']) && empty($object['duration_minutes']) && empty($object['distance_km']) && empty($object['coordinates'])):
       $specification['type'] = 'oncharge-free';
-      $specification['message'] = '...';
+      $specification['message'] .= 'Esta carrera es libre y no puntuará en el ranking.';
     endif;
 
     return $specification;
