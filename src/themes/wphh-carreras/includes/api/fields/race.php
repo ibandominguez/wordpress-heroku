@@ -3,7 +3,7 @@
 register_rest_field('race', 'featured_image_url', array(
   'update_callback' => null,
   'schema'          => null,
-  'get_callback'    => function($object, $field_name, $request) {
+  'get_callback'    => function($object, $fieldName, $request) {
     if ($object['featured_media']):
       $image = wp_get_attachment_image_src($object['featured_media'], 'app-thumb');
       return $image[0];
@@ -15,7 +15,7 @@ register_rest_field('race', 'featured_image_url', array(
 register_rest_field('race', 'auth_sessions', array(
   'update_callback' => null,
   'schema'          => null,
-  'get_callback'    => function($object, $field_name, $request) {
+  'get_callback'    => function($object, $fieldName, $request) {
     global $wpdb;
     global $current_user;
 
@@ -45,7 +45,7 @@ register_rest_field('race', 'auth_sessions', array(
 register_rest_field('race', 'runners_count', array(
   'update_callback' => null,
   'schema'          => null,
-  'get_callback'    => function($object, $field_name, $request) {
+  'get_callback'    => function($object, $fieldName, $request) {
     global $wpdb;
     $result = $wpdb->get_row($wpdb->prepare("
       select count(distinct(post_author)) as count
@@ -67,12 +67,13 @@ register_rest_field('race', 'modalities', array(
 register_rest_field('race', 'rankings', array(
   'schema' => null,
   'update_callback' => null,
-  'get_callback' => function($object, $field_name, $request) {
+  'get_callback' => function($object, $fieldName, $request) {
     global $wpdb;
     $rankings = [];
 
     foreach ($object['modalities'] as $modality):
       // TODO: Fix filters (See sql query todos)
+      // Rankings should be base upon the specific situation
       $rankings[$modality->slug] = $wpdb->get_results(
         $wpdb->prepare("
           select
@@ -269,5 +270,41 @@ register_rest_field('race', 'prices', array(
     endif;
 
     return [];
+  }
+));
+
+register_rest_field('race', 'specification', array(
+  'update_callback' => null,
+  'schema'          => null,
+  'get_callback'    => function($object, $fieldName, $request) {
+    $specification = ['type' => '', 'message' => ''];
+
+    if (empty($object['stripe_product']) && !empty($object['duration_minutes'])):
+      $specification['type'] = 'offcharge-duration';
+      $specification['message'] = '...';
+    elseif (empty($object['stripe_product']) && !empty($object['distance_km']) && empty($object['coordinates'])):
+      $specification['type'] = 'offcharge-distance';
+      $specification['message'] = '...';
+    elseif (empty($object['stripe_product']) && !empty($object['distance_km']) && !empty($object['coordinates'])):
+      $specification['type'] = 'offcharge-route';
+      $specification['message'] = '...';
+    elseif (empty($object['stripe_product']) && empty($object['duration_minutes']) && empty($object['distance_km']) && empty($object['coordinates'])):
+      $specification['type'] = 'offcharge-free';
+      $specification['message'] = '...';
+    elseif (!empty($object['stripe_product']) && !empty($object['duration_minutes'])):
+      $specification['type'] = 'oncharge-duration';
+      $specification['message'] = '...';
+    elseif (!empty($object['stripe_product']) && !empty($object['distance_km']) && empty($object['coordinates'])):
+      $specification['type'] = 'oncharge-distance';
+      $specification['message'] = '...';
+    elseif (!empty($object['stripe_product']) && !empty($object['distance_km']) && !empty($object['coordinates'])):
+      $specification['type'] = 'oncharge-route';
+      $specification['message'] = '...';
+    elseif (!empty($object['stripe_product']) && empty($object['duration_minutes']) && empty($object['distance_km']) && empty($object['coordinates'])):
+      $specification['type'] = 'oncharge-free';
+      $specification['message'] = '...';
+    endif;
+
+    return $specification;
   }
 ));

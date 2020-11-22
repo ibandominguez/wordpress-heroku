@@ -82,7 +82,10 @@ small { color: #aaa; }
   </div><hr>
 
   <div class="form-group">
-    <label class="form-label" for="description">Importar archivo .gpx</label>
+    <label class="form-label" for="description">
+      Importar archivo .gpx
+      <button style="margin-left: 20px; cursor: pointer" id="remove-gpx">Borrar ruta GPX</button>
+    </label>
     <small class="hint">Necesitas especificar una clave de google para poder usar Google maps y crear las rutas</small>
     <input id="gpx" type="file" accept=".gpx">
   </div><hr>
@@ -244,6 +247,20 @@ jQuery(document).ready(function () {
     });
 
     reader.readAsText(file);
+  });
+
+  /**
+   * remove gps
+   */
+  jQuery('#remove-gpx').on('click', function (event) {
+    event.preventDefault();
+
+    if (window.confirm('¿Estás segur@?')) {
+      coordinates = [];
+      drawCoordinates();
+      $distanceKmInput.val('');
+      $inputs.empty().append('<input type="hidden" name="coordinates" value="" />');
+    }
   });
 
   drawCoordinates();
