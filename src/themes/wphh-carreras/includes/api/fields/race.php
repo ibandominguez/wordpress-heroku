@@ -106,6 +106,24 @@ register_rest_field('race', 'rankings', array(
   }
 ));
 
+register_rest_field('race', 'auth_ranking', array(
+  'update_callback' => null,
+  'schema'          => null,
+  'get_callback'    => function($object, $fieldName, $request) {
+    global $current_user;
+
+    if (!empty($current_user->ID) && !empty($object['rankings'])):
+      for ($i = 0; $i < count($object['rankings']); $i++):
+        if ($object['rankings'][$i]['id'] == $current_user->ID):
+          return $i + 1;
+        endif;
+      endfor;
+    endif;
+
+    return '- -';
+  }
+));
+
 register_rest_field('race', 'price', array(
   'schema'          => null,
   'update_callback' => function ($value, $object, $fieldName) {
