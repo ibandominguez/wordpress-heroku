@@ -73,18 +73,9 @@ register_rest_field('session', 'parent', array(
     endif;
   },
   'get_callback'    => function($data) {
-    $meta = get_post_meta($data['parent']);
-
-    if (!empty($meta)):
-      return [
-        'id' => $data['parent'],
-        'race_date' => $meta['race_date'][0],
-        'race_time' => $meta['race_time'][0],
-        'description' => $meta['description'][0],
-        'distance_km' => floatval($meta['distance_km'][0]),
-        'duration_minutes' => floatval($meta['duration_minutes'][0]),
-        'coordinates' => unserialize($meta['coordinates'][0])
-      ];
+    if (!empty($data['parent'])):
+      $response = rest_do_request(new WP_REST_Request('GET', "/wp/v2/races/{$data['parent']}"));
+      return !empty($response->data) ? $response->data : 0;
     endif;
 
     return 0;
