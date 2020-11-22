@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Wordpress heroku hosting
-Plugin URI: https://github.com/ibandominguez/wordpress-heroku/tree/master/plugins/wordpress-heroku-hosting/
+Plugin URI: https://github.com/ibandominguez/wordpress-heroku/tree/master/plugins/wphh-core/
 Description: Provide web hosting within the Heroku.
 Author: Ibán Dominguez Noda
 Author URI: https://github.com/ibandominguez
@@ -12,7 +12,7 @@ Version: 0.1.2
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
 define('WPHH_PLUGINS', [
-  'wordpress-heroku-hosting/wordpress-heroku-hosting.php' => true,
+  'wphh-core/wphh-core.php' => true,
   's3-uploads/s3-uploads.php' => defined('S3_UPLOADS_BUCKET')
 ]);
 

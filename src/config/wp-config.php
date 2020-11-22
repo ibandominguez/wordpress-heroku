@@ -110,7 +110,7 @@ $table_prefix = PREFIX;
 require_once(ABSPATH.'wp-settings.php');
 require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
-activate_plugin('wordpress-heroku-hosting/wordpress-heroku-hosting.php');
+activate_plugin('wphh-core/wphh-core.php');
 
 /**
  * Permalink default
