@@ -16,7 +16,6 @@ add_action('init', function () {
 add_action('rest_api_init', function () {
   require_once __DIR__.'/includes/api/routes/payments.php';
   require_once __DIR__.'/includes/api/routes/users.php';
-  require_once __DIR__.'/includes/api/routes/rankings.php';
   require_once __DIR__.'/includes/api/fields/user.php';
   require_once __DIR__.'/includes/api/fields/race.php';
   require_once __DIR__.'/includes/api/fields/session.php';
