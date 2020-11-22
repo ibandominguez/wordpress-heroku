@@ -74,6 +74,9 @@ register_rest_field('race', 'rankings', array(
     foreach ($object['modalities'] as $modality):
       // TODO: Fix filters (See sql query todos)
       // Rankings should be base upon the specific situation
+      $rankings[$modality->slug] = [];
+      continue;
+
       $rankings[$modality->slug] = $wpdb->get_results(
         $wpdb->prepare("
           select
