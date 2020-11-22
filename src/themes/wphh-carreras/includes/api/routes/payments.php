@@ -64,6 +64,9 @@ register_rest_route('wp/v2', '/webhooks', [
     return true;
   },
   'callback' => function (WP_REST_Request $request) {
+    // TODO: (Important)
+    // Validate requests using hook key
+
     $body = $request->get_json_params();
 
     if (
