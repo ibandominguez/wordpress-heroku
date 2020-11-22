@@ -123,3 +123,13 @@ register_rest_route('wp/v2', '/users/me', [
     ));
   }
 ]);
+
+// TODO: To be deleted
+// Just added to prevent app alert
+// on previous versions
+register_rest_route('wp/v2', '/rankings', [
+  'methods' => ['GET'],
+  'callback' => function ($request) {
+    return new WP_REST_Response([], 200);
+  }
+]);
