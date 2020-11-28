@@ -129,6 +129,7 @@ register_rest_route('wp/v2', '/users/me', [
 // on previous versions
 register_rest_route('wp/v2', '/rankings', [
   'methods' => ['GET'],
+  'permission_callback' => '__return_true',
   'callback' => function ($request) {
     return new WP_REST_Response([], 200);
   }
