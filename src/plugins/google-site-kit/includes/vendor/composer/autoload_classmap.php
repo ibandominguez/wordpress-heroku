@@ -45,6 +45,7 @@ return array(
     'Google\\Site_Kit\\Core\\CLI\\Reset_CLI_Command' => $baseDir . '/Core/CLI/Reset_CLI_Command.php',
     'Google\\Site_Kit\\Core\\Contracts\\WP_Errorable' => $baseDir . '/Core/Contracts/WP_Errorable.php',
     'Google\\Site_Kit\\Core\\Modules\\Module' => $baseDir . '/Core/Modules/Module.php',
+    'Google\\Site_Kit\\Core\\Modules\\Module_Registry' => $baseDir . '/Core/Modules/Module_Registry.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_Settings' => $baseDir . '/Core/Modules/Module_Settings.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_With_Admin_Bar' => $baseDir . '/Core/Modules/Module_With_Admin_Bar.php',
     'Google\\Site_Kit\\Core\\Modules\\Module_With_Assets' => $baseDir . '/Core/Modules/Module_With_Assets.php',
