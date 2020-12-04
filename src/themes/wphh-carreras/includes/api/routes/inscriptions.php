@@ -37,10 +37,10 @@ register_rest_route('wp/v2', '/inscriptions', [
       );
     endif;
 
-    add_user_meta($body['user_id'], 'race_payments', $raceId);
+    add_user_meta($body['user_id'], 'race_payments', strval($raceId));
 
     return new WP_REST_Response(
-      ['message' => 'Estás inscrito correctmante'],
+      ['message' => 'Estás inscrito correctamante'],
       201
     );
   }
