@@ -39,11 +39,11 @@ endif;
 
     <?php if (!empty($_GET['user_id'])): ?>
       <form id="inscription-form" class="bg-gray m-3 p-3">
-        <h4 class="text-lg mb-3">Fecha de nacimiento</h4>
         <h4 class="text-lg mb-3">Email</h4>
         <input required type="email" name="email" class="bg-white rounded-md shadow-md p-3 block mb-3" placeholder="Tu email">
         <button type="submit" class="p-3 bg-blue-600 rounded-md shadow-md hover:opacity-50 text-white">Revisar inscripción</button>
       </form>
+      <p id="message" class="p-3 text-center"></p>
     <?php endif; ?>
 
     <?php if (false && !empty($_GET['user_id'])): ?>
@@ -69,7 +69,12 @@ endif;
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script type="text/javascript">
   jQuery('#inscription-form').on('submit', function (event) {
+    var $form = jQuery(this);
+    var $message = jQuery('#message');
     event.preventDefault();
+    $form.hide();
+    $message.text('Comprobando inscripción ...').removeClass('bg-red-500 bg-blue-500').addClass('bg-blue-500').fadeIn(500);
+
     jQuery.ajax({
       url: '/wp-json/wp/v2/inscriptions',
       method: 'POST',
@@ -83,10 +88,11 @@ endif;
         'user_id': <?= $_GET['user_id'] ?>
       }),
       success: function (response) {
-        console.log(response)
+        $message.text(response.message).removeClass('bg-red-500 bg-blue-500').addClass('bg-green-500 text-white');
       },
       error: function (response) {
-        console.log(response)
+        $form.fadeIn(500);
+        $message.text(response.responseJSON.message).removeClass('bg-blue-500').addClass('bg-red-500 text-white');
       }
     })
   });
