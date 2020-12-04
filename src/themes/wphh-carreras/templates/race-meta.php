@@ -32,6 +32,18 @@ small { color: #aaa; }
   </div><hr>
 
   <div class="form-group">
+    <label class="form-label" for="stripe_product">Precio</label>
+    <input id="price" class="form-control" type="number" step="0.01" name="price" value="<?= get_post_meta($post->ID, 'price', true); ?>">
+    <small>* Debes especificar el precio para que la app te muestre el botón de inscripción.</small>
+  </div><hr>
+
+  <div class="form-group">
+    <label class="form-label" for="stripe_product">OID de TrackingSport</label>
+    <input class="form-control" type="number" name="oid" value="<?= get_post_meta($post->ID, 'oid', true); ?>">
+    <small>* Debes especificar el oid de Tracking sport para que la app pueda validar la inscripción</small>
+  </div><hr>
+
+  <div class="form-group">
     <label class="form-label" for="description">Descripción</label>
     <textarea id="description" class="form-control" name="description"><?= get_post_meta($post->ID, 'description', true); ?></textarea>
   </div><hr>

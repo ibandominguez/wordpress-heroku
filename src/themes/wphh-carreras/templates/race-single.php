@@ -27,7 +27,7 @@ endif;
 <body class="font-sans flex items-center justify-center h-screen bg-gray-100">
 
   <div class="rounded-sm shadow-lg bg-white">
-    <div class="flex items-center p-5">
+    <div class="flex items-center p-3">
       <?php if (has_post_thumbnail()) : ?>
         <?php the_post_thumbnail('thumbnail', ['class' => 'h-20 w-auto']); ?>
       <?php endif; ?>
@@ -38,7 +38,16 @@ endif;
     </div>
 
     <?php if (!empty($_GET['user_id'])): ?>
-      <div class="bg-gray-100 p-5">
+      <form id="inscription-form" class="bg-gray m-3 p-3">
+        <h4 class="text-lg mb-3">Fecha de nacimiento</h4>
+        <h4 class="text-lg mb-3">Email</h4>
+        <input required type="email" name="email" class="bg-white rounded-md shadow-md p-3 block mb-3" placeholder="Tu email">
+        <button type="submit" class="p-3 bg-blue-600 rounded-md shadow-md hover:opacity-50 text-white">Revisar inscripción</button>
+      </form>
+    <?php endif; ?>
+
+    <?php if (false && !empty($_GET['user_id'])): ?>
+      <div class="bg-gray-100 p-3">
         <select id="select" class="w-full p-3 rounded-xl shadow-xl">
           <?php foreach ($prices as $price): ?>
             <option value="<?= $price->id; ?>">
@@ -48,7 +57,7 @@ endif;
         </select>
       </div>
 
-      <div class="p-5 bg-gray-300">
+      <div class="p-3 bg-gray-300">
         <button onclick="checkout(jQuery('#select').val())" class="p-4 shadow-md rounded-full flex items-center mx-auto bg-white hover:bg-gray-500 hover:text-white transition-all duration-500">
           <span class="material-icons mr-2">shopping_cart</span>
           Proceder al pago
@@ -57,7 +66,33 @@ endif;
     <?php endif; ?>
   </div>
 
-  <?php if (!empty($_GET['user_id'])): ?>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+  jQuery('#inscription-form').on('submit', function (event) {
+    event.preventDefault();
+    jQuery.ajax({
+      url: '/wp-json/wp/v2/inscriptions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      data: JSON.stringify({
+        'oid': '<?= $meta['oid'] ?>',
+        'email': jQuery('[name=email]').val(),
+        'user_id': <?= $_GET['user_id'] ?>
+      }),
+      success: function (response) {
+        console.log(response)
+      },
+      error: function (response) {
+        console.log(response)
+      }
+    })
+  });
+  </script>
+
+  <?php if (false && !empty($_GET['user_id'])): ?>
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script type="text/javascript">
