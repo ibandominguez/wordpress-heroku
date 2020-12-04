@@ -11,16 +11,10 @@ register_rest_route('wp/v2', '/inscriptions', [
     global $wpdb;
     $body = $request->get_json_params();
 
-    if (empty($body['email']) || empty($body['oid']) || empty($body['user_id'])):
+    if (empty($body['email']) || empty($body['oid']) || empty($body['user_id']) || empty($body['race_id'])):
       return new WP_REST_Response([
-        'message' => 'El usuario y email son requeridos'
+        'message' => 'El usuario, carrera, OID y email son requeridos'
       ], 201);
-    endif;
-
-    $raceId = $wpdb->get_var($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s LIMIT 1" , 'oid'));
-
-    if (empty($raceId)):
-      return new WP_REST_Response(['message' => 'El oid es inválido'], 201);
     endif;
 
     $response = wp_remote_get(
@@ -37,7 +31,7 @@ register_rest_route('wp/v2', '/inscriptions', [
       );
     endif;
 
-    add_user_meta($body['user_id'], 'race_payments', strval($raceId));
+    add_user_meta($body['user_id'], 'race_payments', $body['race_id']);
 
     return new WP_REST_Response(
       ['message' => 'Estás inscrito correctamante'],

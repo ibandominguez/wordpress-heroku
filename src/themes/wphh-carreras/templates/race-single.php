@@ -85,7 +85,8 @@ endif;
       data: JSON.stringify({
         'oid': '<?= $meta['oid'] ?>',
         'email': jQuery('[name=email]').val(),
-        'user_id': <?= $_GET['user_id'] ?>
+        'user_id': <?= $_GET['user_id'] ?>,
+        'race_id': <?= $post->ID; ?>
       }),
       success: function (response) {
         $message.text(response.message).removeClass('bg-red-500 bg-blue-500').addClass('bg-green-500 text-white');
