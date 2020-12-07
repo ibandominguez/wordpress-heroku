@@ -44,6 +44,12 @@ small { color: #aaa; }
   </div><hr>
 
   <div class="form-group">
+    <label class="form-label" for="stripe_product">Link para subscribirse</label>
+    <input class="form-control" type="url" name="subscription_link" value="<?= get_post_meta($post->ID, 'subscription_link', true); ?>">
+    <small>* Ese link llevará a los usuarios al proceso de inscripción.</small>
+  </div><hr>
+
+  <div class="form-group">
     <label class="form-label" for="description">Descripción</label>
     <textarea id="description" class="form-control" name="description"><?= get_post_meta($post->ID, 'description', true); ?></textarea>
   </div><hr>

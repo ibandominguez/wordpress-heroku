@@ -72,7 +72,8 @@ add_action('save_post', function($postId) {
 
   $fields = [
     'description', 'distance_km', 'duration_minutes', 'coordinates', 'start_datetime', 'end_datetime',
-    'price', 'organization_details', 'coupons', 'coupons_discount', 'share_link', 'stripe_product', 'oid'
+    'price', 'organization_details', 'coupons', 'coupons_discount', 'share_link', 'stripe_product', 'oid',
+    'subscription_link'
   ];
 
   if (!wp_verify_nonce($nonce, 'race_meta_box') || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)):

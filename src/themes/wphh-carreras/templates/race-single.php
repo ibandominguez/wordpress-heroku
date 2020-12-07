@@ -43,6 +43,11 @@ endif;
         <input required type="email" name="email" class="bg-white rounded-md shadow-md p-3 block mb-3" placeholder="Tu email">
         <button type="submit" class="p-3 bg-blue-600 rounded-md shadow-md hover:opacity-50 text-white">Revisar inscripción</button>
       </form>
+      <?php if (!empty($meta['subscription_link'])): ?>
+        <a href="<?= $meta['subscription_link']; ?>" class="bg-gray-100 p-3 text-blue-500 underline hover:opacity-50 block" target="_blank">
+          Puedes formalizar tu subscripción en <?= $meta['subscription_link']; ?>
+        </a>
+      <?php endif; ?>
       <p id="message" class="p-3 text-center"></p>
     <?php endif; ?>
 
