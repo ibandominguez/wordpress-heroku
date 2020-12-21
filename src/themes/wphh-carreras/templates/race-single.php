@@ -33,7 +33,7 @@ endif;
       <?php endif; ?>
       <div class="p-3">
         <h2 class="text-2xl"><?= $post->post_title; ?></h2>
-        <p style="max-height: 300px; overflow: scroll"><?= $meta['description']; ?></p>
+        <p style="max-height: 150px; overflow: scroll"><?= $meta['description']; ?></p>
       </div>
     </div>
 
