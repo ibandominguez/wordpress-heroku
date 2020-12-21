@@ -245,6 +245,18 @@ register_rest_field('race', 'stripe_product', array(
   }
 ));
 
+register_rest_field('race', 'oid', array(
+  'schema'          => null,
+  'update_callback' => function ($value, $object, $fieldName) {
+    $object = (array) $object;
+    return update_post_meta($object['ID'], $fieldName, $value);
+  },
+  'get_callback'    => function($object, $fieldName, $request) {
+    $stripeProuct = get_post_meta($object['id'], $fieldName, true);
+    return !empty($stripeProuct) ? $stripeProuct : null;
+  }
+));
+
 register_rest_field('race', 'coordinates', array(
   'schema'          => array(
     'type' => 'array',
