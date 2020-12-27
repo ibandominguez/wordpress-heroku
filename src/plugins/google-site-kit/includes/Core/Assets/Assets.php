@@ -303,6 +303,7 @@ final class Assets {
 		$base_url = $this->context->url( 'dist/assets/' );
 
 		$dependencies = array(
+			'googlesitekit-runtime',
 			'googlesitekit-i18n',
 			'googlesitekit-vendor',
 			'googlesitekit-commons',
@@ -383,6 +384,12 @@ final class Assets {
 				)
 			),
 			new Script(
+				'googlesitekit-runtime',
+				array(
+					'src' => $base_url . 'js/runtime.js',
+				)
+			),
+			new Script(
 				'googlesitekit-i18n',
 				array(
 					'src' => $base_url . 'js/googlesitekit-i18n.js',
@@ -410,7 +417,6 @@ final class Assets {
 				array(
 					'src'          => $base_url . 'js/googlesitekit-base.js',
 					'dependencies' => array(
-						'googlesitekit-apifetch-data',
 						'googlesitekit-base-data',
 						'googlesitekit-i18n',
 					),
