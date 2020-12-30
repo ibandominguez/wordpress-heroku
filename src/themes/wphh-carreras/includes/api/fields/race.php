@@ -98,9 +98,9 @@ register_rest_field('race', 'rankings', array(
           and term_taxonomies.term_id = {$modality->term_id}
           and (isnull(race_distance_km.meta_value) or session_distance_km.meta_value >= race_distance_km.meta_value)
           and (isnull(race_oid.meta_value) or race_payment.meta_value is not null)
-          and session_average_speed_kmh.meta_value is not null
-          and session_duration_minutes.meta_value is not null
-          and session_distance_km.meta_value is not null
+          and session_average_speed_kmh.meta_value > 0
+          and session_duration_minutes.meta_value > 0
+          and session_distance_km.meta_value > 0
           order by duration_minutes asc
         "),
         ARRAY_A
