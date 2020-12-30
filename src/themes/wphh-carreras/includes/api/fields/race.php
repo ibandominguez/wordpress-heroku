@@ -82,14 +82,14 @@ register_rest_field('race', 'rankings', array(
             truncate(session_distance_km.meta_value, 2) as distance_km
           from {$wpdb->posts} as sessions
           join {$wpdb->users} as users on sessions.post_author = users.ID
-          join {$wpdb->usermeta} as race_payment on (users.ID = race_payment.user_id and race_payment.meta_key = 'race_payments' and race_payment.meta_value = '{$object['id']}')
+          left join {$wpdb->usermeta} as race_payment on (users.ID = race_payment.user_id and race_payment.meta_key = 'race_payments' and race_payment.meta_value = '{$object['id']}')
           join {$wpdb->posts} as race on sessions.post_parent = race.ID
           join {$wpdb->postmeta} as session_average_speed_kmh on (session_average_speed_kmh.post_id = sessions.ID and session_average_speed_kmh.meta_key = 'average_speed_kmh')
           join {$wpdb->postmeta} as session_duration_minutes on (session_duration_minutes.post_id = sessions.ID and session_duration_minutes.meta_key = 'duration_minutes')
           join {$wpdb->postmeta} as session_distance_km on (session_distance_km.post_id = sessions.ID and session_distance_km.meta_key = 'distance_km')
           join {$wpdb->postmeta} as race_distance_km on (race_distance_km.post_id = race.ID and race_distance_km.meta_key = 'distance_km')
           join {$wpdb->postmeta} as race_duration_minutes on (race_duration_minutes.post_id = race.ID and race_duration_minutes.meta_key = 'duration_minutes')
-          join {$wpdb->postmeta} as race_oid on (race_oid.post_id = race.ID and race_oid.meta_key = 'oid')
+          left join {$wpdb->postmeta} as race_oid on (race_oid.post_id = race.ID and race_oid.meta_key = 'oid')
           join {$wpdb->term_relationships} as term_relationships on (sessions.ID = term_relationships.object_id)
           join {$wpdb->term_taxonomy} as term_taxonomies on (term_relationships.term_taxonomy_id = term_taxonomies.term_taxonomy_id)
           where sessions.post_type = 'session'
@@ -97,7 +97,7 @@ register_rest_field('race', 'rankings', array(
           and sessions.post_parent = {$object['id']}
           and term_taxonomies.term_id = {$modality->term_id}
           and (isnull(race_distance_km.meta_value) or session_distance_km.meta_value >= race_distance_km.meta_value)
-          and (isnull(race_oid.meta_value) or race_payment.meta_value is not null)
+          and (isnull(if(race_oid.meta_value, race_oid.meta_value, null)) or race_payment.meta_value is not null)
           and session_average_speed_kmh.meta_value > 0
           and session_duration_minutes.meta_value > 0
           and session_distance_km.meta_value > 0
