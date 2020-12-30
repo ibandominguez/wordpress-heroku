@@ -102,7 +102,7 @@ register_rest_field('race', 'rankings', array(
           and session_average_speed_kmh.meta_value is not null
           and session_duration_minutes.meta_value is not null
           and session_distance_km.meta_value is not null
-          order by session_average_speed_kmh.meta_value desc
+          order by average_speed_kmh desc
         "),
         ARRAY_A
       );
