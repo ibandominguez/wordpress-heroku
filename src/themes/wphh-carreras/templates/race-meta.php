@@ -66,12 +66,12 @@ small { color: #aaa; }
     <small>La carrera podrá realizarse hasta esta fecha.<br>* Si dejas este campo vacío la carrera podrá realizarse hasta cualquier momento.</small>
   </div><hr>
 
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label class="form-label" for="duration_minutes">Duración en minutos (introduce el formato decimal: un minuto y medio = 1.5)</label>
     <input id="duration_minutes" class="form-control" type="number" step="0.01" name="duration_minutes" value="<?= get_post_meta($post->ID, 'duration_minutes', true); ?>">
     <h4 style="margin: 3px 0; padding: 0;">No te preocupes, se transormará a 00:00:00 en la app</h4>
     <small>La carrera finalizará cuando se alcance dicho tiempo.<br>* Si dejas este campo vacío la carrera se podrá finalizar cuando quiera el usuario.</small>
-  </div><hr>
+  </div><hr> -->
 
   <div class="form-group">
     <label class="form-label" for="distance_km">Distancia en kilómetros</label>

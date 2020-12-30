@@ -77,7 +77,7 @@ register_rest_field('race', 'rankings', array(
           select
             users.ID as id,
             users.display_name as name,
-            'Menor duración' as average_speed_kmh,
+            truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
             truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
             truncate(session_distance_km.meta_value, 2) as distance_km
           from {$wpdb->posts} as sessions
@@ -97,7 +97,6 @@ register_rest_field('race', 'rankings', array(
           and sessions.post_parent = {$object['id']}
           and term_taxonomies.term_id = {$modality->term_id}
           and (isnull(race_distance_km.meta_value) or session_distance_km.meta_value >= race_distance_km.meta_value)
-          # and (isnull(race_duration_minutes.meta_value) or session_duration_minutes.meta_value >= race_duration_minutes.meta_value)
           and (isnull(race_oid.meta_value) or race_payment.meta_value is not null)
           and session_average_speed_kmh.meta_value is not null
           and session_duration_minutes.meta_value is not null
