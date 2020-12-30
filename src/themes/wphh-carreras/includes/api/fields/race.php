@@ -77,7 +77,7 @@ register_rest_field('race', 'rankings', array(
           select
             users.ID as id,
             users.display_name as name,
-            truncate(session_average_speed_kmh.meta_value, 2) as average_speed_kmh,
+            'Menor duración' as average_speed_kmh,
             truncate(session_duration_minutes.meta_value, 2) as duration_minutes,
             truncate(session_distance_km.meta_value, 2) as distance_km
           from {$wpdb->posts} as sessions
@@ -102,7 +102,7 @@ register_rest_field('race', 'rankings', array(
           and session_average_speed_kmh.meta_value is not null
           and session_duration_minutes.meta_value is not null
           and session_distance_km.meta_value is not null
-          order by average_speed_kmh desc
+          order by duration_minutes asc
         "),
         ARRAY_A
       );
