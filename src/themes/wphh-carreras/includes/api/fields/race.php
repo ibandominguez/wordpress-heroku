@@ -101,6 +101,7 @@ register_rest_field('race', 'rankings', array(
           and session_average_speed_kmh.meta_value > 0
           and session_duration_minutes.meta_value > 0
           and session_distance_km.meta_value > 0
+          group by users.ID
           order by duration_minutes asc
         "),
         ARRAY_A
