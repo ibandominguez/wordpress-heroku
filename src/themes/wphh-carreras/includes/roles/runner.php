@@ -33,5 +33,7 @@ foreach (['administrator', 'editor'] as $role):
     $role->add_cap('delete_others_sessions');
     $role->add_cap('edit_others_sessions');
     $role->add_cap('delete_private_sessions');
+    $role->add_cap('delete_published_sessions');
+    $role->add_cap('edit_published_sessions');
   endif;
 endforeach;
