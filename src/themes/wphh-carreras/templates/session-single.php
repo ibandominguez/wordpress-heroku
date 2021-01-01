@@ -1,4 +1,6 @@
 <?php global $wp_query; ?>
+<?php $coordinates = get_post_meta($wp_query->post->ID, 'coordinates', true); ?>
+<?php $raceCoordinates = $wp_query->post->post_parent ? get_post_meta($wp_query->post->post_parent, 'coordinates', true) : []; ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
   <head>
@@ -8,26 +10,25 @@
     <title><?php wp_title('&laquo;', true, 'right'); ?> <?php bloginfo('name'); ?></title>
     <?php wp_head(); ?>
     <style media="screen">
-    .header { position: fixed; top: 0; left: 0; width: 100%; }
+    .header { height: 10vh; }
     .detail { padding: 20px; text-align: center; border: 1px solid #aaa; background: rgba(0, 0, 0, 0.05); }
-    .map { height: 100vh; min-height: 500px; }
+    .map { height: 90vh; min-height: 500px; }
     </style>
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="detail col-12 col-xs-12 col-sm-4">Distancia recorrida: <b><?= get_post_meta($wp_query->post->ID, 'distance_km', true); ?></b> km</div>
-        <div class="detail col-12 col-xs-12 col-sm-4">Duración: <b><?= get_post_meta($wp_query->post->ID, 'duration_minutes', true); ?></b> minutos</div>
-        <div class="detail col-12 col-xs-12 col-sm-4">Velocidad media: <b><?= get_post_meta($wp_query->post->ID, 'average_speed_kmh', true); ?></b> km/h</div>
-        <div id="map" class="map col-12 col-xs-12"></div>
+    <div class="p-0 m-y">
+      <div class="d-flex align-items-center justify-items-center" style="height: 10vh">
+        <span class="p-3 flex-grow-1 text-center">Distancia recorrida: <b><?= get_post_meta($wp_query->post->ID, 'distance_km', true); ?></b> km</span>
+        <span class="p-3 flex-grow-1 text-center">Duración: <b><?= get_post_meta($wp_query->post->ID, 'duration_minutes', true); ?></b> minuto(s)</span>
+        <span class="p-3 flex-grow-1 text-center">Velocidad media: <b><?= get_post_meta($wp_query->post->ID, 'average_speed_kmh', true); ?></b> km/h</span>
       </div>
+      <div id="map" class="w-100" style="height: 90vh"></div>
     </div>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?= get_option('race_map_key'); ?>&libraries=places,geometry"></script>
     <script type="text/javascript">
-    function initMap() {
-      var coordinates = (<?= json_encode(
-        get_post_meta($wp_query->post->ID, 'coordinates', true)
-      ); ?> || []).map(function(coordinate) {
+    window.onload = function () {
+      var coordinates = <?= is_array($coordinates) ? json_encode($coordinates) : '[]'; ?>.map(function(coordinate) {
         coordinate.lat = parseFloat(coordinate.latitude);
         coordinate.lng = parseFloat(coordinate.longitude);
         coordinate.speed = parseFloat(coordinate.speed);
@@ -45,9 +46,7 @@
 
       <?php if ($wp_query->post->post_parent): ?>
         new google.maps.Polyline({
-          path: <?= json_encode(
-            get_post_meta($wp_query->post->post_parent, 'coordinates', true) ?? []
-          ); ?>.map(function(coordinate) {
+          path: <?= is_array($raceCoordinates) ? json_encode($raceCoordinates) : '[]'; ?>.map(function(coordinate) {
             coordinate.lat = parseFloat(coordinate.latitude);
             coordinate.lng = parseFloat(coordinate.longitude);
             return coordinate;
@@ -94,6 +93,5 @@
       map.fitBounds(bounds);
     }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<?= get_option('race_map_key'); ?>&callback=initMap&libraries=places,geometry"></script>
   </body>
 </html>
