@@ -25,9 +25,9 @@
 
     <script type="text/javascript">
     function initMap() {
-      var coordinates = <?= json_encode(
-        get_post_meta($wp_query->post->ID, 'coordinates', true) ?? []
-      ); ?>.map(function(coordinate) {
+      var coordinates = (<?= json_encode(
+        get_post_meta($wp_query->post->ID, 'coordinates', true)
+      ); ?> || []).map(function(coordinate) {
         coordinate.lat = parseFloat(coordinate.latitude);
         coordinate.lng = parseFloat(coordinate.longitude);
         coordinate.speed = parseFloat(coordinate.speed);
