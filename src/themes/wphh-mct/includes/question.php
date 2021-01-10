@@ -56,9 +56,13 @@ register_post_type('question', [
     add_meta_box('group_meta_box', 'Grupo', function($post) { ?>
       <?php global $wpdb; ?>
       <?php $groups = $wpdb->get_col("select distinct(meta_value) from {$wpdb->postmeta} where meta_key = 'group'"); ?>
+      <?php $postGroup = get_post_meta($post->ID, 'group', true); ?>
       <div x-data='{ newGroup: "", groups: <?= is_array($groups) ? json_encode($groups) : '[]'; ?> }'>
         <select x-ref="groupSelect" name="group" style="width: 100%">
           <option value="">Free (Gratuita)</option>
+          <?php if (!empty($postGroup)): ?>
+            <option value="<?= $postGroup; ?>" selected><?= $postGroup; ?></option>
+          <?php endif; ?>
           <template x-for="group in groups" :key="group">
             <option :value="group" x-text="group"></option>
           </template>

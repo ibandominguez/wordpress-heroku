@@ -16,3 +16,29 @@ add_action('admin_enqueue_scripts', function () {
 add_action('rest_api_init', function () {
   // ...
 });
+
+add_action('admin_menu', function() {
+  remove_menu_page('upload.php');
+  remove_menu_page('tools.php');
+});
+
+add_action('wp_dashboard_setup', function() {
+  global $wpdb;
+  global $wp_meta_boxes;
+
+  $wp_meta_boxes['dashboard'] = [];
+  $wp_meta_boxes['side'] = [];
+
+  remove_action('welcome_panel', 'wp_welcome_panel');
+
+  wp_add_dashboard_widget('theme_questions', 'Gestión de preguntas', function () use ($wpdb) { ?>
+    <h4>Total de preguntas creadas: <b><?= count(get_posts(['post_type' => 'question'])); ?></b></h4>
+    <h4>Total grupos de venta: <b><?= count($wpdb->get_col("select distinct(meta_value) from {$wpdb->postmeta} where meta_key = 'group'")); ?></b></h4>
+    <p>Todas tus preguntas se pueden agrupar en categorías y grupos. Las categorías sirven como filtros a la hora de crear tests y los grupos definen los diferentes paquetes de venta.</p>
+  <?php });
+
+  wp_add_dashboard_widget('theme_sales', 'Total ventas', function () use ($wpdb) { ?>
+    <h4>En desarrollo</h4>
+    <p>Actualmente en desarrollo.</p>
+  <?php });
+});
