@@ -29,6 +29,7 @@ register_post_type('question', [
       .question-meta table { width: 100%; }
       .question-meta table th { text-align: left; padding: 10px; border: 1px dashed #eee; }
       .question-meta table td { text-align: left; padding: 5px; border: 1px solid #eee; }
+      .question-meta table td textarea { width: 100%; }
       </style>
       <div class="question-meta" x-data='{ options: <?= !empty($options) ? json_encode($options) : '[{ title: "", correct: false }]'; ?> }'>
         <table>
@@ -43,7 +44,9 @@ register_post_type('question', [
             <template x-for="(option, index) in options" :key="option">
               <tr>
                 <td style="text-align: center"><input type="checkbox" :name="'options[' + index + '][correct]'" x-model="option.correct" value="true" /></td>
-                <td><input required type="text" :name="'options[' + index + '][title]'" placeholder="Añadir texto de la posible respuesta" x-model="option.title" /></td>
+                <td>
+                  <textarea required type="text" :name="'options[' + index + '][title]'" placeholder="Añadir texto de la posible respuesta" x-model="option.title"></textarea>
+                </td>
                 <td><span class="button" @click="options.splice(index, 1)">Borrar</span></td>
               </tr>
             </template>
