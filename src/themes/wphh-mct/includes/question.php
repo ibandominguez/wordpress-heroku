@@ -51,6 +51,15 @@ register_post_type('question', [
         </table>
         <span class="button" style="margin-top: 5px" @click="options.push({ title: '', correct: false })">Añadir nueva opción</span>
       </div>
+      <script type="text/javascript">
+      jQuery(document).ready(function () {
+        var $postTitleElement = jQuery('[name=post_title]');
+        var $textAreaElement  = jQuery('<textarea />', { id: 'title', name: 'post_title', style: 'width: 100%' })
+        $textAreaElement.append($postTitleElement.val());
+        $postTitleElement.replaceWith($textAreaElement);
+        $textAreaElement.animate({ height: '100px' });
+      });
+      </script>
     <?php }, null, 'advanced', 'high');
 
     add_meta_box('group_meta_box', 'Grupo', function($post) { ?>
