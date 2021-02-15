@@ -83,7 +83,7 @@ define('SAVEQUERIES', getEnvOr('WP_DEBUG_DISPLAY', false));
  */
 
 if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
-	$_SERVER['HTTPS']='on';
+	$_SERVER['HTTPS'] = 'on';
 endif;
 
 /**
