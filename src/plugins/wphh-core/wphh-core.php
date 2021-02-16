@@ -34,7 +34,8 @@ add_filter('wp_prepare_themes_for_js', function($themes) {
   foreach ($themes as $key => $value):
     if (
       strpos($key, 'wphh-') !== 0 &&
-      strpos($key, $_SERVER['HTTP_HOST']) !== 0
+      strpos($key, $_SERVER['HTTP_HOST']) !== 0 &&
+      strpos($key, '-') !== false
     ):
       unset($themes[$key]);
     endif;
