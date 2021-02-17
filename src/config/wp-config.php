@@ -82,7 +82,7 @@ define('SAVEQUERIES', getEnvOr('WP_DEBUG_DISPLAY', false));
  * Handle Heroku ssl
  */
 
-if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
+if (defined('FORCE_SSL_ADMIN') && !empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https'):
 	$_SERVER['HTTPS'] = 'on';
 endif;
 

@@ -4,6 +4,8 @@ RewriteBase /
 # Force SSL on Heroku
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+RequestHeader set X-Forwarded-Proto "https"
+RequestHeader set X-Forwarded-Port "443"
 
 # Wordpress front contoller
 RewriteRule ^index\.php$ - [L]
