@@ -8,7 +8,7 @@
   </head>
   <body>
     <!-- Header -->
-    <header class="navbar navbar-expand-lg navbar-light bg-light">
+    <header class="navbar navbar-light bg-light">
       <nav class="container">
         <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
           <?php the_custom_logo(); ?>
