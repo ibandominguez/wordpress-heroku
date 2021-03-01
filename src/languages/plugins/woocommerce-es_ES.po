@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-02-09 23:38:07+0000\n"
+"PO-Revision-Date: 2021-02-25 11:55:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24322,7 +24322,7 @@ msgstr "Cambiar a:"
 #: includes/admin/views/html-bulk-edit-product.php:222
 #: includes/admin/views/html-bulk-edit-product.php:280
 msgid "— No Change —"
-msgstr "- Sin cambios -"
+msgstr "— Sin cambios —"
 
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:121
 #: includes/admin/views/html-admin-settings.php:45

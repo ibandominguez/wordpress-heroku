@@ -55,7 +55,7 @@ class Plugin {
 	 */
 	public function __construct() {
 		$this->plugin_name = 'wp-rest-cache';
-		$this->version     = '2021.1.0';
+		$this->version     = '2021.2.1';
 
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -119,6 +119,8 @@ class Plugin {
 			3
 		);
 		add_action( 'wp_ajax_flush_caches', [ $plugin_admin, 'flush_caches' ], 10, 1 );
+
+		add_action( 'cli_init', [ $plugin_admin, 'add_cli_commands' ] );
 	}
 
 	/**
