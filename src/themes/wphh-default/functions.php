@@ -2,8 +2,14 @@
 
 require_once __DIR__.'/includes/Bootstrap_NavWalker.php';
 
+add_action('init', function () {
+  add_theme_support('wp-block-styles');
+  add_theme_support('align-wide');
+});
+
 add_action('wp_enqueue_scripts', function() {
   wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', false, null, 'all');
+  wp_enqueue_style('style', get_stylesheet_uri());
   wp_enqueue_script('popper-js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', ['jquery'], null, true);
   wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', ['jquery'], null, true);
 });

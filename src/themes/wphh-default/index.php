@@ -8,43 +8,45 @@
   </head>
   <body>
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
-        <?php the_custom_logo(); ?>
-      <?php else: ?>
-        <a href="<?= esc_url(home_url('/')); ?>" rel="home" title="<?php bloginfo('name'); ?>" class="navbar-brand">
-          <?php bloginfo('name'); ?>
-        </a>
-      <?php endif; ?>
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav class="container">
+        <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
+          <?php the_custom_logo(); ?>
+        <?php else: ?>
+          <a href="<?= esc_url(home_url('/')); ?>" rel="home" title="<?php bloginfo('name'); ?>" class="navbar-brand">
+            <?php bloginfo('name'); ?>
+          </a>
+        <?php endif; ?>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#wphh-default-navbar" aria-controls="wphh-default-navbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#wphh-default-navbar" aria-controls="wphh-default-navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div id="wphh-default-navbar" class="collapse navbar-collapse">
-        <?php wp_nav_menu([
-    			'theme_location' => 'primary',
-    			'menu_id'        => 'primary-menu',
-    			'container'      => false,
-    			'depth'          => 2,
-    			'menu_class'     => 'navbar-nav ml-auto',
-    			'walker'         => new Bootstrap_NavWalker(),
-    			'fallback_cb'    => 'Bootstrap_NavWalker::fallback',
-  		  ]); ?>
-      </div>
-    </nav>
+        <div id="wphh-default-navbar" class="collapse navbar-collapse">
+          <?php wp_nav_menu([
+      			'theme_location' => 'primary',
+      			'menu_id'        => 'primary-menu',
+      			'container'      => false,
+      			'depth'          => 2,
+      			'menu_class'     => 'navbar-nav ml-auto',
+      			'walker'         => new Bootstrap_NavWalker(),
+      			'fallback_cb'    => 'Bootstrap_NavWalker::fallback',
+    		  ]); ?>
+        </div>
+      </nav>
+    </header>
     <!-- /Header -->
 
     <!-- Content -->
-    <div class="container-fluid py-3">
+    <div class="container">
       <?php /* Post listing */ ?>
       <?php if (have_posts()): while (have_posts()): the_post(); ?>
-        <h2><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
-        <small><?php the_time('F jS, Y'); ?> by <?php the_author_posts_link(); ?></small>
         <?php if (is_singular()): ?>
-          <div class="content"><?php the_content(); ?></div>
+          <div class="entry-content"><?php the_content(); ?></div>
         <?php else: ?>
-          <div class="excerpt"><?php the_excerpt(); ?></div>
+          <h2><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+          <small><?php the_time('F jS, Y'); ?> by <?php the_author_posts_link(); ?></small>
+          <div class="entry-excerpt"><?php the_excerpt(); ?></div>
           <hr>
         <?php endif; ?>
       <?php endwhile; else: ?>
