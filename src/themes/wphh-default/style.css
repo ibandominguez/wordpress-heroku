@@ -19,7 +19,11 @@ Currently on development
 /* Align wide, other styles */
 
 .entry-content > *:first-child {
-	padding-top: 35px;
+	margin-top: 35px;
+}
+
+.entry-content > * {
+	margin-bottom: 15px;
 }
 
 /* Align wide, alignfull block styles */
