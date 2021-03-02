@@ -8,7 +8,7 @@
   </head>
   <body>
     <!-- Header -->
-    <header class="navbar navbar-expand-lg navbar-light bg-light py-5">
+    <header class="navbar navbar-expand-lg navbar-light bg-light py-4">
       <nav class="container">
         <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
           <?php the_custom_logo(); ?>
@@ -41,14 +41,16 @@
     <div class="container">
       <?php /* Post listing */ ?>
       <?php if (have_posts()): while (have_posts()): the_post(); ?>
-        <?php if (is_singular()): ?>
-          <div class="entry-content"><?php the_content(); ?></div>
-        <?php else: ?>
-          <h2><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
-          <small><?php the_time('F jS, Y'); ?> by <?php the_author_posts_link(); ?></small>
-          <div class="entry-excerpt"><?php the_excerpt(); ?></div>
-          <hr>
-        <?php endif; ?>
+        <div class="entry-content">
+          <?php if (is_singular()): ?>
+            <?php the_content(); ?>
+          <?php else: ?>
+            <h2><a href="<?php the_permalink(); ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+            <small><?php the_time('F jS, Y'); ?> by <?php the_author_posts_link(); ?></small>
+            <div class="entry-excerpt"><?php the_excerpt(); ?></div>
+            <hr>
+          <?php endif; ?>
+        </div>
       <?php endwhile; else: ?>
         <h4><?= __('Not found', 'wphh-default'); ?></h4>
         <p><?= __('Content not found', 'wphh-default'); ?></p>

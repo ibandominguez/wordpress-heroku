@@ -18,9 +18,8 @@ Currently on development
 
 /* Align wide, other styles */
 
-.entry-content > div {
-	padding-top: 25px;
-	padding-bottom: 25px;
+.entry-content > *:first-child {
+	padding-top: 35px;
 }
 
 /* Align wide, alignfull block styles */
