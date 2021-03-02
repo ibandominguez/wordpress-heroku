@@ -29,3 +29,94 @@ add_action('wp_dashboard_setup', function() {
   <?php });
   */
 });
+
+add_action('customize_register', function ($wp_customize) {
+  $wp_customize->add_panel('wphh_theme_options', [
+    'priority' => 160,
+    'capability' => 'edit_theme_options',
+    'theme_supports' => '', // Rarely needed
+    'title' => __('Diseño general', 'wphh-default'),
+    'description' => __('Configura el diseño de tu tema', 'wphh-default'),
+  ]);
+
+  $wp_customize->add_section('header', [
+    'title' => __('Cabecera', 'wphh-default'),
+    'description' => __('Diseña aquí tu cabecera', 'wphh-default'),
+    'panel' => 'wphh_theme_options', // Not typically needed.
+    'priority' => 160,
+    'capability' => 'edit_theme_options',
+    'theme_supports' => '', // Rarely needed.
+  ]);
+
+  $wp_customize->add_setting('header_bg_color', [
+    'type' => 'theme_mod', // or 'option'
+    'capability' => 'edit_theme_options',
+    'theme_supports' => '', // Rarely needed.
+    'default' => '#EEE', // Ej: #000000
+    'transport' => 'refresh', // or postMessage
+    'sanitize_callback' => 'sanitize_hex_color', // Ej: 'sanitize_hex_color'
+    'sanitize_js_callback' => '', // Basically to_json.
+  ]);
+
+  $wp_customize->add_control(
+    new WP_Customize_Color_Control($wp_customize, 'header_bg_color', [
+      'label' => __('Color de fondo', 'wphh-default'),
+      'section' => 'header' // Required, core or custom.
+    ])
+  );
+
+  $wp_customize->add_setting('header_y_padding', [
+    'type' => 'theme_mod', // or 'option'
+    'capability' => 'edit_theme_options',
+    'theme_supports' => '', // Rarely needed.
+    'default' => '15', // Ej: #000000
+    'transport' => 'refresh', // or postMessage
+    'sanitize_callback' => '', // Ej: 'sanitize_hex_color'
+    'sanitize_js_callback' => '', // Basically to_json.
+  ]);
+
+  $wp_customize->add_control('header_y_padding', [
+    'type' => 'range',
+    'section' => 'header',
+    'label' => __('Espaciado vertical', 'wphh-default'),
+    'input_attrs' => ['min' => 0, 'max' => 50, 'step' => 1]
+  ]);
+
+  $wp_customize->add_setting('header_text_color', [
+    'type' => 'theme_mod', // or 'option'
+    'capability' => 'edit_theme_options',
+    'theme_supports' => '', // Rarely needed.
+    'default' => '#222', // Ej: #000000
+    'transport' => 'refresh', // or postMessage
+    'sanitize_callback' => 'sanitize_hex_color', // Ej: 'sanitize_hex_color'
+    'sanitize_js_callback' => '', // Basically to_json.
+  ]);
+
+  $wp_customize->add_control(
+    new WP_Customize_Color_Control($wp_customize, 'header_text_color', [
+      'label' => __('Color del texto', 'wphh-default'),
+      'section' => 'header' // Required, core or custom.
+    ])
+  );
+
+  $wp_customize->add_setting('header_text_color_hover', [
+    'type' => 'theme_mod', // or 'option'
+    'capability' => 'edit_theme_options',
+    'theme_supports' => '', // Rarely needed.
+    'default' => '#000', // Ej: #000000
+    'transport' => 'refresh', // or postMessage
+    'sanitize_callback' => 'sanitize_hex_color', // Ej: 'sanitize_hex_color'
+    'sanitize_js_callback' => '', // Basically to_json.
+  ]);
+
+  $wp_customize->add_control(
+    new WP_Customize_Color_Control($wp_customize, 'header_text_color_hover', [
+      'label' => __('Color del texto (activo o hover)', 'wphh-default'),
+      'section' => 'header' // Required, core or custom.
+    ])
+  );
+
+  // TODO: Add more options to be configured
+  // such as typography, section spacings, cdn importing, main colors, etc ...
+  // Optial sidebar, widgets ...
+});

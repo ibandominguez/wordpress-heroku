@@ -5,10 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?php wp_title('&laquo;', true, 'right'); ?> <?php bloginfo('name'); ?></title>
     <?php wp_head(); ?>
+    <style media="screen">
+    #header {
+      background-color: <?= get_theme_mod('header_bg_color'); ?>;
+      padding: <?= get_theme_mod('header_y_padding'); ?>px 0px;
+    }
+    #header .navbar-nav .nav-link {
+      color: <?= get_theme_mod('header_text_color'); ?>;
+    }
+    #header .navbar-nav .nav-link.active, #header .navbar-nav .nav-link:hover {
+      color: <?= get_theme_mod('header_text_color_hover'); ?>;
+    }
+    </style>
   </head>
   <body>
     <!-- Header -->
-    <header class="navbar navbar-expand-lg navbar-light bg-light py-4">
+    <header id="header" class="navbar navbar-expand-lg navbar-light theme-mod-header">
       <nav class="container">
         <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
           <?php the_custom_logo(); ?>
