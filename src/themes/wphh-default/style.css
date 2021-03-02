@@ -16,15 +16,16 @@ Domain Path: /languages
 Currently on development
 */
 
-/* General Styles overwrite */
+/* Align wide, other styles */
 
-h1, h2, h3, h4, h5, h6 {
-	margin: 15px 0;
+.entry-content > div {
+	padding-top: 25px;
+	padding-bottom: 25px;
 }
 
 /* Align wide, alignfull block styles */
 
-.alignwide, .alignfull {
+.entry-content > .alignwide, .entry-content > .alignfull {
 	margin: 32px calc(50% - 50vw);
 	margin-top: 0;
 	margin-bottom: 0;
@@ -33,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 920px) {
-	.alignwide {
+	.entry-content > .alignwide {
 		margin: 32px calc((767px - 920px) / 2);
 		max-width: 920px;
 		width: 920px;
