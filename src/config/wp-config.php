@@ -37,6 +37,8 @@ endif;
  * Handle Heroku ssl
  */
 
+define('FORCE_SSL_ADMIN', getEnvOr('FORCE_SSL_ADMIN', false));
+
 if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
 	$_SERVER['HTTPS'] = 'on';
 endif;
@@ -73,8 +75,6 @@ define('NONCE_SALT', getEnvOr('NONCE_SALT', ']c5oeTN0OF{Tif5a7@h<GY#N-(X/P?&z@4J
 
 define('WP_SITEURL', getEnvOr('WP_SITEURL', URL));
 define('WP_HOME', getEnvOr('WP_HOME', URL));
-
-define('FORCE_SSL_ADMIN', getEnvOr('FORCE_SSL_ADMIN', false));
 
 define('DISALLOW_FILE_EDIT', getEnvOr('DISALLOW_FILE_EDIT', true));
 define('DISALLOW_FILE_MODS', getEnvOr('DISALLOW_FILE_MODS', true));
