@@ -23,6 +23,8 @@ define('WPHH_PLUGINS', [
 add_action('init', function() {
   require_once(__DIR__.'/includes/api/meta-filters.php');
   require_once(__DIR__.'/includes/settings/smtp.php');
+  require_once(__DIR__.'/includes/authbasic.php');
+  require_once(__DIR__.'/includes/logo.php');
   // TODO: Check current site status
 });
 
