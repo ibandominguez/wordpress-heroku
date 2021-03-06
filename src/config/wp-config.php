@@ -34,6 +34,14 @@ if (!empty(getenv('CLOUDCUBE_URL'))):
 endif;
 
 /**
+ * Handle Heroku ssl
+ */
+
+if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
+	$_SERVER['HTTPS'] = 'on';
+endif;
+
+/**
  * Define contansts
  * to be used through out the app
  */
@@ -77,14 +85,6 @@ define('WP_DEBUG', getEnvOr('WP_DEBUG', false));
 define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));
 define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
 define('SAVEQUERIES', getEnvOr('WP_DEBUG_DISPLAY', false));
-
-/**
- * Handle Heroku ssl
- */
-
-if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
-	$_SERVER['HTTPS'] = 'on';
-endif;
 
 /**
  * Dinamic database check
