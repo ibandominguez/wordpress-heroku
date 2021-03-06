@@ -7,7 +7,7 @@
  * Author URI: https://woocommerce.com/
  * Text Domain: woocommerce-services
  * Domain Path: /i18n/languages/
- * Version: 1.25.7
+ * Version: 1.25.8
  * WC requires at least: 3.0.0
  * WC tested up to: 5.0
  *
@@ -42,7 +42,7 @@ require_once( plugin_basename( 'classes/class-wc-connect-options.php' ) );
 if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 
 	define( 'WOOCOMMERCE_CONNECT_MINIMUM_WOOCOMMERCE_VERSION', '2.6' );
-	define( 'WOOCOMMERCE_CONNECT_MINIMUM_JETPACK_VERSION', '3.9' );
+	define( 'WOOCOMMERCE_CONNECT_MINIMUM_JETPACK_VERSION', '7.5' );
 	define( 'WOOCOMMERCE_CONNECT_SCHEMA_AGE_WARNING_THRESHOLD', DAY_IN_SECONDS );
 	define( 'WOOCOMMERCE_CONNECT_SCHEMA_AGE_ERROR_THRESHOLD', 3 * DAY_IN_SECONDS );
 	define( 'WOOCOMMERCE_CONNECT_MAX_JSON_DECODE_DEPTH', 32 );
@@ -656,6 +656,7 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 			require_once( plugin_basename( 'classes/class-wc-connect-package-settings.php' ) );
 			require_once( plugin_basename( 'classes/class-wc-connect-continents.php' ) );
 			require_once( plugin_basename( 'classes/class-wc-connect-order-presenter.php' ) );
+			require_once __DIR__ . '/classes/class-wc-connect-cart-validation.php';
 
 			$core_logger           = new WC_Logger();
 			$logger                = new WC_Connect_Logger( $core_logger );
@@ -696,6 +697,9 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 			$this->set_taxjar( $taxjar );
 			$this->set_paypal_ec( $paypal_ec );
 			$this->set_label_reports( $label_reports );
+
+			$cart_validation = new WC_Connect_Cart_Validation();
+			$cart_validation->register_filters();
 		}
 
 		/**
