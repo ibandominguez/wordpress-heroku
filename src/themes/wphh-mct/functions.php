@@ -10,6 +10,7 @@ add_action('init', function () {
 add_action('admin_enqueue_scripts', function () {
   // wp_enqueue_style('tailwind.css', 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css');
   wp_enqueue_script('alpine.js', 'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js');
+  wp_enqueue_script('alpine-ie11.js', 'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine-ie11.min.js');
 });
 
 add_action('rest_api_init', function () {
@@ -17,8 +18,8 @@ add_action('rest_api_init', function () {
 });
 
 add_action('admin_menu', function() {
-  remove_menu_page('upload.php');
-  remove_menu_page('tools.php');
+  !current_user_can('administrator') && remove_menu_page('upload.php');
+  !current_user_can('administrator') && remove_menu_page('tools.php');
 });
 
 add_action('wp_dashboard_setup', function() {
