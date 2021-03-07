@@ -67,22 +67,20 @@ register_post_type('question', [
 
     add_meta_box('group_meta_box', 'Grupo', function($post) { ?>
       <?php global $wpdb; ?>
-      <?php $groups = $wpdb->get_col("select distinct(meta_value) from {$wpdb->postmeta} where meta_key = 'group'"); ?>
+      <?php $groups = $wpdb->get_col("select distinct(meta_value) from {$wpdb->postmeta} where meta_key = 'group' and meta_value is not null and meta_value != ''"); ?>
       <?php $postGroup = get_post_meta($post->ID, 'group', true); ?>
-      <div x-data='{ newGroup: "", groups: <?= is_array($groups) ? json_encode($groups) : '[]'; ?> }'>
+      <div x-data='{ newGroup: "", groups: <?= json_encode(!empty($groups) ? $groups : []); ?> }'>
         <select x-ref="groupSelect" name="group" style="width: 100%">
           <option value="">Free (Gratuita)</option>
-          <?php if (!empty($postGroup)): ?>
-            <option value="<?= $postGroup; ?>" selected><?= $postGroup; ?></option>
-          <?php endif; ?>
           <template x-for="group in groups" :key="group">
-            <option :value="group" x-text="group"></option>
+            <option :value="group" x-text="group" :selected="group === '<?= $postGroup; ?>'"></option>
           </template>
         </select>
         <hr>
         <input type="text" style="width: 100%" x-model="newGroup" placeholder="Añade un nuevo grupo a la lista">
         <span class="button" style="margin-top: 5px" @click="groups.push(newGroup); newGroup = ''; setTimeout(function() { $refs.groupSelect.selectedIndex = $refs.groupSelect.length - 1; }, 250)">Añadir nuevo grupo</span>
         <p>Ten en cuenta el nombre de los grupos con atención. Ya que estos grupos son los que dividen las preguntas para venderlas por paquetes</p>
+        <small>* Si cambias las preguntas y el grupo no está en ningún uso, este se eliminará de la lista para evitar tener paquetes en venta sin preguntas.</small>
       </div>
     <?php }, 'question', 'side');
   }
