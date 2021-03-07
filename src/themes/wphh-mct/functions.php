@@ -22,6 +22,10 @@ add_action('admin_menu', function() {
   !current_user_can('administrator') && remove_menu_page('tools.php');
 });
 
+add_action('after_setup_theme', function() {
+  add_theme_support('custom-logo');
+});
+
 add_action('wp_dashboard_setup', function() {
   global $wpdb;
   global $wp_meta_boxes;

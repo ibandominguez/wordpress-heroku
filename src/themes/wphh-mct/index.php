@@ -9,13 +9,14 @@
   <body>
     <!-- Main -->
     <div style="font-family: helvetica, sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center;">
-      <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
-        <?php the_custom_logo(); ?>
-      <?php else: ?>
-        <a href="<?= esc_url(home_url('/')); ?>" rel="home" title="<?php bloginfo('name'); ?>" class="navbar-brand">
-          <?php bloginfo('name'); ?>
-        </a>
-      <?php endif; ?>
+      <div style="text-align: center">
+        <?php if (function_exists('the_custom_logo') && has_custom_logo()): ?>
+          <?php the_custom_logo(); ?>
+        <?php else: ?>
+          <h2><?php bloginfo('name'); ?></h2>
+        <?php endif; ?>
+        <p><?php bloginfo('description'); ?></p>
+      </div>
     </div>
     <!-- /Main -->
 
