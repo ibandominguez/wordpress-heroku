@@ -17,7 +17,7 @@ register_post_type('question', [
   'has_archive'        => true,
   'hierarchical'       => true,
   'menu_position'      => null,
-  'taxonomies'         => ['category'],
+  'taxonomies'         => ['category', 'post_tag'],
   'supports'           => ['title', 'thumbnail'],
   'register_meta_box_cb' => function() {
     add_meta_box('options_meta_box', 'Opciones de respuesta', function($post) { ?>
@@ -148,6 +148,7 @@ add_action('admin_init', function () {
     global $pagenow;
 
     if (
+      isset($_GET['post_type']) &&
       $_GET['post_type'] === 'question' &&
       $pagenow === 'edit.php' &&
       isset($_GET['group'])
