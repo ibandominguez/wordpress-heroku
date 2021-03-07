@@ -118,3 +118,64 @@ register_rest_field('question', 'options', [
     return !empty($options) ? $options : [];
   }
 ]);
+
+/**
+ * Filtering by group
+ */
+add_action('admin_init', function () {
+  add_action('restrict_manage_posts', function () {
+    global $wpdb, $table_prefix;
+
+    $groups = $wpdb->get_col("
+      select distinct(meta_value) from {$wpdb->postmeta}
+      where meta_key = 'group' and meta_value is not null
+    ");
+
+    printf('<select name="group">');
+    !isset($_GET['group']) && printf('<option disabled selected>Todas</option>');
+    foreach ($groups as $group):
+      printf(
+        '<option value="%s"%s>%s</option>',
+        $group,
+        isset($_GET['group']) && $group === $_GET['group'] ? 'selected' : '',
+        empty($group) ? 'Free (Gratuita)' : $group
+      );
+    endforeach;
+    printf('</select>');
+  });
+
+  add_filter('parse_query', function($query) {
+    global $pagenow;
+
+    if (
+      $_GET['post_type'] === 'question' &&
+      $pagenow === 'edit.php' &&
+      isset($_GET['group'])
+    ):
+      $query->set('meta_query', [
+        ['key' => 'group', 'value' => $_GET['group'], 'compare' => '=']
+      ]);
+    endif;
+  });
+});
+
+/**
+ * @link https://codex.wordpress.org/Plugin_API/Filter_Reference/manage_posts_columns
+ */
+add_filter('manage_question_posts_columns', function($columns) {
+  $dateColumn = $columns['date'];
+  unset($columns['date']);
+  $columns['group'] = 'Grupo (Ventas)';
+  $columns['date'] = $dateColumn;
+  return $columns;
+});
+
+/**
+ * @link https://codex.wordpress.org/Plugin_API/Action_Reference/manage_posts_custom_column
+ */
+add_action('manage_question_posts_custom_column', function($column, $postId) {
+  if (in_array($column, ['group'])):
+    $value = get_post_meta($postId, $column, true);
+    print($value ? $value : 'Free (Gratuita)');
+  endif;
+}, 10, 2);
