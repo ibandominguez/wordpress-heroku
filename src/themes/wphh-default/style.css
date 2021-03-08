@@ -22,7 +22,11 @@ Currently on development
 	margin-top: 35px;
 }
 
-.entry-content > * {
+.entry-conten > * {
+	margin-top: 15px;
+}
+
+.entry-content > *:last-child {
 	margin-bottom: 15px;
 }
 
