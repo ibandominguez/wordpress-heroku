@@ -36,7 +36,7 @@ add_action('wp_dashboard_setup', function() {
   remove_action('welcome_panel', 'wp_welcome_panel');
 
   wp_add_dashboard_widget('theme_questions', 'Gestión de preguntas', function () use ($wpdb) { ?>
-    <h4>Total de preguntas creadas: <b><?= wp_count_posts('question'); ?></b></h4>
+    <h4>Total de preguntas creadas: <b><?= $wpdb->get_col("select count(*) as count from {$wpdb->posts} where post_type = 'question'")[0]; ?></b></h4>
     <h4>Total grupos de venta: <b><?= count($wpdb->get_col("select distinct(meta_value) from {$wpdb->postmeta} where meta_key = 'group'")); ?></b></h4>
     <p>Todas tus preguntas se pueden agrupar en categorías y grupos. Las categorías sirven como filtros a la hora de crear tests y los grupos definen los diferentes paquetes de venta.</p>
   <?php });
