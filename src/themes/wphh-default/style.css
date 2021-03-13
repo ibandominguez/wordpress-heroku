@@ -16,25 +16,17 @@ Domain Path: /languages
 Currently on development
 */
 
-/* Align wide, other styles */
+/* Entry content styling */
 
-.entry-content > *:first-child {
-	margin-top: 35px;
+.entry-content > * {
+	padding: 25px 0;
 }
 
-.entry-conten > * {
-	margin-top: 15px;
-}
-
-.entry-content > *:last-child {
-	margin-bottom: 15px;
-}
-
-/* Align wide, alignfull block styles */
-
-.entry-content > .alignwide, .entry-content > .alignfull {
+.entry-content > .alignwide,
+.entry-content > .alignfull {
 	margin: 32px calc(50% - 50vw);
 	margin-top: 0;
+	padding: inherit;
 	margin-bottom: 0;
 	max-width: 100vw;
 	width: 100vw;
