@@ -64,8 +64,10 @@
           <?php endif; ?>
         </div>
       <?php endwhile; else: ?>
-        <h4><?= __('Not found', 'wphh-default'); ?></h4>
-        <p><?= __('Content not found', 'wphh-default'); ?></p>
+        <div class="my-5">
+          <h2><?= __('Not found', 'wphh-default'); ?></h2>
+          <p><?= __('Content not found', 'wphh-default'); ?></p>
+        </div>
       <?php endif; ?>
 
       <?php /* Pagination links */ ?>
