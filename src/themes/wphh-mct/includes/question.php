@@ -120,6 +120,18 @@ register_rest_field('question', 'options', [
 ]);
 
 /**
+ * @link https://developer.wordpress.org/reference/functions/register_rest_field/
+ */
+register_rest_field('question', 'group', [
+  'schema'          => 'string',
+  'update_callback' => null,
+  'get_callback'    => function($object, $fieldName, $request) {
+    $group = get_post_meta($object['id'], $fieldName, true);
+    return !empty($group) ? $group : null;
+  }
+]);
+
+/**
  * Filtering by group
  */
 add_action('admin_init', function () {
