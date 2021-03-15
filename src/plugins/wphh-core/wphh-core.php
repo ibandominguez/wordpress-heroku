@@ -29,6 +29,48 @@ add_action('init', function() {
 });
 
 /**
+ * Setup enviroments widgets
+ * @link https://codex.wordpress.org/Plugin_API/Action_Reference/rest_init
+ */
+add_action('rest_api_init', function() {
+  register_rest_route('wphh/v1', '/mails', [
+    'methods' => ['POST'],
+    'callback' => function (WP_REST_Request $request) {
+      $smptSettings = get_option('smtp_settings');
+      $params = $request->get_params();
+      $attachments = [];
+
+      if (empty($smptSettings['From'])):
+        return new WP_REST_Response(['message' => 'Debe configurarse el mail para activar esta funcionalidad'], 400);
+      endif;
+
+      if (empty($params['name']) || empty($params['email']) || empty($params['subject']) || empty($params['message'])):
+        return new WP_REST_Response(['message' => 'Los campos nombre, email, motivo y mensaje son requeridos'], 400);
+      endif;
+
+      foreach ($request->get_file_params() as $attachment):
+        move_uploaded_file($attachment['tmp_name'], $attachment['tmp_name'].$attachment['name']);
+        $attachments[] = $attachment['tmp_name'].$attachment['name'];
+      endforeach;
+
+      $mail = wp_mail(
+        $smptSettings['From'], // to
+        $params['subject'], // subject
+        $params['message'], // body
+        [
+          "From: {$smptSettings['FromName']} <{$smptSettings['From']}>",
+          "Reply-To: {$params['name']} <{$params['email']}>",
+          'Content-Type: text/html; charset=UTF-8'
+        ], // headers
+        $attachments // attachments
+      );
+
+      return new WP_REST_Response(['send' => $mail], $mail ? 201 : 400);
+    }
+  ]);
+});
+
+/**
  * Allow to create custom theme based on the host
  * @link https://developer.wordpress.org/reference/hooks/wp_prepare_themes_for_js/
  */
