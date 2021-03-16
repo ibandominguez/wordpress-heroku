@@ -65,7 +65,7 @@ add_action('rest_api_init', function() {
         $attachments // attachments
       );
 
-      return new WP_REST_Response(['send' => $mail], $mail ? 201 : 400);
+      return new WP_REST_Response(['sent' => $mail], $mail ? 201 : 400);
     }
   ]);
 });
