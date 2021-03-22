@@ -39,7 +39,11 @@ endif;
 
 define('FORCE_SSL_ADMIN', getEnvOr('FORCE_SSL_ADMIN', false));
 
-if (defined('FORCE_SSL_ADMIN') && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false):
+if (
+	defined('FORCE_SSL_ADMIN') &&
+	isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+	strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false
+):
 	$_SERVER['HTTPS'] = 'on';
 endif;
 
@@ -108,18 +112,22 @@ $table_prefix = PREFIX;
  */
 
 require_once(ABSPATH.'wp-settings.php');
-require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
-activate_plugin('wphh-core/wphh-core.php');
+if (!defined('WP_CLI')):
+	require_once(ABSPATH.'wp-admin/includes/plugin.php');
+	activate_plugin('wphh-core/wphh-core.php');
+endif;
 
 /**
  * Permalink default
  * Enables rest api
  */
 
-global $wp_rewrite;
+if (!defined('WP_CLI')):
+	global $wp_rewrite;
 
-if ($wp_rewrite->permalink_structure !== '/%postname%/'):
-	$wp_rewrite->set_permalink_structure('/%postname%/');
-	$wp_rewrite->flush_rules();
+	if ($wp_rewrite->permalink_structure !== '/%postname%/'):
+		$wp_rewrite->set_permalink_structure('/%postname%/');
+		$wp_rewrite->flush_rules();
+	endif;
 endif;
