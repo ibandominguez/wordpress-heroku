@@ -15,7 +15,7 @@ function getEnvOr($key, $default = null) {
 	return !empty($value) ? $value : $default;
 }
 
-if (!empty(getenv('JAWSDB_URL'))):
+if (!empty(getenv('JAWSDB_URL')) && !defined('WP_CLI')):
 	$url = parse_url(getenv('JAWSDB_URL'));
 	putenv('DB_NAME='.substr($url['path'], 1));
 	putenv('DB_USER='.$url['user']);
@@ -23,7 +23,7 @@ if (!empty(getenv('JAWSDB_URL'))):
 	putenv('DB_HOST='.$url['host']);
 endif;
 
-if (!empty(getenv('CLOUDCUBE_URL'))):
+if (!empty(getenv('CLOUDCUBE_URL')) && !defined('WP_CLI')):
 	$url = parse_url(getenv('CLOUDCUBE_URL'));
 	$bucket = explode('.', $url['host'])[0];
 	$path = $url['path'].'/'.$_SERVER['HTTP_HOST'];
