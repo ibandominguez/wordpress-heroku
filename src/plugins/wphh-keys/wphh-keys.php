@@ -120,7 +120,7 @@ add_action('rest_api_init', function (WP_REST_Server $wp_rest_server) {
       endif;
 
       $postMetaKey->active = date('Y-m-d') <= $postMetaKey->expires_at;
-      $postMetaKey->daysRemaining = round((strtotime($postMetaKey->expires_at) - strtotime(date('Y-m-d'))) / (60 * 60 * 24));
+      $postMetaKey->days_remaining = round((strtotime($postMetaKey->expires_at) - strtotime(date('Y-m-d'))) / (60 * 60 * 24));
 
       return new WP_REST_Response($postMetaKey, 200);
     }
