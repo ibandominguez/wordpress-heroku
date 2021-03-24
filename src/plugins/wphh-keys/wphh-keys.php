@@ -49,7 +49,7 @@ add_action('init', function () {
 add_action('save_post', function($postId) {
   $nonce  = @$_POST['key_meta_nonce'];
   $fields = ['key', 'expires_at'];
-  $formatedExpiresAt = DateTime::createFromFormat('Y-m-d', $_POST['expires_at']);
+  $formatedExpiresAt = DateTime::createFromFormat('Y-m-d', @$_POST['expires_at']);
 
   if (!wp_verify_nonce($nonce, 'key_meta') || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)):
     return $postId;
@@ -125,4 +125,51 @@ add_action('rest_api_init', function (WP_REST_Server $wp_rest_server) {
       return new WP_REST_Response($postMetaKey, 200);
     }
   ]);
+});
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/post_row_actions/
+ */
+add_filter('post_row_actions', function ($actions, $post) {
+  if ($post->post_type === 'key'):
+    unset($actions['trash']);
+    unset($actions['inline hide-if-no-js']);
+    $actions['delete'] = '<a rel="nofollow" href="' . esc_url(get_delete_post_link($post->ID, '', true)) . '">' . __('Delete') .'</a>';
+    return $actions;
+  endif;
+}, 10, 2);
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/admin_footer-hook_suffix/
+ */
+add_action('admin_footer-post.php', function () {
+  global $pagenow, $typenow;
+  if ($typenow === 'key'):
+    print("
+      <script>
+        jQuery('#minor-publishing').empty().css('padding', '15px').text('Actualiza tu clave');
+        jQuery('#delete-action').empty();
+      </script>
+    ");
+  endif;
+});
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/admin_footer-hook_suffix/
+ */
+add_action('admin_footer-post-new.php',  function () {
+  global $pagenow, $typenow;
+  if ($typenow === 'key'):
+    print("<script>jQuery('#minor-publishing').empty().css('padding', '15px').text('Publica tu clave');</script>");
+  endif;
+});
+
+/**
+ * @link https://developer.wordpress.org/reference/hooks/admin_footer-hook_suffix/
+ */
+add_action('admin_footer-edit.php', function () {
+  global $pagenow, $typenow;
+  if ($typenow === 'key'):
+    print("<script>jQuery('#minor-publishing').empty().css('padding', '15px').text('Publica tu clave');</script>");
+  endif;
 });

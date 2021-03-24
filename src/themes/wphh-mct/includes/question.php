@@ -136,7 +136,11 @@ register_rest_field('question', 'group', [
  */
 add_action('admin_init', function () {
   add_action('restrict_manage_posts', function () {
-    global $wpdb, $table_prefix;
+    global $wpdb, $table_prefix, $typenow;
+
+    if ($typenow !== 'question') {
+      return;
+    }
 
     $groups = $wpdb->get_col("
       select distinct(meta_value) from {$wpdb->postmeta}
