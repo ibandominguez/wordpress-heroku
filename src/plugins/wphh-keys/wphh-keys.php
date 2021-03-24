@@ -73,7 +73,7 @@ add_filter('manage_key_posts_columns', function($columns) {
   $dateColumn = $columns['date'];
   unset($columns['date']);
   $columns['key'] = 'Clave';
-  $columns['expires_at'] = 'Válida hasta';
+  $columns['vailidity'] = 'Validez';
   $columns['date'] = $dateColumn;
   return $columns;
 });
@@ -82,10 +82,26 @@ add_filter('manage_key_posts_columns', function($columns) {
  * @link https://codex.wordpress.org/Plugin_API/Action_Reference/manage_posts_custom_column
  */
 add_action('manage_key_posts_custom_column', function($column, $postId) {
-  if (in_array($column, ['expires_at', 'key'])):
-    $value = get_post_meta($postId, $column, true);
-    print($value ? $value : 'n/a');
-  endif;
+  switch ($column):
+    case 'key':
+      $key = get_post_meta($postId, 'key', true);
+      print($key ? $key : 'n/a');
+      break;
+    case 'vailidity':
+      $expiresAt = get_post_meta($postId, 'expires_at', true);
+      $active = date('Y-m-d') <= $expiresAt;
+      $activeColor = $active ? 'green' : 'red';
+      $daysRemaining = round((strtotime($expiresAt) - strtotime(date('Y-m-d'))) / (60 * 60 * 24));
+      print(implode('', [
+        '<div style="display: flex; align-items: center; justify-content: center">',
+          "<span style=\"border-radius: 50%; height: 20px; width: 20px; margin-right: 10px; background-color: {$activeColor}\"></span>",
+          $active ? 'Activa' : 'Inactiva',
+          $active ? " ({$daysRemaining} días restantes) " : '',
+          '<br />Expiración: ' . date('d-m-Y', strtotime($expiresAt)),
+        '</div>'
+      ]));
+      break;
+  endswitch;
 }, 10, 2);
 
 /**
@@ -172,4 +188,33 @@ add_action('admin_footer-edit.php', function () {
   if ($typenow === 'key'):
     print("<script>jQuery('#minor-publishing').empty().css('padding', '15px').text('Publica tu clave');</script>");
   endif;
+});
+
+/**
+ * Filtering by group
+ */
+add_action('admin_init', function () {
+  add_action('restrict_manage_posts', function () {
+    global $typenow;
+
+    if ($typenow === 'key'):
+      print(implode('', [
+        '<select name="active">',
+          '<option value="">Todas</option>',
+          '<option ' . (@$_GET['active'] === 'true' ? 'selected' : '') . ' value="true">Activas</option>',
+          '<option ' . (@$_GET['active'] === 'false' ? 'selected' : '') . ' value="false">Inactivas</option>',
+        '</select>'
+      ]));
+    endif;
+  });
+
+  add_filter('parse_query', function($query) {
+    global $pagenow, $typenow;
+
+    if ($pagenow === 'edit.php' && $typenow === 'key' && !empty($_GET['active'])):
+      $query->set('meta_query', [
+        ['key' => 'expires_at', 'value' => date('Y-m-d'), 'compare' => $_GET['active'] === 'true' ? '>=' : '<=']
+      ]);
+    endif;
+  });
 });
