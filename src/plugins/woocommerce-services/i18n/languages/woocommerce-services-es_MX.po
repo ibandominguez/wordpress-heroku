@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce Shipping &amp; Tax - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-02-10 14:12:48+0000\n"
+"PO-Revision-Date: 2021-03-03 13:45:19+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,29 @@ msgstr ""
 "X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: es_MX\n"
 "Project-Id-Version: Plugins - WooCommerce Shipping &amp; Tax - Stable (latest release)\n"
+
+#. Translators: %1$s: State name, %2$s: Country name
+#: classes/class-wc-connect-shipping-method.php:300
+msgid "State %1$s is invalid for %2$s."
+msgstr "El estado %1$s no es válido para %2$s."
+
+#. Translators: %1$s: Localized label for Zip/postal code, %2$s: submitted
+#. zip/postal code, %3$s: Country name
+#: classes/class-wc-connect-shipping-method.php:263
+msgid "%1$s %2$s is invalid for %3$s."
+msgstr "%1$s %2$s no es válido para %3$s."
+
+#. Translators: %1$s: Localized label for Zip/postal code, %2$s: Country name
+#. Translators: %1$s: Localized label for province/region/state, %2$s: Country
+#. name
+#: classes/class-wc-connect-shipping-method.php:249
+#: classes/class-wc-connect-shipping-method.php:286
+msgid "A %1$s is required for %2$s."
+msgstr "Se necesita un %1$s para %2$s."
+
+#: classes/class-wc-connect-shipping-method.php:236
+msgid "A country is required"
+msgstr "Se necesita un país"
 
 #: i18n/strings.php:95
 msgid "Your store is over the limit for rate calls this month and your account will be charged for overages. To prevent future overage charges you can upgrade your plan."
@@ -178,13 +201,13 @@ msgid "Invalid WooCommerce Shipping & Tax service slug provided"
 msgstr "Slug de servicio de WooCommerce Shipping & Tax no válido proporcionado"
 
 #. Plugin Name of the plugin
-#: classes/class-wc-connect-settings-pages.php:113
 #: classes/class-wc-connect-privacy.php:36
+#: classes/class-wc-connect-settings-pages.php:113
 msgid "WooCommerce Shipping & Tax"
 msgstr "WooCommerce Shipping & Tax"
 
-#: classes/class-wc-connect-taxjar-integration.php:318 i18n/strings.php:128
-#: i18n/strings.php:263
+#: i18n/strings.php:128 i18n/strings.php:263
+#: classes/class-wc-connect-taxjar-integration.php:318
 msgid "ZIP/Postal code"
 msgstr "Código postal"
 
@@ -486,7 +509,7 @@ msgstr "Han sido guardados tus paquetes de envío."
 msgid "0.0"
 msgstr "0.0"
 
-#: woocommerce-services.php:1331
+#: woocommerce-services.php:1335
 msgid "Shipment Tracking"
 msgstr "Seguimiento de envíos"
 
@@ -498,23 +521,23 @@ msgstr "Información de aduanas válida"
 msgid "Customs information incomplete"
 msgstr "Información de aduanas incompleta"
 
-#: woocommerce-services.php:1374
+#: woocommerce-services.php:1378
 msgid "Packing Log:"
 msgstr "Registro de paquetería:"
 
-#: woocommerce-services.php:1361
+#: woocommerce-services.php:1365
 msgid "Chosen Rate:"
 msgstr "Tarifa elegida:"
 
-#: woocommerce-services.php:1357
+#: woocommerce-services.php:1361
 msgid "Shipping Method ID:"
 msgstr "ID del método de envío:"
 
-#: woocommerce-services.php:1353
+#: woocommerce-services.php:1357
 msgid "Shipping Method Name:"
 msgstr "Nombre del método de envío:"
 
-#: woocommerce-services.php:1337
+#: woocommerce-services.php:1341
 msgid "Shipping Debug"
 msgstr "Depuración de envíos"
 
@@ -556,8 +579,8 @@ msgid "Unable to send request to WooCommerce Shipping & Tax server. Body must be
 msgstr "No ha sido posible enviar la solicitud al servidor de WooCommerce Shipping & Tax. El cuerpo debe ser un array."
 
 #: classes/class-wc-connect-api-client-live.php:30
-msgid "Unable to send request to WooCommerce Shipping & Tax server. Jetpack_Data does not implement get_access_token."
-msgstr "No ha sido posible enviar la solicitud al servidor de WooCommerce Shipping & Tax. Jetpack_Data no implementa get_access_token."
+msgid "Unable to send request to WooCommerce Shipping & Tax server. Jetpack connection does not implement get_access_token."
+msgstr "No ha sido posible enviar la solicitud al servidor de WooCommerce Shipping & Tax. La conexión de Jetpack no implementa `get_access_token`."
 
 #: classes/class-wc-connect-api-client-live.php:23
 msgid "Unable to send request to WooCommerce Shipping & Tax server. Jetpack_Data was not found."
@@ -575,12 +598,12 @@ msgstr "Al producto ( ID: %d ) le falta un valor de dimensión. No se pueden cal
 msgid "Product ( ID: %d ) did not include a weight. Shipping rates cannot be calculated."
 msgstr "El producto ( ID: %d ) no incluye peso. No se pueden calcular las tarifas de envío."
 
-#: classes/class-wc-connect-shipping-method.php:462
+#: classes/class-wc-connect-shipping-method.php:559
 msgid "Packing log:"
 msgstr "Registro de paquetería:"
 
 #. translators: 1: name of shipping service, 2: shipping rate (price)
-#: classes/class-wc-connect-shipping-method.php:455
+#: classes/class-wc-connect-shipping-method.php:552
 msgid "Received rate: %1$s (%2$s)"
 msgstr "Tarifa recibida: %1$s (%2$s)"
 
@@ -1116,12 +1139,12 @@ msgstr "Hubo un problema al actualizar tus tarjetas de crédito guardadas."
 msgid "No labels found for this period"
 msgstr "No se han encontrado etiquetas en este periodo"
 
-#: classes/class-wc-connect-label-reports.php:202 i18n/strings.php:357
+#: i18n/strings.php:357 classes/class-wc-connect-label-reports.php:202
 msgid "Total"
 msgstr "Total"
 
-#: classes/class-wc-connect-label-reports.php:170 i18n/strings.php:180
-#: i18n/strings.php:434
+#: i18n/strings.php:180 i18n/strings.php:434
+#: classes/class-wc-connect-label-reports.php:170
 msgid "Refund"
 msgstr "Reembolso"
 
@@ -1225,11 +1248,11 @@ msgstr "Enlaza a una cuenta PayPal"
 msgid "Refresh"
 msgstr "Recargar"
 
-#: woocommerce-services.php:1115
+#: woocommerce-services.php:1119
 msgid "Tracking number"
 msgstr "Número de seguimiento"
 
-#: woocommerce-services.php:1114
+#: woocommerce-services.php:1118
 msgid "Provider"
 msgstr "Proveedor"
 
@@ -1320,8 +1343,8 @@ msgstr "configuración de pago más sencilla"
 msgid "automated tax calculation and smoother payment setup"
 msgstr "cálculo automático de impuestos y configuración de pago más sencilla"
 
-#: classes/class-wc-connect-paypal-ec.php:312 i18n/strings.php:7
-#: i18n/strings.php:209 i18n/strings.php:369 i18n/strings.php:399
+#: i18n/strings.php:7 i18n/strings.php:209 i18n/strings.php:369
+#: i18n/strings.php:399 classes/class-wc-connect-paypal-ec.php:312
 msgid "Required"
 msgstr "Requerido"
 
@@ -1580,7 +1603,7 @@ msgstr "#%d - [producto borrado]"
 msgid "#%1$d - %2$s"
 msgstr "#%1$d - %2$s"
 
-#: woocommerce-services.php:1446
+#: woocommerce-services.php:1450
 msgid "<a href=\"%s\">Support</a>"
 msgstr "<a href=\"%s\">Soporte</a>"
 
@@ -1588,8 +1611,8 @@ msgstr "<a href=\"%s\">Soporte</a>"
 msgid "There was an error installing Jetpack. Please try installing it manually."
 msgstr "Hubo un error al instalar Jetpack. Por favor, trata de instalarlo manualmente."
 
-#: i18n/strings.php:46 woocommerce-services.php:1010
-#: woocommerce-services.php:1013
+#: woocommerce-services.php:1014 woocommerce-services.php:1017
+#: i18n/strings.php:46
 msgid "Shipping Labels"
 msgstr "Etiquetas de envío"
 
@@ -1602,13 +1625,13 @@ msgstr "Automattic"
 msgid "https://woocommerce.com/"
 msgstr "https://woocommerce.com/"
 
-#: i18n/strings.php:129 i18n/strings.php:256 woocommerce-services.php:1397
-#: woocommerce-services.php:1425
+#: woocommerce-services.php:1401 woocommerce-services.php:1429
+#: i18n/strings.php:129 i18n/strings.php:256
 msgid "Phone"
 msgstr "Teléfono"
 
-#: classes/class-wc-connect-nux.php:487 classes/class-wc-connect-nux.php:584
 #: i18n/strings.php:88 i18n/strings.php:143 i18n/strings.php:152
+#: classes/class-wc-connect-nux.php:487 classes/class-wc-connect-nux.php:584
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1687,8 +1710,8 @@ msgstr "Seleccionados todos los servicios"
 msgid "Expand Services"
 msgstr "Expandir servicios"
 
-#: classes/class-wc-connect-label-reports.php:167 i18n/strings.php:199
-#: i18n/strings.php:413 i18n/strings.php:453
+#: i18n/strings.php:199 i18n/strings.php:413 i18n/strings.php:453
+#: classes/class-wc-connect-label-reports.php:167
 msgid "Service"
 msgstr "Servicio"
 
@@ -1700,7 +1723,7 @@ msgstr "Ajuste de precio"
 msgid "Saved Packages"
 msgstr "Paquetes guardados"
 
-#: woocommerce-services.php:1103 woocommerce-services.php:1110
+#: woocommerce-services.php:1107 woocommerce-services.php:1114
 msgid "Tracking"
 msgstr "Seguimiento"
 
@@ -1723,8 +1746,8 @@ msgstr "Empresa"
 msgid "Address"
 msgstr "Dirección"
 
-#: classes/class-wc-connect-taxjar-integration.php:1095 i18n/strings.php:126
-#: i18n/strings.php:259
+#: i18n/strings.php:126 i18n/strings.php:259
+#: classes/class-wc-connect-taxjar-integration.php:1095
 msgid "City"
 msgstr "Ciudad"
 
@@ -1830,12 +1853,12 @@ msgid "Invalid PDF request."
 msgstr "Petición de PDF no válida."
 
 #: classes/class-wc-rest-connect-shipping-label-controller.php:106
-#: classes/class-wc-connect-shipping-method.php:409
+#: classes/class-wc-connect-shipping-method.php:506
 msgid "Unknown package"
 msgstr "Paquete desconocido"
 
 #: classes/class-wc-rest-connect-shipping-label-controller.php:102
-#: classes/class-wc-connect-shipping-method.php:411
+#: classes/class-wc-connect-shipping-method.php:508
 msgid "Individual packaging"
 msgstr "Empaquetado individual"
 
@@ -1859,12 +1882,12 @@ msgstr "No fue posible actualizar los ajustes. Los datos del formulario no se ha
 msgid "Unable to update settings. %s"
 msgstr "No ha sido posible actualizar los ajustes. %s"
 
-#: classes/class-wc-connect-shipping-method.php:442 i18n/strings.php:76
-#: i18n/strings.php:280
+#: i18n/strings.php:76 i18n/strings.php:280
+#: classes/class-wc-connect-shipping-method.php:539
 msgid "Packaging"
 msgstr "Paquetería"
 
-#: woocommerce-services.php:1477
+#: woocommerce-services.php:1481
 msgid "Section not loading? Visit the <a href=\"%s\">status page</a> for troubleshooting steps."
 msgstr "¿No carga la sección? Visita la <a href=\"%s\">página de estado</a> para ver los pasos de solución de problemas."
 
@@ -1876,7 +1899,7 @@ msgstr "Nota: El modo de desarrollo de Jetpack está activo en este sitio. Este 
 msgid "Note: Jetpack is connected, but development mode is also enabled on this site. Please disable development mode."
 msgstr "Nota: Jetpack está conectado, pero también está activo el modo de desarrollo en este sitio. Por favor, desactiva el modo de desarrollo."
 
-#: woocommerce-services.php:1333
+#: woocommerce-services.php:1337
 msgid "Shipping Label"
 msgstr "Etiqueta de envío"
 
@@ -2046,7 +2069,7 @@ msgstr "Por favor, establece la ubicación base en Ajustes de WooCommerce > Gene
 msgid "WooCommerce %s or higher is required (You are running %s)"
 msgstr "Se requiere WooCommerce %s o superior (estás ejecutando la versión %s)"
 
-#: classes/class-wc-connect-error-notice.php:103 woocommerce-services.php:1513
+#: woocommerce-services.php:1517 classes/class-wc-connect-error-notice.php:103
 msgid "Dismiss this notice"
 msgstr "Descartar este aviso"
 

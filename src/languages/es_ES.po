@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 5.7.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-03-11 15:02:56+0000\n"
+"PO-Revision-Date: 2021-03-17 08:03:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1891,7 +1891,7 @@ msgstr "Comprueba tu correo electrónico"
 #. translators: %s: Link to the login page.
 #: wp-login.php:1038
 msgid "Registration complete. Please check your email, then visit the <a href=\"%s\">login page</a>."
-msgstr "REgistro completo. Por favor, comprueba tu correo electrónico y, después, visita la <a href=\"%s\">página de acceso</a>."
+msgstr "Registro completo. Por favor, comprueba tu correo electrónico y, después, visita la <a href=\"%s\">página de acceso</a>."
 
 #. translators: %s: Link to the login page.
 #: wp-login.php:1028
@@ -12264,7 +12264,7 @@ msgstr "Tu contraseña ha sido restablecida."
 
 #: wp-login.php:847 wp-admin/user-edit.php:678
 msgid "Password Reset"
-msgstr "Contraseña restablecida"
+msgstr "Restablecer contraseña"
 
 #: wp-login.php:831
 msgid "The passwords do not match."

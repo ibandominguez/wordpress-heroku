@@ -11,6 +11,29 @@ msgstr ""
 "Language: ro\n"
 "Project-Id-Version: Plugins - WooCommerce Shipping &amp; Tax - Stable (latest release)\n"
 
+#. Translators: %1$s: State name, %2$s: Country name
+#: classes/class-wc-connect-shipping-method.php:300
+msgid "State %1$s is invalid for %2$s."
+msgstr ""
+
+#. Translators: %1$s: Localized label for Zip/postal code, %2$s: submitted
+#. zip/postal code, %3$s: Country name
+#: classes/class-wc-connect-shipping-method.php:263
+msgid "%1$s %2$s is invalid for %3$s."
+msgstr ""
+
+#. Translators: %1$s: Localized label for Zip/postal code, %2$s: Country name
+#. Translators: %1$s: Localized label for province/region/state, %2$s: Country
+#. name
+#: classes/class-wc-connect-shipping-method.php:249
+#: classes/class-wc-connect-shipping-method.php:286
+msgid "A %1$s is required for %2$s."
+msgstr ""
+
+#: classes/class-wc-connect-shipping-method.php:236
+msgid "A country is required"
+msgstr ""
+
 #: i18n/strings.php:95
 msgid "Your store is over the limit for rate calls this month and your account will be charged for overages. To prevent future overage charges you can upgrade your plan."
 msgstr ""
@@ -178,13 +201,13 @@ msgid "Invalid WooCommerce Shipping & Tax service slug provided"
 msgstr ""
 
 #. Plugin Name of the plugin
-#: classes/class-wc-connect-settings-pages.php:113
 #: classes/class-wc-connect-privacy.php:36
+#: classes/class-wc-connect-settings-pages.php:113
 msgid "WooCommerce Shipping & Tax"
 msgstr ""
 
-#: classes/class-wc-connect-taxjar-integration.php:318 i18n/strings.php:128
-#: i18n/strings.php:263
+#: i18n/strings.php:128 i18n/strings.php:263
+#: classes/class-wc-connect-taxjar-integration.php:318
 msgid "ZIP/Postal code"
 msgstr ""
 
@@ -491,7 +514,7 @@ msgstr "Pachetele de livrare au fost salvate."
 msgid "0.0"
 msgstr ""
 
-#: woocommerce-services.php:1331
+#: woocommerce-services.php:1335
 msgid "Shipment Tracking"
 msgstr ""
 
@@ -503,23 +526,23 @@ msgstr ""
 msgid "Customs information incomplete"
 msgstr ""
 
-#: woocommerce-services.php:1374
+#: woocommerce-services.php:1378
 msgid "Packing Log:"
 msgstr ""
 
-#: woocommerce-services.php:1361
+#: woocommerce-services.php:1365
 msgid "Chosen Rate:"
 msgstr ""
 
-#: woocommerce-services.php:1357
+#: woocommerce-services.php:1361
 msgid "Shipping Method ID:"
 msgstr "ID metodă de livrare:"
 
-#: woocommerce-services.php:1353
+#: woocommerce-services.php:1357
 msgid "Shipping Method Name:"
 msgstr "Nume metodă de livrare:"
 
-#: woocommerce-services.php:1337
+#: woocommerce-services.php:1341
 msgid "Shipping Debug"
 msgstr ""
 
@@ -561,7 +584,7 @@ msgid "Unable to send request to WooCommerce Shipping & Tax server. Body must be
 msgstr ""
 
 #: classes/class-wc-connect-api-client-live.php:30
-msgid "Unable to send request to WooCommerce Shipping & Tax server. Jetpack_Data does not implement get_access_token."
+msgid "Unable to send request to WooCommerce Shipping & Tax server. Jetpack connection does not implement get_access_token."
 msgstr ""
 
 #: classes/class-wc-connect-api-client-live.php:23
@@ -580,12 +603,12 @@ msgstr ""
 msgid "Product ( ID: %d ) did not include a weight. Shipping rates cannot be calculated."
 msgstr ""
 
-#: classes/class-wc-connect-shipping-method.php:462
+#: classes/class-wc-connect-shipping-method.php:559
 msgid "Packing log:"
 msgstr ""
 
 #. translators: 1: name of shipping service, 2: shipping rate (price)
-#: classes/class-wc-connect-shipping-method.php:455
+#: classes/class-wc-connect-shipping-method.php:552
 msgid "Received rate: %1$s (%2$s)"
 msgstr ""
 
@@ -1123,12 +1146,12 @@ msgstr "A fost o problemă la actualizarea cardurilor de credit salvate."
 msgid "No labels found for this period"
 msgstr "Nicio etichetă găsită în această perioadă"
 
-#: classes/class-wc-connect-label-reports.php:202 i18n/strings.php:357
+#: i18n/strings.php:357 classes/class-wc-connect-label-reports.php:202
 msgid "Total"
 msgstr "Total"
 
-#: classes/class-wc-connect-label-reports.php:170 i18n/strings.php:180
-#: i18n/strings.php:434
+#: i18n/strings.php:180 i18n/strings.php:434
+#: classes/class-wc-connect-label-reports.php:170
 msgid "Refund"
 msgstr "Rambursează"
 
@@ -1232,11 +1255,11 @@ msgstr ""
 msgid "Refresh"
 msgstr "Reîmprospătează"
 
-#: woocommerce-services.php:1115
+#: woocommerce-services.php:1119
 msgid "Tracking number"
 msgstr "Număr de urmărire"
 
-#: woocommerce-services.php:1114
+#: woocommerce-services.php:1118
 msgid "Provider"
 msgstr "Furnizor"
 
@@ -1327,8 +1350,8 @@ msgstr ""
 msgid "automated tax calculation and smoother payment setup"
 msgstr ""
 
-#: classes/class-wc-connect-paypal-ec.php:312 i18n/strings.php:7
-#: i18n/strings.php:209 i18n/strings.php:369 i18n/strings.php:399
+#: i18n/strings.php:7 i18n/strings.php:209 i18n/strings.php:369
+#: i18n/strings.php:399 classes/class-wc-connect-paypal-ec.php:312
 msgid "Required"
 msgstr "Obligatoriu"
 
@@ -1589,7 +1612,7 @@ msgstr "#%d - [produs șters]"
 msgid "#%1$d - %2$s"
 msgstr "#%1$d - %2$s"
 
-#: woocommerce-services.php:1446
+#: woocommerce-services.php:1450
 msgid "<a href=\"%s\">Support</a>"
 msgstr "<a href=\"%s\">Suport</a>"
 
@@ -1597,8 +1620,8 @@ msgstr "<a href=\"%s\">Suport</a>"
 msgid "There was an error installing Jetpack. Please try installing it manually."
 msgstr ""
 
-#: i18n/strings.php:46 woocommerce-services.php:1010
-#: woocommerce-services.php:1013
+#: woocommerce-services.php:1014 woocommerce-services.php:1017
+#: i18n/strings.php:46
 msgid "Shipping Labels"
 msgstr "Etichete de livrare"
 
@@ -1611,13 +1634,13 @@ msgstr "Automattic"
 msgid "https://woocommerce.com/"
 msgstr "https://woocommerce.com/"
 
-#: i18n/strings.php:129 i18n/strings.php:256 woocommerce-services.php:1397
-#: woocommerce-services.php:1425
+#: woocommerce-services.php:1401 woocommerce-services.php:1429
+#: i18n/strings.php:129 i18n/strings.php:256
 msgid "Phone"
 msgstr "Telefon"
 
-#: classes/class-wc-connect-nux.php:487 classes/class-wc-connect-nux.php:584
 #: i18n/strings.php:88 i18n/strings.php:143 i18n/strings.php:152
+#: classes/class-wc-connect-nux.php:487 classes/class-wc-connect-nux.php:584
 msgid "Connect"
 msgstr "Conectare"
 
@@ -1697,8 +1720,8 @@ msgstr "Toate serviciile selectate"
 msgid "Expand Services"
 msgstr "Extinde serviciile"
 
-#: classes/class-wc-connect-label-reports.php:167 i18n/strings.php:199
-#: i18n/strings.php:413 i18n/strings.php:453
+#: i18n/strings.php:199 i18n/strings.php:413 i18n/strings.php:453
+#: classes/class-wc-connect-label-reports.php:167
 msgid "Service"
 msgstr "Serviciu"
 
@@ -1710,7 +1733,7 @@ msgstr "Ajustare preț"
 msgid "Saved Packages"
 msgstr "Pachete salvate"
 
-#: woocommerce-services.php:1103 woocommerce-services.php:1110
+#: woocommerce-services.php:1107 woocommerce-services.php:1114
 msgid "Tracking"
 msgstr "Urmărire"
 
@@ -1734,8 +1757,8 @@ msgstr "Companie"
 msgid "Address"
 msgstr "Adresă"
 
-#: classes/class-wc-connect-taxjar-integration.php:1095 i18n/strings.php:126
-#: i18n/strings.php:259
+#: i18n/strings.php:126 i18n/strings.php:259
+#: classes/class-wc-connect-taxjar-integration.php:1095
 msgid "City"
 msgstr "Oraș"
 
@@ -1841,12 +1864,12 @@ msgid "Invalid PDF request."
 msgstr ""
 
 #: classes/class-wc-rest-connect-shipping-label-controller.php:106
-#: classes/class-wc-connect-shipping-method.php:409
+#: classes/class-wc-connect-shipping-method.php:506
 msgid "Unknown package"
 msgstr "Pachet necunoscut"
 
 #: classes/class-wc-rest-connect-shipping-label-controller.php:102
-#: classes/class-wc-connect-shipping-method.php:411
+#: classes/class-wc-connect-shipping-method.php:508
 msgid "Individual packaging"
 msgstr ""
 
@@ -1870,12 +1893,12 @@ msgstr ""
 msgid "Unable to update settings. %s"
 msgstr ""
 
-#: classes/class-wc-connect-shipping-method.php:442 i18n/strings.php:76
-#: i18n/strings.php:280
+#: i18n/strings.php:76 i18n/strings.php:280
+#: classes/class-wc-connect-shipping-method.php:539
 msgid "Packaging"
 msgstr ""
 
-#: woocommerce-services.php:1477
+#: woocommerce-services.php:1481
 msgid "Section not loading? Visit the <a href=\"%s\">status page</a> for troubleshooting steps."
 msgstr ""
 
@@ -1887,7 +1910,7 @@ msgstr ""
 msgid "Note: Jetpack is connected, but development mode is also enabled on this site. Please disable development mode."
 msgstr ""
 
-#: woocommerce-services.php:1333
+#: woocommerce-services.php:1337
 msgid "Shipping Label"
 msgstr "Etichetă livrare"
 
@@ -2057,7 +2080,7 @@ msgstr ""
 msgid "WooCommerce %s or higher is required (You are running %s)"
 msgstr ""
 
-#: classes/class-wc-connect-error-notice.php:103 woocommerce-services.php:1513
+#: woocommerce-services.php:1517 classes/class-wc-connect-error-notice.php:103
 msgid "Dismiss this notice"
 msgstr ""
 

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-03-09 21:50:51+0000\n"
+"PO-Revision-Date: 2021-03-18 12:13:27+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5455,7 +5455,7 @@ msgstr "Nuevos productos"
 
 #: packages/woocommerce-admin/src/API/OnboardingTasks.php:358
 msgid "Best Sellers"
-msgstr "Mejores vendedores "
+msgstr "Los más vendidos"
 
 #: packages/woocommerce-admin/src/API/OnboardingTasks.php:354
 msgid "On Sale"
@@ -11895,7 +11895,7 @@ msgstr "Tu sitio podría estar en una red privada. Jetpack solo puede conectarse
 
 #: includes/admin/class-wc-admin-setup-wizard.php:2183
 msgid "Sorry! We couldn't contact Jetpack just now 😭. Please make sure that your site is visible over the internet, and that it accepts incoming and outgoing requests via curl. You can also try to connect to Jetpack again, and if you run into any more issues, please contact support."
-msgstr "¡Lo siento! No hemos podido contactar con Jetpack justo ahora 😭. Por favor asegúrate de que tu sitio está visible en internet y que acepta peticiones de entrada y salida vía curl. Puedes también intentar conectar Jetpack de nuevo, y si tienes más problemas, por favor contacta con soporte."
+msgstr "¡Lo siento! No hemos podido contactar con Jetpack justo ahora 😭. Por favor, asegúrate de que tu sitio está visible en internet y que acepta peticiones de entrada y salida vía curl. Puedes también intentar conectar Jetpack de nuevo, y si tienes más problemas, por favor, contacta con soporte."
 
 #: includes/admin/class-wc-admin-setup-wizard.php:2182
 msgid "Sorry! We tried, but we couldn't install Jetpack for you 😭. Please go to the Plugins tab to install it, and finish setting up your store."
@@ -23511,7 +23511,7 @@ msgstr "(sin impuestos)"
 
 #: includes/class-wc-countries.php:460
 msgid "(ex. VAT)"
-msgstr "(sin IVA)"
+msgstr "(sin impuestos)"
 
 #: includes/class-wc-countries.php:449
 msgid "(incl. tax)"
@@ -23519,11 +23519,11 @@ msgstr "(impuesto incluido)"
 
 #: includes/class-wc-countries.php:449
 msgid "(incl. VAT)"
-msgstr "(incl. IVA)"
+msgstr "(incl. impuestos)"
 
 #: includes/class-wc-countries.php:438
 msgid "VAT"
-msgstr "IVA"
+msgstr "Impuestos"
 
 #: includes/class-wc-countries.php:427
 msgid "the"
