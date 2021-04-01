@@ -159,6 +159,14 @@ final class Authentication {
 	protected $has_connected_admins;
 
 	/**
+	 * Has_Multiple_Admins instance.
+	 *
+	 * @since 1.29.0
+	 * @var Has_Multiple_Admins
+	 */
+	protected $has_multiple_admins;
+
+	/**
 	 * Connected_Proxy_URL instance.
 	 *
 	 * @since 1.17.0
@@ -227,6 +235,7 @@ final class Authentication {
 		$this->profile              = new Profile( $this->user_options );
 		$this->owner_id             = new Owner_ID( $this->options );
 		$this->has_connected_admins = new Has_Connected_Admins( $this->options, $this->user_options );
+		$this->has_multiple_admins  = new Has_Multiple_Admins( $this->transients );
 		$this->connected_proxy_url  = new Connected_Proxy_URL( $this->options );
 		$this->disconnected_reason  = new Disconnected_Reason( $this->user_options );
 		$this->initial_version      = new Initial_Version( $this->user_options );
@@ -256,7 +265,7 @@ final class Authentication {
 		add_filter( 'googlesitekit_setup_data', $this->get_method_proxy( 'inline_js_setup_data' ) );
 		add_filter( 'googlesitekit_is_feature_enabled', $this->get_method_proxy( 'filter_features_via_proxy' ), 10, 2 );
 
-		add_action( 'init', $this->get_method_proxy( 'handle_oauth' ) );
+		add_action( 'admin_init', $this->get_method_proxy( 'handle_oauth' ) );
 		add_action( 'admin_init', $this->get_method_proxy( 'check_connected_proxy_url' ) );
 		add_action( 'admin_init', $this->get_method_proxy( 'verify_user_input_settings' ) );
 		add_action(
@@ -621,10 +630,6 @@ final class Authentication {
 			$auth_client->authorize_user();
 		}
 
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		if ( $input->filter( INPUT_GET, 'googlesitekit_disconnect' ) ) {
 			$nonce = $input->filter( INPUT_GET, 'nonce' );
 			if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'disconnect' ) ) {
@@ -813,6 +818,7 @@ final class Authentication {
 								'resettable'         => $this->options->has( Credentials::OPTION ),
 								'setupCompleted'     => $this->is_setup_completed(),
 								'hasConnectedAdmins' => $this->has_connected_admins->get(),
+								'hasMultipleAdmins'  => $this->has_multiple_admins->get(),
 								'ownerID'            => $this->owner_id->get(),
 							);
 

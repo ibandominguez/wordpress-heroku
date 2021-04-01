@@ -7,7 +7,7 @@
  * Author URI: https://woocommerce.com/
  * Text Domain: woocommerce-services
  * Domain Path: /i18n/languages/
- * Version: 1.25.9
+ * Version: 1.25.10
  * WC requires at least: 3.0.0
  * WC tested up to: 5.0
  *
@@ -836,9 +836,10 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 		 * rest_api_init firing, WP_REST_Controller is not yet defined
 		 */
 		public function rest_api_init() {
-			$schemas_store  = $this->get_service_schemas_store();
-			$settings_store = $this->get_service_settings_store();
-			$logger         = $this->get_logger();
+			$schemas_store         = $this->get_service_schemas_store();
+			$settings_store        = $this->get_service_settings_store();
+			$payment_methods_store = $this->get_payment_methods_store();
+			$logger                = $this->get_logger();
 
 			if ( ! class_exists( 'WP_REST_Controller' ) ) {
 				$this->logger->debug( 'Error. WP_REST_Controller could not be found', __FUNCTION__ );
@@ -873,7 +874,7 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 			$rest_service_data_refresh_controller->register_routes();
 
 			require_once __DIR__ . '/classes/class-wc-rest-connect-shipping-label-controller.php';
-			$rest_shipping_label_controller = new WC_REST_Connect_Shipping_Label_Controller( $this->api_client, $settings_store, $logger, $this->shipping_label );
+			$rest_shipping_label_controller = new WC_REST_Connect_Shipping_Label_Controller( $this->api_client, $settings_store, $logger, $this->shipping_label, $this->payment_methods_store );
 			$this->set_rest_shipping_label_controller( $rest_shipping_label_controller );
 			$rest_shipping_label_controller->register_routes();
 
@@ -1232,10 +1233,11 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 		 * Hook fetching the available services from the connect server
 		 */
 		public function schedule_service_schemas_fetch() {
-			$schemas_store = $this->get_service_schemas_store();
-			$schemas       = $schemas_store->get_service_schemas();
+			$schemas_store     = $this->get_service_schemas_store();
+			$schemas           = $schemas_store->get_service_schemas();
+			$last_fetch_result = $schemas_store->get_last_fetch_result_code();
 
-			if ( ! $schemas ) {
+			if ( ! $schemas && '401' !== $last_fetch_result ) { // Don't retry auth failures wait for next scheduled time.
 				$schemas_store->fetch_service_schemas_from_connect_server();
 			} elseif ( defined( 'WOOCOMMERCE_CONNECT_FREQUENT_FETCH' ) && WOOCOMMERCE_CONNECT_FREQUENT_FETCH ) {
 				$schemas_store->fetch_service_schemas_from_connect_server();
