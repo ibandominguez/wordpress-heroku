@@ -3,15 +3,15 @@
  * Plugin Name: WooCommerce Shipping & Tax
  * Plugin URI: https://woocommerce.com/
  * Description: Hosted services for WooCommerce: automated tax calculation, shipping label printing, and smoother payment setup.
- * Author: Automattic
+ * Author: WooCommerce
  * Author URI: https://woocommerce.com/
  * Text Domain: woocommerce-services
  * Domain Path: /i18n/languages/
- * Version: 1.25.10
- * WC requires at least: 3.0.0
- * WC tested up to: 5.0
+ * Version: 1.25.14
+ * WC requires at least: 3.5.5
+ * WC tested up to: 5.4
  *
- * Copyright (c) 2017-2020 Automattic
+ * Copyright (c) 2017-2021 Automattic
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -225,6 +225,16 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 		 * @return bool true|false.
 		 */
 		public static function can_add_wc_admin_notice() {
+			if ( ! class_exists( 'WC_Data_Store' ) ) {
+				return false;
+			}
+
+			try {
+				WC_Data_Store::load( 'admin-note' );
+			} catch ( Exception $e ) {
+				return false;
+			}
+
 			return trait_exists( 'Automattic\WooCommerce\Admin\Notes\NoteTraits' ) && class_exists( 'Automattic\WooCommerce\Admin\Notes\Note' );
 		}
 
@@ -743,7 +753,7 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 			// Add WC Admin Notices.
 			if ( self::can_add_wc_admin_notice() ) {
 				require_once __DIR__ . '/classes/class-wc-connect-note-dhl-live-rates-available.php';
-				WC_Connect_Note_Dhl_Live_Rates_Available::init( $schema );
+				WC_Connect_Note_DHL_Live_Rates_Available::init( $schema );
 			}
 		}
 
@@ -792,7 +802,6 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this->nux, 'show_pointers' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_plugin_action_links' ) );
 			add_action( 'enqueue_wc_connect_script', array( $this, 'enqueue_wc_connect_script' ), 10, 2 );
-			add_action( 'admin_init', array( $this, 'load_admin_dependencies' ) );
 			add_filter( 'wc_connect_shipping_service_settings', array( $this, 'shipping_service_settings' ), 10, 3 );
 			add_action( 'woocommerce_email_after_order_table', array( $this, 'add_tracking_info_to_emails' ), 10, 3 );
 			add_filter( 'woocommerce_admin_reports', array( $this, 'reports_tabs' ) );
@@ -803,6 +812,10 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 
 			$this->taxjar->init();
 			$this->paypal_ec->init();
+
+			if ( is_admin() ) {
+				$this->load_admin_dependencies();
+			}
 		}
 
 		/**
@@ -1111,6 +1124,10 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 						);
 					}
 				}
+			}
+
+			if ( empty( $services ) ) {
+				return;
 			}
 
 			$api_client = $this->get_api_client();
@@ -1583,8 +1600,11 @@ if ( ! class_exists( 'WC_Connect_Loader' ) ) {
 				)
 			);
 
+			$encoded_arguments = wp_json_encode( $extra_args );
+			$escaped_arguments = function_exists( 'wc_esc_json' ) ? wc_esc_json( $encoded_arguments ) : esc_attr( $encoded_arguments );
+
 			?>
-				<div class="wcc-root woocommerce <?php echo esc_attr( $root_view ); ?>" data-args="<?php echo esc_attr( wp_json_encode( $extra_args ) ); ?>">
+				<div class="wcc-root woocommerce <?php echo esc_attr( $root_view ); ?>" data-args="<?php echo $escaped_arguments; ?>">
 					<span class="form-troubles" style="opacity: 0">
 						<?php printf( __( 'Section not loading? Visit the <a href="%s">status page</a> for troubleshooting steps.', 'woocommerce-services' ), $debug_page_uri ); ?>
 					</span>
