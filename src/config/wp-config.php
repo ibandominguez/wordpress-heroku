@@ -90,6 +90,8 @@ define('WP_DEBUG_LOG', getEnvOr('WP_DEBUG_LOG', __DIR__.'/error.log'));
 define('WP_DEBUG_DISPLAY', getEnvOr('WP_DEBUG_DISPLAY', false));
 define('SAVEQUERIES', getEnvOr('WP_DEBUG_DISPLAY', false));
 
+define('DISABLE_WP_CRON', true);
+
 /**
  * Dinamic database check
  * This would only work if you can create new
