@@ -142,21 +142,35 @@ class UAGB_Post_Assets {
 	protected $post_id;
 
 	/**
+	 * Preview
+	 *
+	 * @since 1.24.2
+	 * @var preview
+	 */
+	public $preview = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param int $post_id Post ID.
 	 */
 	public function __construct( $post_id ) {
 
-		$this->post_id = $post_id;
+		$this->post_id = intval( $post_id );
 
-		$this->file_generation = UAGB_Helper::$file_generation;
+		$this->preview = isset( $_GET['preview'] ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		$this->is_allowed_assets_generation = $this->allow_assets_generation();
+		if ( $this->preview ) {
+			$this->file_generation              = 'disabled';
+			$this->is_allowed_assets_generation = true;
+		} else {
+			$this->file_generation              = UAGB_Helper::$file_generation;
+			$this->is_allowed_assets_generation = $this->allow_assets_generation();
+		}
 
 		if ( $this->is_allowed_assets_generation ) {
-			$this_post = get_post( $this->post_id );
-
+			global $post;
+			$this_post = $this->preview ? $post : get_post( $this->post_id );
 			$this->prepare_assets( $this_post );
 		}
 	}
@@ -297,6 +311,10 @@ class UAGB_Post_Assets {
 	 */
 	public function update_page_assets() {
 
+		if ( $this->preview ) {
+			return;
+		}
+
 		$meta_array = array(
 			'css'                => wp_slash( $this->stylesheet ),
 			'js'                 => $this->script,
@@ -435,6 +453,10 @@ class UAGB_Post_Assets {
 
 		$conditional_block_css = UAGB_Block_Helper::get_condition_block_css();
 
+		if ( in_array( 'uagb/masonry-gallery', $this->current_block_list, true ) ) {
+			$conditional_block_css .= UAGB_Block_Helper::get_masonry_gallery_css();
+		}
+
 		echo '<style id="uagb-style-conditional-extension">' . $conditional_block_css . '</style>'; //phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 
 		self::$conditional_blocks_printed = true;
@@ -519,6 +541,12 @@ class UAGB_Post_Assets {
 
 		$this->current_block_list[] = $name;
 
+		if ( 'core/gallery' === $name && isset( $block['attrs']['masonry'] ) && true === $block['attrs']['masonry'] ) {
+			$this->current_block_list[] = 'uagb/masonry-gallery';
+			$this->uag_flag             = true;
+			$css                       += UAGB_Block_Helper::get_gallery_css( $blockattr, $block_id );
+		}
+
 		if ( strpos( $name, 'uagb/' ) !== false ) {
 			$this->uag_flag = true;
 		}
@@ -581,6 +609,7 @@ class UAGB_Post_Assets {
 
 			case 'uagb/tabs':
 				$css += UAGB_Block_Helper::get_tabs_css( $blockattr, $block_id );
+				$js  .= UAGB_Block_JS::get_tabs_js( $blockattr, $block_id );
 				break;
 
 			case 'uagb/testimonial':
@@ -706,6 +735,10 @@ class UAGB_Post_Assets {
 			case 'uagb/lottie':
 				$css += UAGB_Block_Helper::get_lottie_css( $blockattr, $block_id );
 				$js  .= UAGB_Block_JS::get_lottie_js( $blockattr, $block_id );
+				break;
+
+			case 'uagb/star-rating':
+				$css += UAGB_Block_Helper::get_star_rating_css( $blockattr, $block_id );
 				break;
 
 			default:
@@ -1067,4 +1100,3 @@ class UAGB_Post_Assets {
 		return $css;
 	}
 }
-

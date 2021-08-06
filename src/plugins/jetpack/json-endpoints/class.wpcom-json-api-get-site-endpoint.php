@@ -61,6 +61,7 @@ class WPCOM_JSON_API_GET_Site_Endpoint extends WPCOM_JSON_API_Endpoint {
 		'is_fse_active'               => '(bool) If the site has Full Site Editing active or not.',
 		'is_fse_eligible'             => '(bool) If the site is capable of Full Site Editing or not',
 		'is_core_site_editor_enabled' => '(bool) If the site has the core site editor enabled.',
+		'is_wpcom_atomic'             => '(bool) If the site is a WP.com Atomic one.',
 	);
 
 	protected static $no_member_fields = array(
@@ -86,6 +87,7 @@ class WPCOM_JSON_API_GET_Site_Endpoint extends WPCOM_JSON_API_Endpoint {
 		'is_fse_active',
 		'is_fse_eligible',
 		'is_core_site_editor_enabled',
+		'is_wpcom_atomic',
 	);
 
 	protected static $site_options_format = array(
@@ -165,6 +167,7 @@ class WPCOM_JSON_API_GET_Site_Endpoint extends WPCOM_JSON_API_Endpoint {
 		'capabilities',
 		'plan',
 		'products',
+		'zendesk_site_meta',
 	);
 
 	protected static $jetpack_response_option_additions = array(
@@ -431,6 +434,9 @@ class WPCOM_JSON_API_GET_Site_Endpoint extends WPCOM_JSON_API_Endpoint {
 				break;
 			case 'is_core_site_editor_enabled':
 				$response[ $key ] = $this->site->is_core_site_editor_enabled();
+				break;
+			case 'is_wpcom_atomic':
+				$response[ $key ] = $this->site->is_wpcom_atomic();
 				break;
 		}
 
@@ -715,6 +721,7 @@ class WPCOM_JSON_API_GET_Site_Endpoint extends WPCOM_JSON_API_Endpoint {
 			unset( $response->is_multisite );
 			unset( $response->plan );
 			unset( $response->products );
+			unset( $response->zendesk_site_meta );
 		}
 
 		// render additional options

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce PayPal Checkout Payment Gateway - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-10-06 07:41:47+0000\n"
+"PO-Revision-Date: 2021-06-28 18:54:28+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,134 +11,162 @@ msgstr ""
 "Language: es\n"
 "Project-Id-Version: Plugins - WooCommerce PayPal Checkout Payment Gateway - Stable (latest release)\n"
 
-#: includes/settings/settings-ppec.php:552
+#: includes/settings/settings-ppec.php:651
+msgid "Enable PayPal Checkout buttons on the regular checkout page"
+msgstr "Activa los botones de PayPal Checkout en la página de finalizar compra normal"
+
+#: includes/settings/settings-ppec.php:648
+msgid "Enable on the checkout page"
+msgstr "Activar en la página de finalizar compra"
+
+#: includes/settings/settings-ppec.php:618
+msgid "Enable PayPal Checkout buttons on the single product page"
+msgstr "Activa los botones de PayPal Checkout en la página del producto individual"
+
+#: includes/settings/settings-ppec.php:615
+msgid "Enable on the single product page"
+msgstr "Activar en la página del producto individual"
+
+#: includes/settings/settings-ppec.php:569
+msgid "Enable on the cart page"
+msgstr "Activar en la página del carrito"
+
+#: includes/settings/settings-ppec.php:437
+msgid "MercadoPago"
+msgstr "MercadoPago"
+
+#: includes/settings/settings-ppec.php:432
+msgid "BLIK"
+msgstr "BLIK"
+
+#: includes/settings/settings-ppec.php:554
 msgid "Shape and size of the message."
 msgstr "Forma y tamaño del mensaje."
 
-#: includes/settings/settings-ppec.php:548
+#: includes/settings/settings-ppec.php:550
 msgid "20x1"
 msgstr "20x1"
 
-#: includes/settings/settings-ppec.php:547
+#: includes/settings/settings-ppec.php:549
 msgid "8x1"
 msgstr "8x1"
 
-#: includes/settings/settings-ppec.php:546
+#: includes/settings/settings-ppec.php:548
 msgid "1x4"
 msgstr "1x4"
 
-#: includes/settings/settings-ppec.php:545
+#: includes/settings/settings-ppec.php:547
 msgid "1x1"
 msgstr "1x1"
 
-#: includes/settings/settings-ppec.php:540
+#: includes/settings/settings-ppec.php:542
 msgid "Credit Messaging ratio"
 msgstr "Relación de aspecto del mensaje de crédito"
 
-#: includes/settings/settings-ppec.php:537
+#: includes/settings/settings-ppec.php:539
 msgid "Color of the message."
 msgstr "Color del mensaje."
 
-#: includes/settings/settings-ppec.php:533
+#: includes/settings/settings-ppec.php:535
 msgid "White no border"
 msgstr "Blanco sin borde"
 
-#: includes/settings/settings-ppec.php:530
+#: includes/settings/settings-ppec.php:532
 msgid "Gray"
 msgstr "Gris"
 
-#: includes/settings/settings-ppec.php:522
+#: includes/settings/settings-ppec.php:524
 msgid "Credit Messaging color"
 msgstr "Color de los mensajes de crédito"
 
-#: includes/settings/settings-ppec.php:519
+#: includes/settings/settings-ppec.php:521
 msgid "Text and logo color of the message."
 msgstr "Color del texto y el logotipo del mensaje."
 
-#: includes/settings/settings-ppec.php:515
-#: includes/settings/settings-ppec.php:531
+#: includes/settings/settings-ppec.php:517
+#: includes/settings/settings-ppec.php:533
 msgid "Grayscale"
 msgstr "Escala de grises"
 
-#: includes/settings/settings-ppec.php:514
-#: includes/settings/settings-ppec.php:529
+#: includes/settings/settings-ppec.php:516
+#: includes/settings/settings-ppec.php:531
 msgid "Monochrome"
 msgstr "Monocromo"
 
-#: includes/settings/settings-ppec.php:513
-#: includes/settings/settings-ppec.php:532
+#: includes/settings/settings-ppec.php:515
+#: includes/settings/settings-ppec.php:534
 msgid "White"
 msgstr "Blanco"
 
-#: includes/settings/settings-ppec.php:507
+#: includes/settings/settings-ppec.php:509
 msgid "Credit Messaging text color"
 msgstr "Color del texto del mensaje de crédito"
 
-#: includes/settings/settings-ppec.php:504
+#: includes/settings/settings-ppec.php:506
 msgid "Position of the PayPal logo in the message."
 msgstr "Posición del logotipo de PayPal en el mensaje."
 
-#: includes/settings/settings-ppec.php:500
+#: includes/settings/settings-ppec.php:502
 msgid "Top"
 msgstr "Superior"
 
-#: includes/settings/settings-ppec.php:499
+#: includes/settings/settings-ppec.php:501
 msgid "Right"
 msgstr "Derecha"
 
-#: includes/settings/settings-ppec.php:498
+#: includes/settings/settings-ppec.php:500
 msgid "Left"
 msgstr "Izquierda"
 
-#: includes/settings/settings-ppec.php:493
+#: includes/settings/settings-ppec.php:495
 msgid "Credit Messaging logo position"
 msgstr "Posición del logotipo del crédito en el mensaje"
 
-#: includes/settings/settings-ppec.php:490
+#: includes/settings/settings-ppec.php:492
 msgid "PayPal Credit logo used in the message."
 msgstr "El logotipo del crédito de PayPal usado en el mensaje."
 
-#: includes/settings/settings-ppec.php:486
+#: includes/settings/settings-ppec.php:488
 msgid "None"
 msgstr "Ninguno"
 
-#: includes/settings/settings-ppec.php:485
+#: includes/settings/settings-ppec.php:487
 msgid "In-Line"
 msgstr "Integrado"
 
-#: includes/settings/settings-ppec.php:484
+#: includes/settings/settings-ppec.php:486
 msgid "Alternative"
 msgstr "Alternativo"
 
-#: includes/settings/settings-ppec.php:483
+#: includes/settings/settings-ppec.php:485
 msgid "Primary"
 msgstr "Principal"
 
-#: includes/settings/settings-ppec.php:478
+#: includes/settings/settings-ppec.php:480
 msgid "Credit Messaging logo"
 msgstr "Logotipo de los mensajes de crédito"
 
-#: includes/settings/settings-ppec.php:475
+#: includes/settings/settings-ppec.php:477
 msgid "The layout of the message."
 msgstr "El diseño del mensaje."
 
-#: includes/settings/settings-ppec.php:471
+#: includes/settings/settings-ppec.php:473
 msgid "Graphic"
 msgstr "Gráfico"
 
-#: includes/settings/settings-ppec.php:470
+#: includes/settings/settings-ppec.php:472
 msgid "Text"
 msgstr "Texto"
 
-#: includes/settings/settings-ppec.php:465
+#: includes/settings/settings-ppec.php:467
 msgid "Credit Messaging Layout"
 msgstr "Diseño de los mensajes de crédito"
 
-#: includes/settings/settings-ppec.php:462
+#: includes/settings/settings-ppec.php:464
 msgid "Display credit messages on your website to promote special financing offers, which help increase sales."
 msgstr "Muestra mensajes de crédito en tu web para promocionar ofertas especiales de financiación, que ayudan a aumentar las ventas."
 
-#: includes/settings/settings-ppec.php:460
+#: includes/settings/settings-ppec.php:462
 msgid "Enable PayPal Credit messages"
 msgstr "Activar los mensajes de crédito de PayPal"
 
@@ -156,39 +184,39 @@ msgstr "caducado el %1$s (%2$s)"
 msgid "expires on %1$s (%2$s)"
 msgstr "caduca el %1$s (%2$s)"
 
-#: includes/class-wc-gateway-ppec-cart-handler.php:365
+#: includes/class-wc-gateway-ppec-cart-handler.php:367
 msgid "OR"
 msgstr "O"
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:404
+#: includes/abstracts/abstract-wc-gateway-ppec.php:410
 msgid "Refund Error: Sorry! This is not a refundable transaction."
 msgstr "Error en el reembolso: ¡Lo siento! Esta no es una transacción reembolsable."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:322
+#: includes/abstracts/abstract-wc-gateway-ppec.php:328
 msgid "An error occurred while trying to validate your API credentials. Unable to verify that your API credentials are correct."
 msgstr "Ocurrió un error al tratar de validar tus credenciales de la API. No ha sido posible verificar que tus credenciales de la API sean correctas."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:300
+#: includes/abstracts/abstract-wc-gateway-ppec.php:306
 msgid "Error: You must enter API username."
 msgstr "Error. Debes introducir un nombre de usuario de la API."
 
-#: includes/class-wc-gateway-ppec-cart-handler.php:585
+#: includes/class-wc-gateway-ppec-cart-handler.php:587
 msgid "An error occurred while processing your PayPal payment. Please contact the store owner for assistance."
 msgstr "Ocurrió un error al procesar tu pago por PayPal. Por favor, contacta con el propietario de la tienda para obtener ayuda."
 
-#: includes/class-wc-gateway-ppec-plugin.php:464
+#: includes/class-wc-gateway-ppec-plugin.php:470
 msgid "Support"
 msgstr "Soporte"
 
-#: includes/class-wc-gateway-ppec-plugin.php:464
+#: includes/class-wc-gateway-ppec-plugin.php:470
 msgid "Open a support request at WooCommerce.com"
 msgstr "Abre una solicitud de soporte en WooCommerce.com"
 
-#: includes/class-wc-gateway-ppec-plugin.php:463
+#: includes/class-wc-gateway-ppec-plugin.php:469
 msgid "View Documentation"
 msgstr "Ver la documentación"
 
-#: includes/settings/settings-ppec.php:440
+#: includes/settings/settings-ppec.php:441
 msgid "Sofort"
 msgstr "Sofort"
 
@@ -200,31 +228,31 @@ msgstr "Przelewy24"
 msgid "MyBank"
 msgstr "MyBank"
 
-#: includes/settings/settings-ppec.php:437
+#: includes/settings/settings-ppec.php:436
 msgid "iDEAL"
 msgstr "iDEAL"
 
-#: includes/settings/settings-ppec.php:436
+#: includes/settings/settings-ppec.php:435
 msgid "giropay"
 msgstr "giropay"
 
-#: includes/settings/settings-ppec.php:435
+#: includes/settings/settings-ppec.php:434
 msgid "eps"
 msgstr "eps"
 
-#: includes/settings/settings-ppec.php:434
+#: includes/settings/settings-ppec.php:431
 msgid "Bancontact"
 msgstr "Bancontact"
 
-#: includes/settings/settings-ppec.php:433
+#: includes/settings/settings-ppec.php:440
 msgid "SEPA-Lastschrift"
 msgstr "SEPA-Lastschrift"
 
-#: includes/settings/settings-ppec.php:432
+#: includes/settings/settings-ppec.php:442
 msgid "Venmo"
 msgstr "Venmo"
 
-#: includes/settings/settings-ppec.php:431
+#: includes/settings/settings-ppec.php:429
 msgid "Credit or debit cards"
 msgstr "Tarjetas de crédito o débito"
 
@@ -252,7 +280,7 @@ msgid "Button Label"
 msgstr "Etiqueta del botón"
 
 #: includes/settings/settings-ppec.php:63
-#: includes/settings/settings-ppec.php:444
+#: includes/settings/settings-ppec.php:446
 msgid "Enable PayPal Credit to eligible customers"
 msgstr "Activa el crédito de PayPal para los clientes que cumplan los requisitos"
 
@@ -266,23 +294,23 @@ msgstr "Saber más"
 msgid "To reset current credentials and use another account %1$sclick here%2$s. %3$sLearn more about your API Credentials%2$s."
 msgstr "Para restablecer las credenciales actuales y usar otra cuenta, %1$shaz clic aquí%2$s. %3$sApende más sobre tus credenciales de la API%2$s."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:647
+#: includes/abstracts/abstract-wc-gateway-ppec.php:653
 msgid "Remove"
 msgstr "Eliminar"
 
-#: includes/class-wc-gateway-ppec-checkout-handler.php:1178
+#: includes/class-wc-gateway-ppec-checkout-handler.php:1181
 msgid "You have cancelled Checkout with PayPal. The payment method was not updated."
 msgstr "Has cancelado el pago con PayPal. El método de pago no se ha actualizado."
 
-#: includes/class-wc-gateway-ppec-checkout-handler.php:1155
+#: includes/class-wc-gateway-ppec-checkout-handler.php:1158
 msgid "There was a problem updating your payment method. Please try again later or use a different payment method."
 msgstr "Ha habido un problema al actualizar tu método de pago. Por favor, inténtalo de nuevo más tarde o usa un método de pago diferente."
 
-#: includes/class-wc-gateway-ppec-checkout-handler.php:1146
+#: includes/class-wc-gateway-ppec-checkout-handler.php:1149
 msgid "The payment method was updated for all your current subscriptions."
 msgstr "El método de pago se ha actualizado para todas tus suscripciones actuales."
 
-#: includes/class-wc-gateway-ppec-checkout-handler.php:1141
+#: includes/class-wc-gateway-ppec-checkout-handler.php:1144
 msgid "The payment method was updated for this subscription."
 msgstr "El método de pago se ha actualizado para esta suscripción."
 
@@ -293,7 +321,7 @@ msgid "%1$sWarning!%2$s PayPal Checkout will drop support for WooCommerce %3$s i
 msgstr "%1$s¡Advertencia!%2$s PayPal Checkout eliminará la compatibilidad para WooCommerce %3$s en una actualización que se lanzará próximamente. Para continuar usando PayPal Checkout, por favor, %4$sactualiza a %1$sWooCommerce 3.0%2$s o superior%5$s."
 
 #. Translators: placeholder is the URL of the gateway settings page.
-#: includes/class-wc-gateway-ppec-plugin.php:520
+#: includes/class-wc-gateway-ppec-plugin.php:542
 msgid "<p>PayPal Checkout with new <strong>Smart Payment Buttons™</strong> gives your customers the power to pay the way they want without leaving your site.</p><p>The <strong>existing buttons will be removed</strong> in the <strong>next release</strong>. Please upgrade to Smart Payment Buttons on the <a href=\"%s\">PayPal Checkout settings page</a>.</p>"
 msgstr "<p>Pago con PayPal con los nuevos <strong>Botones de pago inteligentes™</strong> da a tus clientes el potencial de pagar tal y como quieren sin tener que salir de tu sitio.</p><p>Los <strong>botones existentes se eliminarán</strong> en la <strong>siguiente versión</strong>. Por favor, actualiza tus botones de pago inteligentes en la <a href=\"%s\">pagina de ajustes de pago con PayPal</a>.</p>"
 
@@ -337,14 +365,14 @@ msgstr "Esto activa el crédito de PayPal, que muestra un botón de crédito Pay
 msgid "PayPal Checkout Order Data Erased."
 msgstr "Datos del pedido de PayPal Exprés borrados."
 
-#: includes/class-wc-gateway-ppec-privacy.php:12
 #: includes/abstracts/abstract-wc-gateway-ppec.php:18
+#: includes/class-wc-gateway-ppec-privacy.php:12
 #: includes/settings/settings-ppec.php:370
 #: includes/settings/settings-ppec.php:416
 msgid "PayPal Checkout"
 msgstr "PayPal Exprés"
 
-#: includes/settings/settings-ppec.php:659
+#: includes/settings/settings-ppec.php:658
 msgid "Configure settings specific to regular checkout"
 msgstr "Configura ajustes específicos del pago normal"
 
@@ -356,31 +384,31 @@ msgstr "Ajustes del botón de pago normal"
 msgid "Configure settings specific to Single Product view"
 msgstr "Configura ajustes específicos de la vista de producto"
 
-#: includes/settings/settings-ppec.php:608
+#: includes/settings/settings-ppec.php:609
 msgid "Single Product Button Settings"
 msgstr "Ajustes del botón en la página de producto"
 
-#: includes/settings/settings-ppec.php:592
+#: includes/settings/settings-ppec.php:593
 #: includes/settings/settings-ppec.php:630
-#: includes/settings/settings-ppec.php:664
+#: includes/settings/settings-ppec.php:663
 msgid "Optionally override global button settings above and configure buttons for this context."
 msgstr "Opcionalmente sáltate los ajustes globales del botón de arriba y configura botones en este contexto."
 
-#: includes/settings/settings-ppec.php:587
+#: includes/settings/settings-ppec.php:588
 msgid "Configure settings specific to mini-cart"
 msgstr "Configura ajustes específicos al mini carrito"
 
-#: includes/settings/settings-ppec.php:586
+#: includes/settings/settings-ppec.php:587
 #: includes/settings/settings-ppec.php:624
-#: includes/settings/settings-ppec.php:658
+#: includes/settings/settings-ppec.php:657
 msgid "Configure Settings"
 msgstr "Configurar ajustes"
 
-#: includes/settings/settings-ppec.php:580
+#: includes/settings/settings-ppec.php:581
 msgid "Mini-cart Button Settings"
 msgstr "Ajustes del botón del mini carrito"
 
-#: includes/settings/settings-ppec.php:430
+#: includes/settings/settings-ppec.php:433
 msgid "ELV"
 msgstr "ELV"
 
@@ -429,8 +457,8 @@ msgid "Button Shape"
 msgstr "Forma del botón"
 
 #: includes/settings/settings-ppec.php:346
-#: includes/settings/settings-ppec.php:512
-#: includes/settings/settings-ppec.php:527
+#: includes/settings/settings-ppec.php:514
+#: includes/settings/settings-ppec.php:529
 msgid "Black"
 msgstr "Negro"
 
@@ -439,7 +467,7 @@ msgid "Silver"
 msgstr "Plata"
 
 #: includes/settings/settings-ppec.php:344
-#: includes/settings/settings-ppec.php:528
+#: includes/settings/settings-ppec.php:530
 msgid "Blue"
 msgstr "Azul"
 
@@ -531,25 +559,25 @@ msgstr "Datos PPEC de suscripciones de WooCommerce"
 msgid "WooCommerce PPEC Order Data"
 msgstr "Datos PPEC de pedidos de WooCommerce"
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:608
+#: includes/abstracts/abstract-wc-gateway-ppec.php:614
 msgid "Remove image"
 msgstr "Eliminar imagen"
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:597
-#: includes/abstracts/abstract-wc-gateway-ppec.php:600
+#: includes/abstracts/abstract-wc-gateway-ppec.php:603
+#: includes/abstracts/abstract-wc-gateway-ppec.php:606
 msgid "Add image"
 msgstr "Añadir imagen"
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:596
+#: includes/abstracts/abstract-wc-gateway-ppec.php:602
 msgid "Use this image"
 msgstr "Usar esta imagen"
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:595
+#: includes/abstracts/abstract-wc-gateway-ppec.php:601
 msgid "Select a image to upload"
 msgstr "Elige una imagen a subir"
 
 #. Translators: placeholder is an image's URL.
-#: includes/abstracts/abstract-wc-gateway-ppec.php:587
+#: includes/abstracts/abstract-wc-gateway-ppec.php:593
 msgid "Already using URL as image: %s"
 msgstr "Ya estás usando una URL como imagen: %s"
 
@@ -568,30 +596,13 @@ msgstr "Requerir número de teléfono"
 msgid "PayPal only returns a shipping address back to the website. To make sure billing address is returned as well, please enable this functionality on your PayPal account by calling %1$sPayPal Technical Support%2$s."
 msgstr "PayPal solo devuelve una dirección de envío al sitio. Para asegurar que también se devuelve la dirección de facturación, por favor, activa esta funcionalidad en tu cuenta de PayPal llamando al %1$ssoporte técnico de PayPal%2$s."
 
-#: includes/settings/settings-ppec.php:620
-msgid "Enable PayPal Checkout on Single Product view."
-msgstr "Activar PayPal Checkout en la página de producto individual."
+#: includes/settings/settings-ppec.php:572
+msgid "Enable PayPal Checkout buttons on the cart page"
+msgstr "Activar PayPal Checkout en la página del carrito"
 
-#: includes/settings/settings-ppec.php:614
-#: includes/settings/settings-ppec.php:617
-msgid "Checkout on Single Product"
-msgstr "Pago en la página del producto"
-
-#: includes/settings/settings-ppec.php:571
-msgid "This shows or hides the PayPal Checkout button on the cart page."
-msgstr "Esto muestra u oculta el botón de pago por PayPal Exprés en la página del carrito."
-
-#: includes/settings/settings-ppec.php:570
-msgid "Enable PayPal Checkout on the cart page"
-msgstr "Activar PayPal Checkout en la página del carrito."
-
-#: includes/settings/settings-ppec.php:567
-msgid "Checkout on cart page"
-msgstr "Pago en la página del carrito"
-
-#: includes/class-wc-gateway-ppec-cart-handler.php:74
-#: includes/class-wc-gateway-ppec-cart-handler.php:144
-#: includes/class-wc-gateway-ppec-cart-handler.php:165
+#: includes/class-wc-gateway-ppec-cart-handler.php:76
+#: includes/class-wc-gateway-ppec-cart-handler.php:146
+#: includes/class-wc-gateway-ppec-cart-handler.php:167
 msgid "Cheatin&#8217; huh?"
 msgstr "¿Haciendo trampas?"
 
@@ -701,16 +712,16 @@ msgstr "Transacción con PayPal retenida: %s"
 msgid "PayPal API error"
 msgstr "Error en la API de PayPal"
 
-#: includes/class-wc-gateway-ppec-plugin.php:463
+#: includes/class-wc-gateway-ppec-plugin.php:469
 msgid "Docs"
 msgstr "Documentos"
 
-#: includes/class-wc-gateway-ppec-plugin.php:444
+#: includes/class-wc-gateway-ppec-plugin.php:450
 msgid "Settings"
 msgstr "Ajustes"
 
 #. Translators: placeholder is the URL of the gateway settings page.
-#: includes/class-wc-gateway-ppec-plugin.php:314
+#: includes/class-wc-gateway-ppec-plugin.php:320
 msgid "PayPal Checkout is almost ready. To get started, <a href=\"%s\">connect your PayPal account</a>."
 msgstr "PayPal Express esta casi listo. Para empezar, <a href=\"%s\">conecta tu cuenta de PayPal</a>."
 
@@ -728,7 +739,7 @@ msgstr "Crea una cuenta introduciendo la siguiente información. Si eres ya clie
 msgid "Create an account?"
 msgstr "¿Crear una cuenta?"
 
-#: includes/class-wc-gateway-ppec-cart-handler.php:381
+#: includes/class-wc-gateway-ppec-cart-handler.php:383
 msgid "Pay with PayPal Credit"
 msgstr "Pagar con crédito PayPal"
 
@@ -911,18 +922,6 @@ msgstr "Esto controla el título que el usuario ve durante el pago."
 msgid "Title"
 msgstr "Título"
 
-#: includes/settings/settings-ppec.php:652
-msgid "This enables the PayPal mark, which can be shown on regular WooCommerce checkout to use PayPal Checkout like a regular WooCommerce gateway."
-msgstr "Esto permite la marca de PayPal, que puede mostrarse en la página de pago normal de WooCommerce para utilizar PayPal Exprés como cualquier otra pasarela de pago normal de WooCommerce."
-
-#: includes/settings/settings-ppec.php:651
-msgid "Enable the PayPal Mark on regular checkout"
-msgstr "Activar la marca de PayPal en la página de pago normal"
-
-#: includes/settings/settings-ppec.php:648
-msgid "PayPal Mark"
-msgstr "Marca de PayPal"
-
 #: includes/settings/settings-ppec.php:112
 msgid "Sandbox"
 msgstr "Pruebas"
@@ -983,28 +982,28 @@ msgstr "%s o <a href=\"#\" class=\"ppec-toggle-settings\"> haz clic aquí para c
 msgid "Setup or link an existing PayPal account"
 msgstr "Configura o enlaza a una cuenta de PayPal existente"
 
-#: includes/settings/settings-ppec.php:429
 #: includes/class-wc-gateway-ppec-with-paypal-credit.php:15
+#: includes/settings/settings-ppec.php:430
 msgid "PayPal Credit"
 msgstr "Crédito en PayPal"
 
-#: includes/class-wc-gateway-ppec-plugin.php:286
+#: includes/class-wc-gateway-ppec-plugin.php:292
 msgid "WooCommerce Gateway PayPal Checkout requires OpenSSL >= 1.0.1 to be installed on your server"
 msgstr "WooCommerce Gateway PayPal Exprés requiere que OpenSSL >= 1.0.1 esté instalado en tu servidor"
 
-#: includes/class-wc-gateway-ppec-plugin.php:283
+#: includes/class-wc-gateway-ppec-plugin.php:289
 msgid "WooCommerce Gateway PayPal Checkout requires cURL to be installed on your server"
 msgstr "WooCommerce Gateway PayPal Exprés requiere que cURL esté instalado en tu servidor"
 
-#: includes/class-wc-gateway-ppec-plugin.php:279
-msgid "WooCommerce Gateway PayPal Checkout requires WooCommerce version 2.5 or greater"
-msgstr "WooCommerce Gateway PayPal Exprés requiere la versión 2.5 o superior de WooCommerce"
+#: includes/class-wc-gateway-ppec-plugin.php:285
+msgid "WooCommerce Gateway PayPal Checkout requires WooCommerce version 3.2.0 or greater"
+msgstr "WooCommerce Gateway PayPal Checkout necesita la versión 3.2.0 o superior de WooCommerce"
 
-#: includes/class-wc-gateway-ppec-plugin.php:275
+#: includes/class-wc-gateway-ppec-plugin.php:281
 msgid "WooCommerce Gateway PayPal Checkout requires WooCommerce to be activated"
 msgstr "WooCommerce Gateway PayPal Exprés requiere que WooCommerce esté activo"
 
-#: includes/class-wc-gateway-ppec-plugin.php:173
+#: includes/class-wc-gateway-ppec-plugin.php:179
 msgid "bootstrap() in WooCommerce Gateway PayPal Checkout plugin can only be called once"
 msgstr "Solo se puede llamar una vez a `bootstrap()` en el plugin WooCommerce Gateway PayPal Checkout"
 
@@ -1164,7 +1163,7 @@ msgstr "Lo siento, ocurrió un error al tratar de obtener tu información de Pay
 
 #: includes/class-wc-gateway-ppec-checkout-handler.php:444
 #: includes/class-wc-gateway-ppec-checkout-handler.php:499
-#: includes/class-wc-gateway-ppec-checkout-handler.php:1130
+#: includes/class-wc-gateway-ppec-checkout-handler.php:1133
 msgid "Your PayPal checkout session has expired. Please check out again."
 msgstr "Tu sesión de pago en PayPal Exprés ha caducado. Por favor, inténtalo de nuevo."
 
@@ -1192,9 +1191,9 @@ msgstr "Detalles de facturación"
 msgid "Confirm your PayPal order"
 msgstr "Confirma tu pedido de PayPal"
 
-#: includes/class-wc-gateway-ppec-cart-handler.php:329
-#: includes/class-wc-gateway-ppec-cart-handler.php:376
-#: includes/class-wc-gateway-ppec-cart-handler.php:411
+#: includes/class-wc-gateway-ppec-cart-handler.php:331
+#: includes/class-wc-gateway-ppec-cart-handler.php:378
+#: includes/class-wc-gateway-ppec-cart-handler.php:413
 msgid "Check out with PayPal"
 msgstr "Pagar con PayPal"
 
@@ -1319,64 +1318,64 @@ msgid "Capture Charge"
 msgstr "Capturar cargo"
 
 #. Translators: placeholder is an amount (with currency symbol).
-#: includes/abstracts/abstract-wc-gateway-ppec.php:469
+#: includes/abstracts/abstract-wc-gateway-ppec.php:475
 msgid "Refund Error: The requested refund amount is too large. The refund amount must be less than or equal to %s."
 msgstr "Error de reembolso: La cantidad de reembolso solicitada es demasiado grande. La cantidad de reembolso debe ser menor o igual que %s."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:466
+#: includes/abstracts/abstract-wc-gateway-ppec.php:472
 msgid "Refund Error: All transactions have been fully refunded. There is no amount left to refund"
 msgstr "Error de reembolso: Todas las transacciones se han reembolsado completamente. No hay ninguna cantidad pendiente de reembolso"
 
 #. Translators: placeholder is a transaction ID.
-#: includes/abstracts/abstract-wc-gateway-ppec.php:417
-#: includes/abstracts/abstract-wc-gateway-ppec.php:442
-#: includes/abstracts/abstract-wc-gateway-ppec.php:494
+#: includes/abstracts/abstract-wc-gateway-ppec.php:423
+#: includes/abstracts/abstract-wc-gateway-ppec.php:448
+#: includes/abstracts/abstract-wc-gateway-ppec.php:500
 msgid "PayPal refund completed; transaction ID = %s"
 msgstr "Reembolso de PayPal completado; ID de la transación = %s"
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:392
+#: includes/abstracts/abstract-wc-gateway-ppec.php:398
 msgid "Refund Error: You need to specify a refund amount."
 msgstr "Error de reembolso: Tienes que especificar una cantidad de reembolso."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:367
+#: includes/abstracts/abstract-wc-gateway-ppec.php:373
 msgid "The \"require billing address\" option is not enabled by your account and has been disabled."
 msgstr "La opción \"requerir dirección de facturación\" no está activa en tu cuenta y se ha desactivado."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:308
+#: includes/abstracts/abstract-wc-gateway-ppec.php:314
 msgid "Error: You must provide API signature or certificate."
 msgstr "Error: Debes facilitar una firma o certificado de la API."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:338
+#: includes/abstracts/abstract-wc-gateway-ppec.php:344
 msgid "Error: The API username does not match the name in the API certificate. Make sure that you have the correct API certificate."
 msgstr "Error. El nombre de usuario de la API no coincide con el nombre en el certificado de la API. Asegúrate de que tienes el certificado correcto de la API."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:336
+#: includes/abstracts/abstract-wc-gateway-ppec.php:342
 msgid "Error: The API certificate has expired."
 msgstr "Error: El certificado de la API ha caducado."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:329
+#: includes/abstracts/abstract-wc-gateway-ppec.php:335
 msgid "Error: The API certificate is not valid."
 msgstr "Error: El certificado de la API no es válido."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:348
+#: includes/abstracts/abstract-wc-gateway-ppec.php:354
 msgid "An error occurred while trying to validate your API credentials.  Unable to verify that your API credentials are correct."
 msgstr "Ocurrió un error al tratar de validar tus credenciales de la API. No fue posible verificar que tus credenciales de la API sean correctas."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:318
-#: includes/abstracts/abstract-wc-gateway-ppec.php:345
+#: includes/abstracts/abstract-wc-gateway-ppec.php:324
+#: includes/abstracts/abstract-wc-gateway-ppec.php:351
 msgid "Error: The API credentials you provided are not valid.  Please double-check that you entered them correctly and try again."
 msgstr "Error: Las credenciales de la API que has facilitado no son válidas. Por favor, vuelve a revisar los datos introducidos correctamente e inténtalo de nuevo."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:304
+#: includes/abstracts/abstract-wc-gateway-ppec.php:310
 msgid "Error: You must enter API password."
 msgstr "Error: Debes introducir la contraseña de la API."
 
-#: includes/abstracts/abstract-wc-gateway-ppec.php:235
+#: includes/abstracts/abstract-wc-gateway-ppec.php:241
 msgid "The certificate on file is not valid."
 msgstr "El certificado del archivo no es válido."
 
 #. Translators: 1) is a certificate's CN, 2) is the expiration date.
-#: includes/abstracts/abstract-wc-gateway-ppec.php:233
+#: includes/abstracts/abstract-wc-gateway-ppec.php:239
 msgid "Certificate belongs to API username %1$s; %2$s."
 msgstr "El certificado pertenece al nombre de usuario de la API %1$s; %2$s."
 

@@ -86,447 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "../../js-packages/connection/components/in-place-connection/index.jsx":
-/*!******************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/in-place-connection/index.jsx ***!
-  \******************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "../../js-packages/connection/node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/connection/components/in-place-connection/style.scss");
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_3__);
-/**
- * External dependencies
- */
-
-
-
-/**
- * Internal dependencies
- */
-
-
-/**
- * The in-place connection component.
- *
- * @param {object} props -- The properties.
- * @param {string} props.title -- Element title.
- * @param {boolean} props.isLoading -- Whether the element is still loading.
- * @param {string|number} props.width -- Iframe width.
- * @param {string|number} props.height -- Iframe height.
- * @param {boolean} props.displayTOS -- Whether the site has connection owner connected.
- * @param {boolean} props.scrollToIframe -- Whether we need to auto-scroll the window upon element rendering.
- * @param {string} props.connectUrl -- The connection URL.
- * @param {Function} props.onComplete -- The callback to be called upon complete of the connection process.
- * @param {Function} props.onThirdPartyCookiesBlocked -- The callback to be called if third-party cookies are disabled.
- * @param {string} props.location -- Component location identifier passed to WP.com.
- *
- * @returns {React.Component} The in-place connection component.
- */
-
-var InPlaceConnection = function InPlaceConnection(props) {
-  var title = props.title,
-      isLoading = props.isLoading,
-      width = props.width,
-      displayTOS = props.displayTOS,
-      scrollToIframe = props.scrollToIframe,
-      connectUrl = props.connectUrl,
-      onComplete = props.onComplete,
-      onThirdPartyCookiesBlocked = props.onThirdPartyCookiesBlocked,
-      location = props.location;
-  var height = props.height;
-  var iframeWrapRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
-  var iframeRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
-  /**
-   * Handles messages received from inside the iframe.
-   *
-   * @param {object} e -- Event object.
-   */
-
-  var receiveData = function receiveData(e) {
-    if (e.source !== iframeRef.current.contentWindow) {
-      return;
-    }
-
-    switch (e.data) {
-      case 'close':
-        // Remove listener, our job here is done.
-        window.removeEventListener('message', receiveData);
-
-        if (onComplete) {
-          onComplete();
-        }
-
-        break;
-
-      case 'wpcom_nocookie':
-        // Third-party cookies blocked.
-        if (onThirdPartyCookiesBlocked) {
-          onThirdPartyCookiesBlocked();
-        }
-
-        break;
-    }
-  };
-
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(
-  /**
-   * The component initialization.
-   */
-  function () {
-    // Scroll to the iframe container
-    if (scrollToIframe) {
-      window.scrollTo(0, iframeWrapRef.current.offsetTop - 10);
-    } // Add an event listener to identify successful authorization via iframe.
-
-
-    window.addEventListener('message', receiveData);
-  }); // The URL looks like https://jetpack.wordpress.com/jetpack.authorize_iframe/1/. We need to include the trailing
-  // slash below so that we don't end up with something like /jetpack.authorize_iframe_iframe/
-
-  var src = connectUrl.replace('authorize/', 'authorize_iframe/');
-
-  if (!src.includes('?')) {
-    src += '?';
-  }
-
-  if (displayTOS) {
-    src += '&display-tos';
-    height = (parseInt(height) + 50).toString();
-  }
-
-  src += '&iframe_height=' + parseInt(height);
-
-  if (location) {
-    src += '&iframe_source=' + location;
-  }
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "dops-card fade-in jp-iframe-wrap",
-    ref: iframeWrapRef
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, title), isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Loading…', 'jetpack')) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("iframe", {
-    title: title,
-    width: width,
-    height: height,
-    src: src,
-    ref: iframeRef
-  }));
-};
-
-InPlaceConnection.propTypes = {
-  title: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
-  isLoading: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  width: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
-  height: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
-  connectUrl: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
-  displayTOS: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool.isRequired,
-  scrollToIframe: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
-  onComplete: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  onThirdPartyCookiesBlocked: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
-  location: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string
-};
-InPlaceConnection.defaultProps = {
-  isLoading: false,
-  height: '220',
-  width: '100%',
-  scrollToIframe: false
-};
-/* harmony default export */ __webpack_exports__["default"] = (InPlaceConnection);
-
-/***/ }),
-
-/***/ "../../js-packages/connection/components/in-place-connection/style.scss":
-/*!*******************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/in-place-connection/style.scss ***!
-  \*******************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "../../js-packages/connection/components/main/index.jsx":
-/*!***************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/main/index.jsx ***!
-  \***************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/slicedToArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "../../js-packages/connection/node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _in_place_connection__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../in-place-connection */ "../../js-packages/connection/components/in-place-connection/index.jsx");
-/* harmony import */ var _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../tools/jetpack-rest-api-client */ "../../js-packages/connection/tools/jetpack-rest-api-client/index.jsx");
-
-
-/**
- * External dependencies
- */
-
-
-
-
-/**
- * Internal dependencies
- */
-
-
-
-/**
- * The in-place connection component.
- *
- * @param {object} props -- The properties.
- * @param {string} props.authorizationUrl -- The authorization URL.
- * @param {string} props.connectLabel -- The "Connect" button label.
- * @param {string} props.inPlaceTitle -- The title for the In-Place Connection component.
- * @param {boolean} props.forceCalypsoFlow -- Whether to go straight to Calypso flow, skipping the In-Place flow.
- * @param {string} props.apiRoot -- API root URL, required.
- * @param {string} props.apiNonce -- API Nonce, required.
- * @param {string} props.registrationNonce -- Separate registration nonce, required.
- * @param {boolean} props.isRegistered -- Whether the site is registered (has blog token), required.
- * @param {boolean} props.isUserConnected -- Whether the current user is connected (has user token), required.
- * @param {boolean} props.hasConnectedOwner -- Whether the site has connection owner, required.
- * @param {Function} props.onRegistered -- The callback to be called upon registration success.
- * @param {Function} props.onUserConnected -- The callback to be called when the connection is fully established.
- * @param {Function} props.redirectFunc -- The redirect function (`window.location.assign()` by default).
- *
- * @returns {React.Component} The in-place connection component.
- */
-
-var Main = function Main(props) {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
-      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
-      isRegistering = _useState2[0],
-      setIsRegistering = _useState2[1];
-
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
-      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState3, 2),
-      isUserConnecting = _useState4[0],
-      setIsUserConnecting = _useState4[1];
-
-  var apiRoot = props.apiRoot,
-      apiNonce = props.apiNonce,
-      connectLabel = props.connectLabel,
-      authorizationUrl = props.authorizationUrl,
-      forceCalypsoFlow = props.forceCalypsoFlow,
-      isRegistered = props.isRegistered,
-      isUserConnected = props.isUserConnected,
-      onRegistered = props.onRegistered,
-      onUserConnected = props.onUserConnected,
-      registrationNonce = props.registrationNonce,
-      redirectFunc = props.redirectFunc,
-      from = props.from,
-      redirectUri = props.redirectUri;
-  /**
-   * Initialize the REST API.
-   */
-
-  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
-    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_6__["default"].setApiRoot(apiRoot);
-    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_6__["default"].setApiNonce(apiNonce);
-  }, [apiRoot, apiNonce]);
-  /**
-   * Initialize the user connection process.
-   */
-
-  var connectUser = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (url) {
-    url = url || authorizationUrl;
-
-    if (!url.includes('?')) {
-      url += '?';
-    }
-
-    if (from) {
-      url += '&from=' + encodeURIComponent(from);
-    }
-
-    if (!url) {
-      throw new Error('Authorization URL is required');
-    }
-
-    if (forceCalypsoFlow) {
-      redirectFunc(url);
-      return;
-    }
-
-    setIsUserConnecting(true);
-  }, [authorizationUrl, forceCalypsoFlow, setIsUserConnecting, redirectFunc, from]);
-  /**
-   * Callback for the user connection success.
-   */
-
-  var onUserConnectedCallback = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
-    setIsUserConnecting(false);
-
-    if (onUserConnected) {
-      onUserConnected();
-    }
-  }, [setIsUserConnecting, onUserConnected]);
-  /**
-   * Initialize the site registration process.
-   */
-
-  var registerSite = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
-    e && e.preventDefault();
-
-    if (isRegistered) {
-      connectUser();
-      return;
-    }
-
-    setIsRegistering(true);
-    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_6__["default"].registerSite(registrationNonce, redirectUri).then(function (response) {
-      setIsRegistering(false);
-
-      if (onRegistered) {
-        onRegistered(response);
-      }
-
-      connectUser(response.authorizeUrl);
-    }).catch(function (error) {
-      throw error;
-    });
-  }, [setIsRegistering, isRegistered, onRegistered, connectUser, registrationNonce, redirectUri]);
-
-  if (isRegistered && isUserConnected) {
-    return null;
-  }
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "jp-connection-main"
-  }, !isUserConnecting && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["Button"], {
-    label: connectLabel,
-    onClick: registerSite,
-    isPrimary: true,
-    disabled: isRegistering || isUserConnecting
-  }, connectLabel), isUserConnecting && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_in_place_connection__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    connectUrl: authorizationUrl,
-    title: props.inPlaceTitle,
-    onComplete: onUserConnectedCallback,
-    displayTOS: props.hasConnectedOwner || isRegistered
-  }));
-};
-
-Main.propTypes = {
-  authorizationUrl: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
-  connectLabel: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
-  inPlaceTitle: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
-  forceCalypsoFlow: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool,
-  apiRoot: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
-  apiNonce: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
-  isRegistered: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool.isRequired,
-  isUserConnected: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool.isRequired,
-  hasConnectedOwner: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool.isRequired,
-  onRegistered: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
-  onUserConnected: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
-  registrationNonce: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
-  redirectFunc: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
-  from: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
-  redirectUri: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string
-};
-Main.defaultProps = {
-  inPlaceTitle: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Connect your WordPress.com account', 'jetpack'),
-  forceCalypsoFlow: false,
-  connectLabel: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Connect', 'jetpack'),
-  redirectFunc: function redirectFunc(url) {
-    return window.location.assign(url);
-  }
-};
-/* harmony default export */ __webpack_exports__["default"] = (Main);
-
-/***/ }),
-
-/***/ "../../js-packages/connection/helpers/third-party-cookies-fallback.jsx":
-/*!******************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/helpers/third-party-cookies-fallback.jsx ***!
-  \******************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * Performs the fallback redirect if third-party cookies are not available.
- *
- * @param {string} fallbackURL -- The fallback URL.
- */
-var thirdPartyCookiesFallback = function thirdPartyCookiesFallback(fallbackURL) {
-  window.location.replace(fallbackURL);
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (thirdPartyCookiesFallback);
-
-/***/ }),
-
-/***/ "../../js-packages/connection/index.jsx":
-/*!***********************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/index.jsx ***!
-  \***********************************************************************************/
-/*! exports provided: JetpackConnection, InPlaceConnection, thirdPartyCookiesFallbackHelper */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/main */ "../../js-packages/connection/components/main/index.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "JetpackConnection", function() { return _components_main__WEBPACK_IMPORTED_MODULE_0__["default"]; });
-
-/* harmony import */ var _components_in_place_connection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/in-place-connection */ "../../js-packages/connection/components/in-place-connection/index.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InPlaceConnection", function() { return _components_in_place_connection__WEBPACK_IMPORTED_MODULE_1__["default"]; });
-
-/* harmony import */ var _helpers_third_party_cookies_fallback__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers/third-party-cookies-fallback */ "../../js-packages/connection/helpers/third-party-cookies-fallback.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "thirdPartyCookiesFallbackHelper", function() { return _helpers_third_party_cookies_fallback__WEBPACK_IMPORTED_MODULE_2__["default"]; });
-
-/*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
-
-/**
- * Components.
- */
-
-
-/**
- * Helpers.
- */
-
-
-
-/***/ }),
-
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/arrayLikeToArray.js":
-/*!*********************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/arrayLikeToArray.js ***!
-  \*********************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/arrayLikeToArray.js":
+/*!******************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/arrayLikeToArray.js ***!
+  \******************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -545,10 +108,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/arrayWithHoles.js":
-/*!*******************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/arrayWithHoles.js ***!
-  \*******************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/arrayWithHoles.js":
+/*!****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/arrayWithHoles.js ***!
+  \****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -561,10 +124,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/assertThisInitialized.js":
-/*!**************************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
-  \**************************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/assertThisInitialized.js":
+/*!***********************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
+  \***********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -581,10 +144,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/classCallCheck.js":
-/*!*******************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/classCallCheck.js ***!
-  \*******************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/classCallCheck.js":
+/*!****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/classCallCheck.js ***!
+  \****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -599,16 +162,16 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/construct.js":
-/*!**************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/construct.js ***!
-  \**************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/construct.js":
+/*!***********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/construct.js ***!
+  \***********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/setPrototypeOf.js");
+var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/setPrototypeOf.js");
 
-var isNativeReflectConstruct = __webpack_require__(/*! ./isNativeReflectConstruct.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js");
+var isNativeReflectConstruct = __webpack_require__(/*! ./isNativeReflectConstruct.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js");
 
 function _construct(Parent, args, Class) {
   if (isNativeReflectConstruct()) {
@@ -635,18 +198,46 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/createSuper.js":
-/*!****************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/createSuper.js ***!
-  \****************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createClass.js":
+/*!*************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createClass.js ***!
+  \*************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+module.exports = _createClass;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createSuper.js":
+/*!*************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createSuper.js ***!
+  \*************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/getPrototypeOf.js");
 
-var isNativeReflectConstruct = __webpack_require__(/*! ./isNativeReflectConstruct.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js");
+var isNativeReflectConstruct = __webpack_require__(/*! ./isNativeReflectConstruct.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js");
 
-var possibleConstructorReturn = __webpack_require__(/*! ./possibleConstructorReturn.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+var possibleConstructorReturn = __webpack_require__(/*! ./possibleConstructorReturn.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
 
 function _createSuper(Derived) {
   var hasNativeReflectConstruct = isNativeReflectConstruct();
@@ -670,10 +261,68 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/getPrototypeOf.js":
-/*!*******************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/getPrototypeOf.js ***!
-  \*******************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \****************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends.js":
+/*!*********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends.js ***!
+  \*********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  module.exports["default"] = module.exports, module.exports.__esModule = true;
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/getPrototypeOf.js":
+/*!****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/getPrototypeOf.js ***!
+  \****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -690,14 +339,14 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/inherits.js":
-/*!*************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/inherits.js ***!
-  \*************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/inherits.js":
+/*!**********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/inherits.js ***!
+  \**********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/setPrototypeOf.js");
+var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/setPrototypeOf.js");
 
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -719,10 +368,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/isNativeFunction.js":
-/*!*********************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/isNativeFunction.js ***!
-  \*********************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeFunction.js":
+/*!******************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeFunction.js ***!
+  \******************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -735,10 +384,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js":
-/*!*****************************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js ***!
-  \*****************************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js":
+/*!**************************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeReflectConstruct.js ***!
+  \**************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -760,10 +409,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
-/*!*************************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
-  \*************************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
+/*!**********************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
+  \**********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -802,10 +451,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/nonIterableRest.js":
-/*!********************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/nonIterableRest.js ***!
-  \********************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/nonIterableRest.js":
+/*!*****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/nonIterableRest.js ***!
+  \*****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -818,16 +467,128 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js":
-/*!******************************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js ***!
-  \******************************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectSpread2.js":
+/*!***************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectSpread2.js ***!
+  \***************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/typeof.js")["default"];
+var defineProperty = __webpack_require__(/*! ./defineProperty.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/defineProperty.js");
 
-var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/assertThisInitialized.js");
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+
+    if (enumerableOnly) {
+      symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+    }
+
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+module.exports = _objectSpread2;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties.js":
+/*!*************************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties.js ***!
+  \*************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var objectWithoutPropertiesLoose = __webpack_require__(/*! ./objectWithoutPropertiesLoose.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js");
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+module.exports = _objectWithoutProperties;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js":
+/*!******************************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js ***!
+  \******************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+module.exports = _objectWithoutPropertiesLoose;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js":
+/*!***************************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/possibleConstructorReturn.js ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/typeof.js")["default"];
+
+var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/assertThisInitialized.js");
 
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
@@ -842,10 +603,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/setPrototypeOf.js":
-/*!*******************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/setPrototypeOf.js ***!
-  \*******************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/setPrototypeOf.js":
+/*!****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/setPrototypeOf.js ***!
+  \****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -864,20 +625,20 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/slicedToArray.js":
-/*!******************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/slicedToArray.js ***!
-  \******************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js":
+/*!***************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js ***!
+  \***************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/arrayWithHoles.js");
+var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/arrayWithHoles.js");
 
-var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js");
+var iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/iterableToArrayLimit.js");
 
-var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
 
-var nonIterableRest = __webpack_require__(/*! ./nonIterableRest.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/nonIterableRest.js");
+var nonIterableRest = __webpack_require__(/*! ./nonIterableRest.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/nonIterableRest.js");
 
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();
@@ -888,10 +649,10 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/typeof.js":
-/*!***********************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/typeof.js ***!
-  \***********************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/typeof.js":
+/*!********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/typeof.js ***!
+  \********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -920,14 +681,14 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
-  \*******************************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
+/*!****************************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
+  \****************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
 
 function _unsupportedIterableToArray(o, minLen) {
   if (!o) return;
@@ -943,20 +704,20 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/@babel/runtime/helpers/wrapNativeSuper.js":
-/*!********************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/@babel/runtime/helpers/wrapNativeSuper.js ***!
-  \********************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/wrapNativeSuper.js":
+/*!*****************************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/wrapNativeSuper.js ***!
+  \*****************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/getPrototypeOf.js");
 
-var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/setPrototypeOf.js");
+var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/setPrototypeOf.js");
 
-var isNativeFunction = __webpack_require__(/*! ./isNativeFunction.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/isNativeFunction.js");
+var isNativeFunction = __webpack_require__(/*! ./isNativeFunction.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/isNativeFunction.js");
 
-var construct = __webpack_require__(/*! ./construct.js */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/construct.js");
+var construct = __webpack_require__(/*! ./construct.js */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/construct.js");
 
 function _wrapNativeSuper(Class) {
   var _cache = typeof Map === "function" ? new Map() : undefined;
@@ -998,10 +759,78 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/object-assign/index.js":
-/*!*************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/object-assign/index.js ***!
-  \*************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/classnames@2.3.1/node_modules/classnames/index.js":
+/*!**************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/classnames@2.3.1/node_modules/classnames/index.js ***!
+  \**************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2018 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames() {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				if (arg.length) {
+					var inner = classNames.apply(null, arg);
+					if (inner) {
+						classes.push(inner);
+					}
+				}
+			} else if (argType === 'object') {
+				if (arg.toString === Object.prototype.toString) {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				} else {
+					classes.push(arg.toString());
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
+
+/***/ }),
+
+/***/ "../../../node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js":
+/*!********************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js ***!
+  \********************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1100,10 +929,10 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/prop-types/checkPropTypes.js":
-/*!*******************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/prop-types/checkPropTypes.js ***!
-  \*******************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/checkPropTypes.js":
+/*!************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/checkPropTypes.js ***!
+  \************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1120,7 +949,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var printWarning = function() {};
 
 if (undefined !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../js-packages/connection/node_modules/prop-types/lib/ReactPropTypesSecret.js");
+  var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/lib/ReactPropTypesSecret.js");
   var loggedTypeFailures = {};
   var has = Function.call.bind(Object.prototype.hasOwnProperty);
 
@@ -1214,10 +1043,10 @@ module.exports = checkPropTypes;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/prop-types/factoryWithThrowingShims.js":
-/*!*****************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/prop-types/factoryWithThrowingShims.js ***!
-  \*****************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/factoryWithThrowingShims.js":
+/*!**********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/factoryWithThrowingShims.js ***!
+  \**********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1231,7 +1060,7 @@ module.exports = checkPropTypes;
 
 
 
-var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../js-packages/connection/node_modules/prop-types/lib/ReactPropTypesSecret.js");
+var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/lib/ReactPropTypesSecret.js");
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -1290,10 +1119,10 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/prop-types/factoryWithTypeCheckers.js":
-/*!****************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/prop-types/factoryWithTypeCheckers.js ***!
-  \****************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/factoryWithTypeCheckers.js":
+/*!*********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/factoryWithTypeCheckers.js ***!
+  \*********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1307,11 +1136,11 @@ module.exports = function() {
 
 
 
-var ReactIs = __webpack_require__(/*! react-is */ "../../js-packages/connection/node_modules/react-is/index.js");
-var assign = __webpack_require__(/*! object-assign */ "../../js-packages/connection/node_modules/object-assign/index.js");
+var ReactIs = __webpack_require__(/*! react-is */ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/index.js");
+var assign = __webpack_require__(/*! object-assign */ "../../../node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js");
 
-var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../js-packages/connection/node_modules/prop-types/lib/ReactPropTypesSecret.js");
-var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "../../js-packages/connection/node_modules/prop-types/checkPropTypes.js");
+var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/lib/ReactPropTypesSecret.js");
+var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/checkPropTypes.js");
 
 var has = Function.call.bind(Object.prototype.hasOwnProperty);
 var printWarning = function() {};
@@ -1893,10 +1722,10 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/prop-types/index.js":
-/*!**********************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/prop-types/index.js ***!
-  \**********************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js":
+/*!***************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js ***!
+  \***************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1908,25 +1737,25 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
  */
 
 if (undefined !== 'production') {
-  var ReactIs = __webpack_require__(/*! react-is */ "../../js-packages/connection/node_modules/react-is/index.js");
+  var ReactIs = __webpack_require__(/*! react-is */ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/index.js");
 
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "../../js-packages/connection/node_modules/prop-types/factoryWithTypeCheckers.js")(ReactIs.isElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/factoryWithTypeCheckers.js")(ReactIs.isElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(/*! ./factoryWithThrowingShims */ "../../js-packages/connection/node_modules/prop-types/factoryWithThrowingShims.js")();
+  module.exports = __webpack_require__(/*! ./factoryWithThrowingShims */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/factoryWithThrowingShims.js")();
 }
 
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!*****************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \*****************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/lib/ReactPropTypesSecret.js":
+/*!**********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \**********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1947,10 +1776,10 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/react-is/cjs/react-is.development.js":
-/*!***************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/react-is/cjs/react-is.development.js ***!
-  \***************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/cjs/react-is.development.js":
+/*!*******************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/cjs/react-is.development.js ***!
+  \*******************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2140,10 +1969,10 @@ exports.typeOf = typeOf;
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/react-is/cjs/react-is.production.min.js":
-/*!******************************************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/react-is/cjs/react-is.production.min.js ***!
-  \******************************************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/cjs/react-is.production.min.js":
+/*!**********************************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/cjs/react-is.production.min.js ***!
+  \**********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2167,10 +1996,10 @@ exports.isValidElementType=function(a){return"string"===typeof a||"function"===t
 
 /***/ }),
 
-/***/ "../../js-packages/connection/node_modules/react-is/index.js":
-/*!********************************************************************************************************!*\
-  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/node_modules/react-is/index.js ***!
-  \********************************************************************************************************/
+/***/ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/index.js":
+/*!************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/index.js ***!
+  \************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2178,10 +2007,1565 @@ exports.isValidElementType=function(a){return"string"===typeof a||"function"===t
 
 
 if (undefined === 'production') {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.production.min.js */ "../../js-packages/connection/node_modules/react-is/cjs/react-is.production.min.js");
+  module.exports = __webpack_require__(/*! ./cjs/react-is.production.min.js */ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/cjs/react-is.production.min.js");
 } else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "../../js-packages/connection/node_modules/react-is/cjs/react-is.development.js");
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "../../../node_modules/.pnpm/react-is@16.13.1/node_modules/react-is/cjs/react-is.development.js");
 }
+
+
+/***/ }),
+
+/***/ "../../js-packages/components/components/automattic-byline-logo/index.jsx":
+/*!*********************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/components/components/automattic-byline-logo/index.jsx ***!
+  \*********************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AutomatticBylineLogo; });
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "../../../node_modules/.pnpm/classnames@2.3.1/node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+/**
+ * External dependencies
+ */
+
+
+
+/**
+ * AutomatticBylineLogo component definition.
+ *
+ * @param {object} props - Component properties.
+ * @param {string} props.title - Title for SVG.
+ * @param {number} props.height - Height for SVG.
+ * @param {number} props.className - Additional className for the a wrapper, default only: `jp-automattic-byline-logo`.
+ *
+ * @returns {React.Component} AutomatticBylineLogo component.
+ */
+
+function AutomatticBylineLogo(_ref) {
+  var _ref$title = _ref.title,
+      title = _ref$title === void 0 ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__["__"])('An Automattic Airline', 'jetpack') : _ref$title,
+      _ref$height = _ref.height,
+      height = _ref$height === void 0 ? 7 : _ref$height,
+      _ref$className = _ref.className,
+      className = _ref$className === void 0 ? '' : _ref$className,
+      otherProps = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default()(_ref, ["title", "height", "className"]);
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("svg", _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
+    role: "img",
+    x: "0",
+    y: "0",
+    viewBox: "0 0 935 38.2",
+    enableBackground: "new 0 0 935 38.2",
+    "aria-labelledby": "jp-automattic-byline-logo-title",
+    height: height,
+    className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('jp-automattic-byline-logo', className)
+  }, otherProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("title", {
+    id: "jp-automattic-byline-logo-title"
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("path", {
+    d: "M317.1 38.2c-12.6 0-20.7-9.1-20.7-18.5v-1.2c0-9.6 8.2-18.5 20.7-18.5 12.6 0 20.8 8.9 20.8 18.5v1.2C337.9 29.1 329.7 38.2 317.1 38.2zM331.2 18.6c0-6.9-5-13-14.1-13s-14 6.1-14 13v0.9c0 6.9 5 13.1 14 13.1s14.1-6.2 14.1-13.1V18.6zM175 36.8l-4.7-8.8h-20.9l-4.5 8.8h-7L157 1.3h5.5L182 36.8H175zM159.7 8.2L152 23.1h15.7L159.7 8.2zM212.4 38.2c-12.7 0-18.7-6.9-18.7-16.2V1.3h6.6v20.9c0 6.6 4.3 10.5 12.5 10.5 8.4 0 11.9-3.9 11.9-10.5V1.3h6.7V22C231.4 30.8 225.8 38.2 212.4 38.2zM268.6 6.8v30h-6.7v-30h-15.5V1.3h37.7v5.5H268.6zM397.3 36.8V8.7l-1.8 3.1 -14.9 25h-3.3l-14.7-25 -1.8-3.1v28.1h-6.5V1.3h9.2l14 24.4 1.7 3 1.7-3 13.9-24.4h9.1v35.5H397.3zM454.4 36.8l-4.7-8.8h-20.9l-4.5 8.8h-7l19.2-35.5h5.5l19.5 35.5H454.4zM439.1 8.2l-7.7 14.9h15.7L439.1 8.2zM488.4 6.8v30h-6.7v-30h-15.5V1.3h37.7v5.5H488.4zM537.3 6.8v30h-6.7v-30h-15.5V1.3h37.7v5.5H537.3zM569.3 36.8V4.6c2.7 0 3.7-1.4 3.7-3.4h2.8v35.5L569.3 36.8 569.3 36.8zM628 11.3c-3.2-2.9-7.9-5.7-14.2-5.7 -9.5 0-14.8 6.5-14.8 13.3v0.7c0 6.7 5.4 13 15.3 13 5.9 0 10.8-2.8 13.9-5.7l4 4.2c-3.9 3.8-10.5 7.1-18.3 7.1 -13.4 0-21.6-8.7-21.6-18.3v-1.2c0-9.6 8.9-18.7 21.9-18.7 7.5 0 14.3 3.1 18 7.1L628 11.3zM321.5 12.4c1.2 0.8 1.5 2.4 0.8 3.6l-6.1 9.4c-0.8 1.2-2.4 1.6-3.6 0.8l0 0c-1.2-0.8-1.5-2.4-0.8-3.6l6.1-9.4C318.7 11.9 320.3 11.6 321.5 12.4L321.5 12.4z"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("path", {
+    d: "M37.5 36.7l-4.7-8.9H11.7l-4.6 8.9H0L19.4 0.8H25l19.7 35.9H37.5zM22 7.8l-7.8 15.1h15.9L22 7.8zM82.8 36.7l-23.3-24 -2.3-2.5v26.6h-6.7v-36H57l22.6 24 2.3 2.6V0.8h6.7v35.9H82.8z"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("path", {
+    d: "M719.9 37l-4.8-8.9H694l-4.6 8.9h-7.1l19.5-36h5.6l19.8 36H719.9zM704.4 8l-7.8 15.1h15.9L704.4 8zM733 37V1h6.8v36H733zM781 37c-1.8 0-2.6-2.5-2.9-5.8l-0.2-3.7c-0.2-3.6-1.7-5.1-8.4-5.1h-12.8V37H750V1h19.6c10.8 0 15.7 4.3 15.7 9.9 0 3.9-2 7.7-9 9 7 0.5 8.5 3.7 8.6 7.9l0.1 3c0.1 2.5 0.5 4.3 2.2 6.1V37H781zM778.5 11.8c0-2.6-2.1-5.1-7.9-5.1h-13.8v10.8h14.4c5 0 7.3-2.4 7.3-5.2V11.8zM794.8 37V1h6.8v30.4h28.2V37H794.8zM836.7 37V1h6.8v36H836.7zM886.2 37l-23.4-24.1 -2.3-2.5V37h-6.8V1h6.5l22.7 24.1 2.3 2.6V1h6.8v36H886.2zM902.3 37V1H935v5.6h-26v9.2h20v5.5h-20v10.1h26V37H902.3z"
+  }));
+}
+
+/***/ }),
+
+/***/ "../../js-packages/components/components/jetpack-footer/index.jsx":
+/*!*************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/components/components/jetpack-footer/index.jsx ***!
+  \*************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return JetpackFooter; });
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "../../../node_modules/.pnpm/classnames@2.3.1/node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _automattic_byline_logo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../automattic-byline-logo */ "../../js-packages/components/components/automattic-byline-logo/index.jsx");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/components/components/jetpack-footer/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _jetpack_logo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../jetpack-logo */ "../../js-packages/components/components/jetpack-logo/index.jsx");
+
+
+
+/**
+ * External dependencies
+ */
+
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+/**
+ * JetpackFooter component definition.
+ *
+ * @param {object} props - Component properties.
+ * @param {object} props.a8cLogoHref - Link for 'An Automattic Airline'.
+ * @param {object} props.moduleName - Name of the module, e.g. 'Jetpack Search'.
+ * @param {object} props.className - additional className of the wrapper, default only: `jp-dashboard-footer`.
+ *
+ * @returns {React.Component} JetpackFooter component.
+ */
+
+function JetpackFooter(_ref) {
+  var a8cLogoHref = _ref.a8cLogoHref,
+      _ref$moduleName = _ref.moduleName,
+      moduleName = _ref$moduleName === void 0 ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Jetpack', 'jetpack') : _ref$moduleName,
+      _ref$className = _ref.className,
+      className = _ref$className === void 0 ? '' : _ref$className,
+      otherProps = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default()(_ref, ["a8cLogoHref", "moduleName", "className"]);
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
+    className: classnames__WEBPACK_IMPORTED_MODULE_4___default()('jp-dashboard-footer', className)
+  }, otherProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+    className: "jp-dashboard-footer__footer-left"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_jetpack_logo__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    logoColor: "#000",
+    showText: false,
+    height: "16",
+    className: "jp-dashboard-footer__jetpack-symbol"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("span", {
+    className: "jp-dashboard-footer__module-name"
+  }, moduleName)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+    className: "jp-dashboard-footer__footer-right"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("a", {
+    href: a8cLogoHref
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_automattic_byline_logo__WEBPACK_IMPORTED_MODULE_5__["default"], null))));
+}
+
+/***/ }),
+
+/***/ "../../js-packages/components/components/jetpack-footer/style.scss":
+/*!**************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/components/components/jetpack-footer/style.scss ***!
+  \**************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../../js-packages/components/components/jetpack-logo/index.jsx":
+/*!***********************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/components/components/jetpack-logo/index.jsx ***!
+  \***********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/extends.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectWithoutProperties.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/classCallCheck */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createClass */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/inherits */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createSuper */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createSuper.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/defineProperty */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! classnames */ "../../../node_modules/.pnpm/classnames@2.3.1/node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_9__);
+
+
+
+
+
+
+
+
+/**
+ * External dependencies
+ */
+
+
+
+
+var JetpackLogo = /*#__PURE__*/function (_React$Component) {
+  _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(JetpackLogo, _React$Component);
+
+  var _super = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_5___default()(JetpackLogo);
+
+  function JetpackLogo() {
+    _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, JetpackLogo);
+
+    return _super.apply(this, arguments);
+  }
+
+  _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(JetpackLogo, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          logoColor = _this$props.logoColor,
+          showText = _this$props.showText,
+          className = _this$props.className,
+          otherProps = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1___default()(_this$props, ["logoColor", "showText", "className"]);
+
+      var viewBox = showText ? '0 0 118 32' : '0 0 32 32';
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("svg", _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
+        xmlns: "http://www.w3.org/2000/svg",
+        x: "0px",
+        y: "0px",
+        viewBox: viewBox,
+        className: classnames__WEBPACK_IMPORTED_MODULE_9___default()('jetpack-logo', className)
+      }, otherProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        fill: logoColor,
+        d: "M16,0C7.2,0,0,7.2,0,16s7.2,16,16,16s16-7.2,16-16S24.8,0,16,0z M15,19H7l8-16V19z M17,29V13h8L17,29z"
+      }), showText && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M41.3,26.6c-0.5-0.7-0.9-1.4-1.3-2.1c2.3-1.4,3-2.5,3-4.6V8h-3V6h6v13.4C46,22.8,45,24.8,41.3,26.6z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M65,18.4c0,1.1,0.8,1.3,1.4,1.3c0.5,0,2-0.2,2.6-0.4v2.1c-0.9,0.3-2.5,0.5-3.7,0.5c-1.5,0-3.2-0.5-3.2-3.1V12H60v-2h2.1V7.1 H65V10h4v2h-4V18.4z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M71,10h3v1.3c1.1-0.8,1.9-1.3,3.3-1.3c2.5,0,4.5,1.8,4.5,5.6s-2.2,6.3-5.8,6.3c-0.9,0-1.3-0.1-2-0.3V28h-3V10z M76.5,12.3 c-0.8,0-1.6,0.4-2.5,1.2v5.9c0.6,0.1,0.9,0.2,1.8,0.2c2,0,3.2-1.3,3.2-3.9C79,13.4,78.1,12.3,76.5,12.3z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M93,22h-3v-1.5c-0.9,0.7-1.9,1.5-3.5,1.5c-1.5,0-3.1-1.1-3.1-3.2c0-2.9,2.5-3.4,4.2-3.7l2.4-0.3v-0.3c0-1.5-0.5-2.3-2-2.3 c-0.7,0-2.3,0.5-3.7,1.1L84,11c1.2-0.4,3-1,4.4-1c2.7,0,4.6,1.4,4.6,4.7L93,22z M90,16.4l-2.2,0.4c-0.7,0.1-1.4,0.5-1.4,1.6 c0,0.9,0.5,1.4,1.3,1.4s1.5-0.5,2.3-1V16.4z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M104.5,21.3c-1.1,0.4-2.2,0.6-3.5,0.6c-4.2,0-5.9-2.4-5.9-5.9c0-3.7,2.3-6,6.1-6c1.4,0,2.3,0.2,3.2,0.5V13 c-0.8-0.3-2-0.6-3.2-0.6c-1.7,0-3.2,0.9-3.2,3.6c0,2.9,1.5,3.8,3.3,3.8c0.9,0,1.9-0.2,3.2-0.7V21.3z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M110,15.2c0.2-0.3,0.2-0.8,3.8-5.2h3.7l-4.6,5.7l5,6.3h-3.7l-4.2-5.8V22h-3V6h3V15.2z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("path", {
+        d: "M58.5,21.3c-1.5,0.5-2.7,0.6-4.2,0.6c-3.6,0-5.8-1.8-5.8-6c0-3.1,1.9-5.9,5.5-5.9s4.9,2.5,4.9,4.9c0,0.8,0,1.5-0.1,2h-7.3 c0.1,2.5,1.5,2.8,3.6,2.8c1.1,0,2.2-0.3,3.4-0.7C58.5,19,58.5,21.3,58.5,21.3z M56,15c0-1.4-0.5-2.9-2-2.9c-1.4,0-2.3,1.3-2.4,2.9 C51.6,15,56,15,56,15z"
+      })));
+    }
+  }]);
+
+  return JetpackLogo;
+}(react__WEBPACK_IMPORTED_MODULE_8___default.a.Component);
+
+_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(JetpackLogo, "propTypes", {
+  className: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.string,
+  width: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.number,
+  height: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.number,
+  showText: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.bool,
+  logoColor: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.string
+});
+
+_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(JetpackLogo, "defaultProps", {
+  className: '',
+  height: 32,
+  showText: true,
+  logoColor: '#00BE28'
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (JetpackLogo);
+
+/***/ }),
+
+/***/ "../../js-packages/components/index.jsx":
+/*!***********************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/components/index.jsx ***!
+  \***********************************************************************************/
+/*! exports provided: JetpackLogo, getRedirectUrl, AutomatticBylineLogo, JetpackFooter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_jetpack_logo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/jetpack-logo */ "../../js-packages/components/components/jetpack-logo/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "JetpackLogo", function() { return _components_jetpack_logo__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _tools_jp_redirect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools/jp-redirect */ "../../js-packages/components/tools/jp-redirect/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getRedirectUrl", function() { return _tools_jp_redirect__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _components_automattic_byline_logo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/automattic-byline-logo */ "../../js-packages/components/components/automattic-byline-logo/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AutomatticBylineLogo", function() { return _components_automattic_byline_logo__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _components_jetpack_footer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/jetpack-footer */ "../../js-packages/components/components/jetpack-footer/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "JetpackFooter", function() { return _components_jetpack_footer__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+
+
+
+
+/***/ }),
+
+/***/ "../../js-packages/components/tools/jp-redirect/index.jsx":
+/*!*****************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/components/tools/jp-redirect/index.jsx ***!
+  \*****************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getRedirectUrl; });
+/* global jetpack_redirects */
+
+/**
+ * Builds an URL using the jetpack.com/redirect/ service
+ *
+ * If $source is a simple slug, it will be sent using the source query parameter. e.g. jetpack.com/redirect/?source=slug
+ *
+ * If $source is a full URL, starting with https://, it will be sent using the url query parameter. e.g. jetpack.com/redirect/?url=https://wordpress.com
+ *
+ * Note: if using full URL, query parameters and anchor must be passed in args. Any querystring of url fragment in the URL will be discarded.
+ *
+ * @since 0.2.0
+ *
+ * @param {string}  source - The URL handler registered in the server or the full destination URL (starting with https://).
+ * @param {object}  args - {
+ *
+ * Additional arguments to build the url.  This is not a complete list as any argument passed here will be sent to as a query parameter to the Redirect server. These parameters will not necessarily be passed over to the final destination URL. If you want to add a parameter to the final destination URL, use the `query` argument.
+ *
+ * @type {string}  site URL of the current site. Will default to the value of jetpack_redirects.currentSiteRawUrl, if available.
+ * @type {string}  path Additional path to be appended to the URL
+ * @type {string}  query Query parameters to be added to the final destination URL. should be in query string format (e.g. 'key=value&foo=bar').
+ * @type {string}  anchor Anchor to be added to the URL
+ * }
+ *
+ * @returns {string} The redirect URL
+ */
+function getRedirectUrl(source) {
+  var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var queryVars = {};
+  var calypsoEnv;
+
+  if (typeof window !== 'undefined') {
+    var _window$Initial_State;
+
+    calypsoEnv = (_window$Initial_State = window.Initial_State) === null || _window$Initial_State === void 0 ? void 0 : _window$Initial_State.calypsoEnv;
+  }
+
+  if (source.search('https://') === 0) {
+    var parsedUrl = new URL(source); // discard any query and fragments.
+
+    source = "https://".concat(parsedUrl.host).concat(parsedUrl.pathname);
+    queryVars.url = encodeURIComponent(source);
+  } else {
+    queryVars.source = encodeURIComponent(source);
+  }
+
+  Object.keys(args).map(function (argName) {
+    queryVars[argName] = encodeURIComponent(args[argName]);
+  });
+
+  if (!Object.keys(queryVars).includes('site') && typeof jetpack_redirects !== 'undefined' && jetpack_redirects.hasOwnProperty('currentSiteRawUrl')) {
+    queryVars.site = jetpack_redirects.currentSiteRawUrl;
+  }
+
+  if (calypsoEnv) {
+    queryVars.calypso_env = calypsoEnv;
+  }
+
+  var queryString = Object.keys(queryVars).map(function (key) {
+    return key + '=' + queryVars[key];
+  }).join('&');
+  return "https://jetpack.com/redirect/?" + queryString;
+}
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connect-button/index.jsx":
+/*!*************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connect-button/index.jsx ***!
+  \*************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../tools/jetpack-rest-api-client */ "../../js-packages/connection/tools/jetpack-rest-api-client/index.jsx");
+/* harmony import */ var _connect_user__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../connect-user */ "../../js-packages/connection/components/connect-user/index.jsx");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/connection/components/connect-button/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_7__);
+
+
+/**
+ * External dependencies
+ */
+
+
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+/**
+ * The RNA connection component.
+ *
+ * @param {object} props -- The properties.
+ * @param {string} props.connectLabel -- The "Connect" button label.
+ * @param {string} props.apiRoot -- API root URL, required.
+ * @param {string} props.apiNonce -- API Nonce, required.
+ * @param {string} props.registrationNonce -- Separate registration nonce, required.
+ * @param {Function} props.onRegistered -- The callback to be called upon registration success.
+ * @param {string} props.redirectUri -- The redirect admin URI.
+ * @param {string} props.from -- Where the connection request is coming from.
+ * @param {Function} props.statusCallback -- Callback to pull connection status from the component.
+ *
+ * @returns {React.Component} The RNA connection component.
+ */
+
+var ConnectButton = function ConnectButton(props) {
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      isRegistering = _useState2[0],
+      setIsRegistering = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState4 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState3, 2),
+      isUserConnecting = _useState4[0],
+      setIsUserConnecting = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(null),
+      _useState6 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState5, 2),
+      authorizationUrl = _useState6[0],
+      setAuthorizationUrl = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState8 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState7, 2),
+      isFetchingConnectionStatus = _useState8[0],
+      setIsFetchingConnectionStatus = _useState8[1];
+
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState10 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState9, 2),
+      connectionStatus = _useState10[0],
+      setConnectionStatus = _useState10[1];
+
+  var apiRoot = props.apiRoot,
+      apiNonce = props.apiNonce,
+      connectLabel = props.connectLabel,
+      onRegistered = props.onRegistered,
+      registrationNonce = props.registrationNonce,
+      redirectUri = props.redirectUri,
+      from = props.from,
+      statusCallback = props.statusCallback;
+  /**
+   * Initialize the REST API.
+   */
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_5__["default"].setApiRoot(apiRoot);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_5__["default"].setApiNonce(apiNonce);
+  }, [apiRoot, apiNonce]);
+  /**
+   * Fetch the connection status on the first render.
+   * To be only run once.
+   */
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    setIsFetchingConnectionStatus(true);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_5__["default"].fetchSiteConnectionStatus().then(function (response) {
+      setIsFetchingConnectionStatus(false);
+      setConnectionStatus(response);
+    })["catch"](function (error) {
+      setIsFetchingConnectionStatus(false);
+      throw error;
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Initialize the site registration process.
+   */
+
+  var registerSite = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    e && e.preventDefault();
+
+    if (connectionStatus.isRegistered) {
+      setIsUserConnecting(true);
+      return;
+    }
+
+    setIsRegistering(true);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_5__["default"].registerSite(registrationNonce, redirectUri).then(function (response) {
+      setIsRegistering(false);
+
+      if (onRegistered) {
+        onRegistered(response);
+      }
+
+      setAuthorizationUrl(response.authorizeUrl);
+      setIsUserConnecting(true);
+    })["catch"](function (error) {
+      setIsRegistering(false);
+      throw error;
+    });
+  }, [setIsRegistering, setAuthorizationUrl, connectionStatus, onRegistered, registrationNonce, redirectUri]);
+  var statusCallbackWrapped = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function () {
+    if (statusCallback && {}.toString.call(statusCallback) === '[object Function]') {
+      return statusCallback(connectionStatus);
+    }
+  }, [connectionStatus, statusCallback]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connect-button"
+  }, statusCallbackWrapped(), isFetchingConnectionStatus && "Loading...", (!connectionStatus.isRegistered || !connectionStatus.isUserConnected) && !isFetchingConnectionStatus && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+    className: "jp-connect-button--button",
+    label: connectLabel,
+    onClick: registerSite,
+    isPrimary: true,
+    disabled: isRegistering || isUserConnecting
+  }, connectLabel), isUserConnecting && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_connect_user__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    connectUrl: authorizationUrl,
+    redirectUri: redirectUri,
+    from: from
+  }));
+};
+
+ConnectButton.propTypes = {
+  connectLabel: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  apiRoot: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  apiNonce: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  onRegistered: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
+  from: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  redirectUri: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  registrationNonce: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired
+};
+ConnectButton.defaultProps = {
+  connectLabel: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Connect', 'jetpack')
+};
+/* harmony default export */ __webpack_exports__["default"] = (ConnectButton);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connect-button/style.scss":
+/*!**************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connect-button/style.scss ***!
+  \**************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connect-screen/image-slider.jsx":
+/*!********************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connect-screen/image-slider.jsx ***!
+  \********************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ * External dependencies
+ */
+
+
+/**
+ * The ImageSlider component.
+ *
+ * @param {object} props -- The properties.
+ * @param {Array} props.images -- Images to display on the right side.
+ * @param {string} props.assetBaseUrl -- The assets base URL
+ *
+ * @returns {React.Component} The `ImageSlider` component.
+ */
+
+var ImageSlider = function ImageSlider(props) {
+  var images = props.images,
+      assetBaseUrl = props.assetBaseUrl;
+
+  if (!images.length) {
+    return null;
+  }
+
+  var imagesHTML = [];
+  images.forEach(function (image) {
+    return imagesHTML.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      src: assetBaseUrl + image,
+      alt: ""
+    })));
+  });
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "jp-connect-screen--image-slider"
+  }, imagesHTML);
+};
+
+ImageSlider.propTypes = {
+  images: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string).isRequired,
+  assetBaseUrl: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
+};
+ImageSlider.defaultProps = {
+  assetBaseUrl: ''
+};
+/* harmony default export */ __webpack_exports__["default"] = (ImageSlider);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connect-screen/index.jsx":
+/*!*************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connect-screen/index.jsx ***!
+  \*************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @automattic/jetpack-components */ "../../js-packages/components/index.jsx");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _connect_button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../connect-button */ "../../js-packages/connection/components/connect-button/index.jsx");
+/* harmony import */ var _image_slider__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./image-slider */ "../../js-packages/connection/components/connect-screen/image-slider.jsx");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/connection/components/connect-screen/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_8__);
+
+
+/**
+ * External dependencies
+ */
+
+
+
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+/**
+ * The Connection Screen component.
+ *
+ * @param {object} props -- The properties.
+ * @param {string} props.apiRoot -- API root URL, required.
+ * @param {string} props.apiNonce -- API Nonce, required.
+ * @param {string} props.registrationNonce -- Separate registration nonce, required.
+ * @param {string} props.redirectUri -- The redirect admin URI.
+ * @param {string} props.from -- Where the connection request is coming from.
+ * @param {string} props.title -- Page title.
+ * @param {Function} props.statusCallback -- Callback to pull connection status from the component.
+ * @param {Array} props.images -- Images to display on the right side.
+ * @param {string} props.assetBaseUrl -- The assets base URL.
+ *
+ * @returns {React.Component} The `ConnectScreen` component.
+ */
+
+var ConnectScreen = function ConnectScreen(props) {
+  var title = props.title,
+      apiRoot = props.apiRoot,
+      apiNonce = props.apiNonce,
+      registrationNonce = props.registrationNonce,
+      from = props.from,
+      redirectUri = props.redirectUri,
+      statusCallback = props.statusCallback,
+      images = props.images,
+      children = props.children,
+      assetBaseUrl = props.assetBaseUrl;
+  var showImageSlider = images.length;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState2 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      connectionStatus = _useState2[0],
+      setConnectionStatus = _useState2[1];
+
+  var statusHandler = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (status) {
+    setConnectionStatus(status);
+
+    if (statusCallback && {}.toString.call(statusCallback) === '[object Function]') {
+      return statusCallback(status);
+    }
+  }, [statusCallback, setConnectionStatus]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: 'jp-connect-screen' + (showImageSlider ? ' jp-connect-screen--two-columns' : '') + (connectionStatus.hasOwnProperty('isRegistered') ? '' : ' jp-connect-screen--loading')
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connect-screen--left"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_4__["JetpackLogo"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, title), children, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_connect_button__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    apiRoot: apiRoot,
+    apiNonce: apiNonce,
+    registrationNonce: registrationNonce,
+    from: from,
+    redirectUri: redirectUri,
+    statusCallback: statusHandler,
+    connectLabel: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Set up Jetpack', 'jetpack')
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connnect-screen--tos"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createInterpolateElement"])(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('By clicking the button above, you agree to our <tosLink>Terms of Service</tosLink> and to <shareDetailsLink>share details</shareDetailsLink> with WordPress.com.', 'jetpack'), {
+    tosLink: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+      href: Object(_automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_4__["getRedirectUrl"])('wpcom-tos'),
+      rel: "noopener noreferrer",
+      target: "_blank"
+    }),
+    shareDetailsLink: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+      href: Object(_automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_4__["getRedirectUrl"])('jetpack-support-what-data-does-jetpack-sync'),
+      rel: "noopener noreferrer",
+      target: "_blank"
+    })
+  }))), showImageSlider && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connect-screen--right"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_image_slider__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    images: images,
+    assetBaseUrl: assetBaseUrl
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connect-screen--clearfix"
+  }));
+};
+
+ConnectScreen.propTypes = {
+  title: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  body: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  apiRoot: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  apiNonce: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  from: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  redirectUri: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  registrationNonce: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  statusCallback: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  images: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string),
+  assetBaseUrl: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string
+};
+ConnectScreen.defaultProps = {
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Over 5 million WordPress sites are faster and more secure', 'jetpack'),
+  images: []
+};
+/* harmony default export */ __webpack_exports__["default"] = (ConnectScreen);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connect-screen/style.scss":
+/*!**************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connect-screen/style.scss ***!
+  \**************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connect-user/index.jsx":
+/*!***********************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connect-user/index.jsx ***!
+  \***********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../tools/jetpack-rest-api-client */ "../../js-packages/connection/tools/jetpack-rest-api-client/index.jsx");
+
+
+/**
+ * External dependencies
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+/**
+ * The user connection component.
+ *
+ * @param {object} props -- The properties.
+ * @param {Function} props.redirectFunc -- The redirect function (`window.location.assign()` by default).
+ * @param {string} props.connectUrl -- The authorization URL (no-iframe).
+ * @param {string} props.redirectUri -- The redirect admin URI.
+ * @param {string} props.from -- Where the connection request is coming from.
+ *
+ * @returns {null} -- Nothing to return.
+ */
+
+var ConnectUser = function ConnectUser(props) {
+  var redirectFunc = props.redirectFunc,
+      connectUrl = props.connectUrl,
+      redirectUri = props.redirectUri,
+      from = props.from;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(null),
+      _useState2 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      authorizationUrl = _useState2[0],
+      setAuthorizationUrl = _useState2[1];
+
+  if (connectUrl && connectUrl !== authorizationUrl) {
+    setAuthorizationUrl(connectUrl);
+  }
+  /**
+   * Fetch the authorization URL on the first render.
+   * To be only run once.
+   */
+
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    if (!authorizationUrl) {
+      _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_3__["default"].fetchAuthorizationUrl(redirectUri).then(function (response) {
+        return setAuthorizationUrl(response.authorizeUrl);
+      })["catch"](function (error) {
+        throw error;
+      });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!authorizationUrl) {
+    return null;
+  }
+
+  redirectFunc(authorizationUrl + (from ? (authorizationUrl.includes('?') ? '&' : '?') + 'from=' + encodeURIComponent(from) : ''));
+  return null;
+};
+
+ConnectUser.propTypes = {
+  connectUrl: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  redirectUri: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  from: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  redirectFunc: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
+};
+ConnectUser.defaultProps = {
+  redirectFunc: function redirectFunc(url) {
+    return window.location.assign(url);
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (ConnectUser);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connection-status-card/index.jsx":
+/*!*********************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connection-status-card/index.jsx ***!
+  \*********************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _connect_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../connect-user */ "../../js-packages/connection/components/connect-user/index.jsx");
+/* harmony import */ var _disconnect_dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../disconnect-dialog */ "../../js-packages/connection/components/disconnect-dialog/index.jsx");
+/* harmony import */ var _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../tools/jetpack-rest-api-client */ "../../js-packages/connection/tools/jetpack-rest-api-client/index.jsx");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/connection/components/connection-status-card/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_8__);
+
+
+/**
+ * External dependencies
+ */
+
+
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+
+/**
+ * The RNA Connection Status Card component.
+ *
+ * @param {object}   props -- The properties.
+ * @param {string}   props.apiRoot -- API root URL, required.
+ * @param {string}   props.apiNonce -- API Nonce, required.
+ * @param {boolean}  props.isRegistered -- Whether a site level connection has already been established, required. If not, the component will not render.
+ * @param {string}   props.isUserConnected -- Whether the current user has connected their WordPress.com account, required.
+ * @param {string}   props.redirectUri -- The redirect admin URI after the user has connected their WordPress.com account.
+ * @param {string}   props.title -- The Card title.
+ * @param {string}   props.connectionInfoText -- The text that will be displayed under the title, containing info how to leverage the connection.
+ * @param {Function} props.onDisconnected -- The callback to be called upon disconnection success.
+ *
+ * @returns {React.Component} The `ConnectionStatusCard` component.
+ */
+
+var ConnectionStatusCard = function ConnectionStatusCard(props) {
+  var apiRoot = props.apiRoot,
+      apiNonce = props.apiNonce,
+      isRegistered = props.isRegistered,
+      isUserConnected = props.isUserConnected,
+      redirectUri = props.redirectUri,
+      title = props.title,
+      connectionInfoText = props.connectionInfoText,
+      onDisconnected = props.onDisconnected;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      isFetchingConnectionData = _useState2[0],
+      setIsFetchingConnectionData = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState4 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState3, 2),
+      connectedUserData = _useState4[0],
+      setConnectedUserData = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState6 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState5, 2),
+      isUserConnecting = _useState6[0],
+      setIsUserConnecting = _useState6[1];
+
+  var avatarRef = Object(react__WEBPACK_IMPORTED_MODULE_1__["useRef"])();
+  /**
+   * Initialize the REST API.
+   */
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__["default"].setApiRoot(apiRoot);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__["default"].setApiNonce(apiNonce);
+  }, [apiRoot, apiNonce]);
+  /**
+   * Fetch the connection data on the first render.
+   * To be only run once.
+   */
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    setIsFetchingConnectionData(true);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__["default"].fetchSiteConnectionData().then(function (response) {
+      var _response$currentUser, _response$currentUser2, _response$currentUser3;
+
+      setIsFetchingConnectionData(false);
+      setConnectedUserData((_response$currentUser = response.currentUser) === null || _response$currentUser === void 0 ? void 0 : _response$currentUser.wpcomUser);
+      var avatar = (_response$currentUser2 = response.currentUser) === null || _response$currentUser2 === void 0 ? void 0 : (_response$currentUser3 = _response$currentUser2.wpcomUser) === null || _response$currentUser3 === void 0 ? void 0 : _response$currentUser3.avatar;
+
+      if (avatar) {
+        avatarRef.current.style.backgroundImage = "url('".concat(avatar, "')");
+      }
+    })["catch"](function (error) {
+      setIsFetchingConnectionData(false);
+      throw error;
+    });
+  }, [setIsFetchingConnectionData, setConnectedUserData]);
+  var onDisconnectedCallback = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    e && e.preventDefault();
+
+    if (onDisconnected) {
+      onDisconnected();
+    }
+  }, [onDisconnected]); // Prevent component from rendering if site is not connected.
+
+  if (!isRegistered) {
+    return null;
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connection-status-card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, connectionInfoText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connection-status-card--status"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connection-status-card--cloud"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: 'jp-connection-status-card--line' + (isUserConnected ? '' : ' jp-connection-status-card--site-only')
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connection-status-card--jetpack-logo"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-connection-status-card--avatar",
+    ref: avatarRef
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
+    className: "jp-connection-status-card--list"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    className: "jp-connection-status-card--list-item-success"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Site connected.', 'jetpack'), "\xA0", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_disconnect_dialog__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    apiRoot: apiRoot,
+    apiNonce: apiNonce,
+    onDisconnected: onDisconnectedCallback
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Jetpack is currently powering multiple products on your site.', 'jetpack'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Once you disconnect Jetpack, these will no longer work.', 'jetpack')))), isUserConnected && !isFetchingConnectionData && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    className: "jp-connection-status-card--list-item-success"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Logged in as', 'jetpack'), " ", connectedUserData === null || connectedUserData === void 0 ? void 0 : connectedUserData.display_name), !isUserConnected && !isFetchingConnectionData && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
+    className: "jp-connection-status-card--list-item-error"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Your WordPress.com account is not connected.', 'jetpack'))), !isUserConnected && !isFetchingConnectionData && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+    isPrimary: true,
+    disabled: isUserConnecting,
+    onClick: setIsUserConnecting,
+    className: "jp-connection-status-card--btn-connect-user"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Connect your WordPress.com account', 'jetpack')), isUserConnecting && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_connect_user__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    redirectUri: redirectUri
+  }));
+};
+
+ConnectionStatusCard.propTypes = {
+  apiRoot: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  apiNonce: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  isRegistered: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool.isRequired,
+  isUserConnected: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool.isRequired,
+  redirectUri: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string.isRequired,
+  title: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  connectionInfoText: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
+  onDisconnected: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func
+};
+ConnectionStatusCard.defaultProps = {
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Connection', 'jetpack'),
+  connectionInfoText: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Leverages the Jetpack Cloud for more features on your side.', 'jetpack')
+};
+/* harmony default export */ __webpack_exports__["default"] = (ConnectionStatusCard);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/connection-status-card/style.scss":
+/*!**********************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/connection-status-card/style.scss ***!
+  \**********************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/disconnect-dialog/index.jsx":
+/*!****************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/disconnect-dialog/index.jsx ***!
+  \****************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/slicedToArray.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @automattic/jetpack-components */ "../../js-packages/components/index.jsx");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../tools/jetpack-rest-api-client */ "../../js-packages/connection/tools/jetpack-rest-api-client/index.jsx");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/connection/components/disconnect-dialog/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_8__);
+
+
+/**
+ * External dependencies
+ */
+
+
+
+
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+/**
+ * The RNA Disconnect Dialog component.
+ *
+ * @param {object} props -- The properties.
+ * @param {string} props.apiRoot -- API root URL, required.
+ * @param {string} props.apiNonce -- API Nonce, required.
+ * @param {string} props.title -- The modal title.
+ * @param {Function} props.onDisconnected -- The callback to be called upon disconnection success.
+ * @param {Function} props.onError -- The callback to be called upon disconnection failure.
+ * @param {Function} props.errorMessage -- The error message to display upon disconnection failure.
+ *
+ * @returns {React.Component} The `DisconnectDialog` component.
+ */
+
+var DisconnectDialog = function DisconnectDialog(props) {
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),
+      isOpen = _useState2[0],
+      setOpen = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState4 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState3, 2),
+      isDisconnecting = _useState4[0],
+      setIsDisconnecting = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState6 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState5, 2),
+      isDisconnected = _useState6[0],
+      setIsDisconnected = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState8 = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState7, 2),
+      disconnectError = _useState8[0],
+      setDisconnectError = _useState8[1];
+
+  var apiRoot = props.apiRoot,
+      apiNonce = props.apiNonce,
+      title = props.title,
+      onDisconnected = props.onDisconnected,
+      onError = props.onError,
+      errorMessage = props.errorMessage,
+      children = props.children;
+  /**
+   * Initialize the REST API.
+   */
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__["default"].setApiRoot(apiRoot);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__["default"].setApiNonce(apiNonce);
+  }, [apiRoot, apiNonce]);
+  /**
+   * Open the Disconnect Dialog.
+   */
+
+  var openModal = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    e && e.preventDefault();
+    setOpen(true);
+  }, [setOpen]);
+  /**
+   * Close the Disconnect Dialog.
+   */
+
+  var closeModal = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    e && e.preventDefault();
+    setOpen(false);
+  }, [setOpen]);
+  /**
+   * Disconnect - Triggered upon clicking the 'Disconnect' button.
+   */
+
+  var disconnect = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    e && e.preventDefault();
+    setDisconnectError(false);
+    setIsDisconnecting(true);
+    _tools_jetpack_rest_api_client__WEBPACK_IMPORTED_MODULE_7__["default"].disconnectSite().then(function () {
+      setIsDisconnecting(false);
+      setIsDisconnected(true);
+    })["catch"](function (error) {
+      setIsDisconnecting(false);
+      setDisconnectError(error);
+
+      if (onError) {
+        onError(error);
+      }
+    });
+  }, [setIsDisconnecting, setIsDisconnected, setDisconnectError, onError]);
+  /**
+   * Close modal and fire 'onDisconnected' callback if exists.
+   * Triggered upon clicking the 'Back To WordPress' button.
+   */
+
+  var backToWordpress = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (e) {
+    e && e.preventDefault();
+
+    if (onDisconnected) {
+      onDisconnected();
+    }
+
+    closeModal();
+  }, [onDisconnected, closeModal]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    variant: "link",
+    onClick: openModal,
+    className: "jp-disconnect-dialog__link"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Disconnect', 'jetpack')), isOpen && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Modal"], {
+    title: "",
+    contentLabel: title,
+    aria: {
+      labelledby: 'jp-disconnect-dialog__heading'
+    },
+    onRequestClose: closeModal,
+    shouldCloseOnClickOutside: false,
+    shouldCloseOnEsc: false,
+    isDismissible: false,
+    className: 'jp-disconnect-dialog' + (isDisconnected ? ' jp-disconnect-dialog__success' : '')
+  }, !isDisconnected && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-disconnect-dialog__content"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", {
+    id: "jp-disconnect-dialog__heading"
+  }, title), children), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-disconnect-dialog__actions"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "lg-col-span-8 md-col-span-8 sm-col-span-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createInterpolateElement"])(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('<strong>Need help?</strong> Learn more about the <jpConnectionInfoLink>Jetpack connection</jpConnectionInfoLink> or <jpSupportLink>contact Jetpack support</jpSupportLink>', 'jetpack'), {
+    strong: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null),
+    jpConnectionInfoLink: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+      href: Object(_automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_5__["getRedirectUrl"])('why-the-wordpress-com-connection-is-important-for-jetpack'),
+      rel: "noopener noreferrer",
+      target: "_blank",
+      className: "jp-disconnect-dialog__link"
+    }),
+    jpSupportLink: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+      href: Object(_automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_5__["getRedirectUrl"])('jetpack-support'),
+      rel: "noopener noreferrer",
+      target: "_blank",
+      className: "jp-disconnect-dialog__link"
+    })
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "jp-disconnect-dialog__button-wrap lg-col-span-4 md-col-span-8 sm-col-span-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    isPrimary: true,
+    disabled: isDisconnecting,
+    onClick: closeModal,
+    className: "jp-disconnect-dialog__btn-dismiss"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Stay connected', 'jetpack')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    isPrimary: true,
+    disabled: isDisconnecting,
+    onClick: disconnect,
+    className: "jp-disconnect-dialog__btn-disconnect"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Disconnect', 'jetpack')))), disconnectError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
+    className: "jp-disconnect-dialog__error"
+  }, errorMessage))), isDisconnected && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_automattic_jetpack_components__WEBPACK_IMPORTED_MODULE_5__["JetpackLogo"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h1", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createInterpolateElement"])(Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Jetpack has been <br/>successfully disconnected.', 'jetpack'), {
+    br: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null)
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    isPrimary: true,
+    onClick: backToWordpress,
+    className: "jp-disconnect-dialog__btn-back-to-wp"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Back to WordPress', 'jetpack')))));
+};
+
+DisconnectDialog.propTypes = {
+  apiRoot: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  apiNonce: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  title: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  onDisconnected: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onError: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  errorMessage: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string
+};
+DisconnectDialog.defaultProps = {
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Are you sure you want to disconnect?', 'jetpack'),
+  errorMessage: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Failed to disconnect. Please try again.', 'jetpack')
+};
+/* harmony default export */ __webpack_exports__["default"] = (DisconnectDialog);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/disconnect-dialog/style.scss":
+/*!*****************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/disconnect-dialog/style.scss ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/in-place-connection/index.jsx":
+/*!******************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/in-place-connection/index.jsx ***!
+  \******************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "../../../node_modules/.pnpm/prop-types@15.7.2/node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.scss */ "../../js-packages/connection/components/in-place-connection/style.scss");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_3__);
+/**
+ * External dependencies
+ */
+
+
+
+/**
+ * Internal dependencies
+ */
+
+
+/**
+ * The in-place connection component.
+ *
+ * @param {object} props -- The properties.
+ * @param {string} props.title -- Element title.
+ * @param {boolean} props.isLoading -- Whether the element is still loading.
+ * @param {string|number} props.width -- Iframe width.
+ * @param {string|number} props.height -- Iframe height.
+ * @param {boolean} props.displayTOS -- Whether the site has connection owner connected.
+ * @param {boolean} props.scrollToIframe -- Whether we need to auto-scroll the window upon element rendering.
+ * @param {string} props.connectUrl -- The connection URL.
+ * @param {Function} props.onComplete -- The callback to be called upon complete of the connection process.
+ * @param {Function} props.onThirdPartyCookiesBlocked -- The callback to be called if third-party cookies are disabled.
+ * @param {string} props.location -- Component location identifier passed to WP.com.
+ *
+ * @returns {React.Component} The in-place connection component.
+ */
+
+var InPlaceConnection = function InPlaceConnection(props) {
+  var title = props.title,
+      isLoading = props.isLoading,
+      width = props.width,
+      displayTOS = props.displayTOS,
+      scrollToIframe = props.scrollToIframe,
+      connectUrl = props.connectUrl,
+      onComplete = props.onComplete,
+      onThirdPartyCookiesBlocked = props.onThirdPartyCookiesBlocked,
+      location = props.location;
+  var height = props.height;
+  var iframeWrapRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
+  var iframeRef = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])();
+  /**
+   * Handles messages received from inside the iframe.
+   *
+   * @param {object} e -- Event object.
+   */
+
+  var receiveData = function receiveData(e) {
+    if (!iframeRef.current || e.source !== iframeRef.current.contentWindow) {
+      return;
+    }
+
+    switch (e.data) {
+      case 'close':
+        // Remove listener, our job here is done.
+        window.removeEventListener('message', receiveData);
+
+        if (onComplete) {
+          onComplete();
+        }
+
+        break;
+
+      case 'wpcom_nocookie':
+        // Third-party cookies blocked.
+        if (onThirdPartyCookiesBlocked) {
+          onThirdPartyCookiesBlocked();
+        }
+
+        break;
+    }
+  };
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(
+  /**
+   * The component initialization.
+   */
+  function () {
+    // Scroll to the iframe container
+    if (scrollToIframe) {
+      window.scrollTo(0, iframeWrapRef.current.offsetTop - 10);
+    } // Add an event listener to identify successful authorization via iframe.
+
+
+    window.addEventListener('message', receiveData);
+  }); // The URL looks like https://jetpack.wordpress.com/jetpack.authorize_iframe/1/. We need to include the trailing
+  // slash below so that we don't end up with something like /jetpack.authorize_iframe_iframe/
+
+  var src = connectUrl.replace('authorize/', 'authorize_iframe/');
+
+  if (!src.includes('?')) {
+    src += '?';
+  }
+
+  if (displayTOS) {
+    src += '&display-tos';
+    height = (parseInt(height) + 50).toString();
+  }
+
+  src += '&iframe_height=' + parseInt(height);
+
+  if (location) {
+    src += '&iframe_source=' + location;
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "dops-card fade-in jp-iframe-wrap",
+    ref: iframeWrapRef
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, title), isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__["__"])('Loading…', 'jetpack')) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("iframe", {
+    title: title,
+    width: width,
+    height: height,
+    src: src,
+    ref: iframeRef
+  }));
+};
+
+InPlaceConnection.propTypes = {
+  title: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  isLoading: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  width: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  height: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
+  connectUrl: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  displayTOS: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool.isRequired,
+  scrollToIframe: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+  onComplete: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  onThirdPartyCookiesBlocked: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  location: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string
+};
+InPlaceConnection.defaultProps = {
+  isLoading: false,
+  height: '300',
+  width: '100%',
+  scrollToIframe: false
+};
+/* harmony default export */ __webpack_exports__["default"] = (InPlaceConnection);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/components/in-place-connection/style.scss":
+/*!*******************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/components/in-place-connection/style.scss ***!
+  \*******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../../js-packages/connection/helpers/third-party-cookies-fallback.jsx":
+/*!******************************************************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/helpers/third-party-cookies-fallback.jsx ***!
+  \******************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * Performs the fallback redirect if third-party cookies are not available.
+ *
+ * @param {string} fallbackURL -- The fallback URL.
+ */
+var thirdPartyCookiesFallback = function thirdPartyCookiesFallback(fallbackURL) {
+  window.location.replace(fallbackURL);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (thirdPartyCookiesFallback);
+
+/***/ }),
+
+/***/ "../../js-packages/connection/index.jsx":
+/*!***********************************************************************************!*\
+  !*** /home/runner/work/jetpack/jetpack/projects/js-packages/connection/index.jsx ***!
+  \***********************************************************************************/
+/*! exports provided: ConnectScreen, ConnectButton, InPlaceConnection, ConnectUser, ConnectionStatusCard, DisconnectDialog, thirdPartyCookiesFallbackHelper */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_connect_screen__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/connect-screen */ "../../js-packages/connection/components/connect-screen/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConnectScreen", function() { return _components_connect_screen__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+/* harmony import */ var _components_connect_button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/connect-button */ "../../js-packages/connection/components/connect-button/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConnectButton", function() { return _components_connect_button__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _components_in_place_connection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/in-place-connection */ "../../js-packages/connection/components/in-place-connection/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InPlaceConnection", function() { return _components_in_place_connection__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _components_connect_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/connect-user */ "../../js-packages/connection/components/connect-user/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConnectUser", function() { return _components_connect_user__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _components_connection_status_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/connection-status-card */ "../../js-packages/connection/components/connection-status-card/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConnectionStatusCard", function() { return _components_connection_status_card__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _components_disconnect_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/disconnect-dialog */ "../../js-packages/connection/components/disconnect-dialog/index.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DisconnectDialog", function() { return _components_disconnect_dialog__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _helpers_third_party_cookies_fallback__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/third-party-cookies-fallback */ "../../js-packages/connection/helpers/third-party-cookies-fallback.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "thirdPartyCookiesFallbackHelper", function() { return _helpers_third_party_cookies_fallback__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+/**
+ * Components.
+ */
+
+
+
+
+
+
+/**
+ * Helpers.
+ */
+
 
 
 /***/ }),
@@ -2200,14 +3584,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Api404Error", function() { return Api404Error; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Api404AfterRedirectError", function() { return Api404AfterRedirectError; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FetchNetworkError", function() { return FetchNetworkError; });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/createSuper */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/createSuper.js");
-/* harmony import */ var _babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/wrapNativeSuper */ "../../js-packages/connection/node_modules/@babel/runtime/helpers/wrapNativeSuper.js");
-/* harmony import */ var _babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/classCallCheck */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/inherits */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createSuper */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/createSuper.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/wrapNativeSuper */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/wrapNativeSuper.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "lodash");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
 
@@ -2219,8 +3603,6 @@ __webpack_require__.r(__webpack_exports__);
  * External dependencies
  */
 
-/* eslint-disable no-unused-vars */
-
 /**
  * Helps create new custom error classes to better notify upper layers.
  *
@@ -2230,14 +3612,14 @@ __webpack_require__.r(__webpack_exports__);
 
 function createCustomError(name) {
   var CustomError = /*#__PURE__*/function (_Error) {
-    _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1___default()(CustomError, _Error);
+    _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_1___default()(CustomError, _Error);
 
-    var _super = _babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2___default()(CustomError);
+    var _super = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_createSuper__WEBPACK_IMPORTED_MODULE_2___default()(CustomError);
 
     function CustomError() {
       var _this;
 
-      _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, CustomError);
+      _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, CustomError);
 
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
@@ -2249,7 +3631,7 @@ function createCustomError(name) {
     }
 
     return CustomError;
-  }( /*#__PURE__*/_babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3___default()(Error));
+  }( /*#__PURE__*/_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_wrapNativeSuper__WEBPACK_IMPORTED_MODULE_3___default()(Error));
 
   return CustomError;
 }
@@ -2311,6 +3693,22 @@ function JetpackRestApiClient(root, nonce) {
           redirect_uri: redirectUri
         })
       }).then(checkStatus).then(parseJsonResponse);
+    },
+    fetchAuthorizationUrl: function fetchAuthorizationUrl(redirectUri) {
+      return getRequest("".concat(apiRoot, "jetpack/v4/connection/authorize_url?no_iframe=1&redirect_uri=").concat(encodeURIComponent(redirectUri)), getParams).then(checkStatus).then(parseJsonResponse);
+    },
+    fetchSiteConnectionStatus: function fetchSiteConnectionStatus() {
+      return getRequest("".concat(apiRoot, "jetpack/v4/connection"), getParams).then(parseJsonResponse);
+    },
+    fetchSiteConnectionData: function fetchSiteConnectionData() {
+      return getRequest("".concat(apiRoot, "jetpack/v4/connection/data"), getParams).then(parseJsonResponse);
+    },
+    disconnectSite: function disconnectSite() {
+      return postRequest("".concat(apiRoot, "jetpack/v4/connection"), postParams, {
+        body: JSON.stringify({
+          isActive: false
+        })
+      }).then(checkStatus).then(parseJsonResponse);
     }
   };
   /**
@@ -2350,13 +3748,11 @@ function JetpackRestApiClient(root, nonce) {
 
 
   function postRequest(route, params, body) {
-    return fetch(route, Object(lodash__WEBPACK_IMPORTED_MODULE_4__["assign"])({}, params, body)).catch(catchNetworkErrors);
+    return fetch(route, Object(lodash__WEBPACK_IMPORTED_MODULE_4__["assign"])({}, params, body))["catch"](catchNetworkErrors);
   }
 
   Object(lodash__WEBPACK_IMPORTED_MODULE_4__["assign"])(this, methods);
 }
-/* eslint-enable no-unused-vars */
-
 /**
  * Check the response status.
  *
@@ -2378,7 +3774,7 @@ function checkStatus(response) {
     });
   }
 
-  return response.json().catch(function (e) {
+  return response.json()["catch"](function (e) {
     return catchJsonParseError(e);
   }).then(function (json) {
     var error = new Error("".concat(json.message, " (Status ").concat(response.status, ")"));
@@ -2396,7 +3792,7 @@ function checkStatus(response) {
 
 
 function parseJsonResponse(response) {
-  return response.json().catch(function (e) {
+  return response.json()["catch"](function (e) {
     return catchJsonParseError(e, response.redirected, response.url);
   });
 }
@@ -2430,55 +3826,23 @@ var restApi = new JetpackRestApiClient();
 
 /***/ }),
 
-/***/ "./_inc/actions/connection-data.js":
-/*!*****************************************!*\
-  !*** ./_inc/actions/connection-data.js ***!
-  \*****************************************/
-/*! exports provided: CONNECTION_DATA_SET_AUTHORIZATION_URL, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONNECTION_DATA_SET_AUTHORIZATION_URL", function() { return CONNECTION_DATA_SET_AUTHORIZATION_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return connectionDataActions; });
-var CONNECTION_DATA_SET_AUTHORIZATION_URL = 'CONNECTION_DATA_AUTHORIZATION_URL_SET';
-var connectionDataActions = {
-  connectionDataSetAuthorizationUrl: function connectionDataSetAuthorizationUrl(url) {
-    return {
-      type: CONNECTION_DATA_SET_AUTHORIZATION_URL,
-      url: url
-    };
-  }
-};
-
-
-/***/ }),
-
 /***/ "./_inc/actions/connection-status.js":
 /*!*******************************************!*\
   !*** ./_inc/actions/connection-status.js ***!
   \*******************************************/
-/*! exports provided: CONNECTION_STATUS_REGISTERED, CONNECTION_STATUS_USER_CONNECTED, default */
+/*! exports provided: SET_CONNECTION_STATUS, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONNECTION_STATUS_REGISTERED", function() { return CONNECTION_STATUS_REGISTERED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONNECTION_STATUS_USER_CONNECTED", function() { return CONNECTION_STATUS_USER_CONNECTED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_CONNECTION_STATUS", function() { return SET_CONNECTION_STATUS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return connectionStatusActions; });
-var CONNECTION_STATUS_REGISTERED = 'CONNECTION_STATUS_REGISTERED';
-var CONNECTION_STATUS_USER_CONNECTED = 'CONNECTION_STATUS_USER_CONNECTED';
+var SET_CONNECTION_STATUS = 'SET_CONNECTION_STATUS';
 var connectionStatusActions = {
-  connectionStatusSetRegistered: function connectionStatusSetRegistered(isRegistered) {
+  setConnectionStatus: function setConnectionStatus(connectionStatus) {
     return {
-      type: CONNECTION_STATUS_REGISTERED,
-      isRegistered: isRegistered
-    };
-  },
-  connectionStatusSetUserConnected: function connectionStatusSetUserConnected(isUserConnected) {
-    return {
-      type: CONNECTION_STATUS_USER_CONNECTED,
-      isUserConnected: isUserConnected
+      type: SET_CONNECTION_STATUS,
+      connectionStatus: connectionStatus
     };
   }
 };
@@ -2495,10 +3859,9 @@ var connectionStatusActions = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectSpread2 */ "./node_modules/@babel/runtime/helpers/objectSpread2.js");
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectSpread2 */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectSpread2.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _connection_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./connection-status */ "./_inc/actions/connection-status.js");
-/* harmony import */ var _connection_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./connection-data */ "./_inc/actions/connection-data.js");
 
 
 /**
@@ -2506,8 +3869,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-
-var actions = _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, _connection_status__WEBPACK_IMPORTED_MODULE_1__["default"]), _connection_data__WEBPACK_IMPORTED_MODULE_2__["default"]);
+var actions = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, _connection_status__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (actions);
 
@@ -2561,6 +3923,17 @@ render();
 
 /***/ }),
 
+/***/ "./_inc/components/admin/assets/connect-right.png":
+/*!********************************************************!*\
+  !*** ./_inc/components/admin/assets/connect-right.png ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/connect-right-d53058f843bf7071f1859f89639782c1.png";
+
+/***/ }),
+
 /***/ "./_inc/components/admin/index.jsx":
 /*!*****************************************!*\
   !*** ./_inc/components/admin/index.jsx ***!
@@ -2582,6 +3955,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _header__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../header */ "./_inc/components/header/index.jsx");
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./style.scss */ "./_inc/components/admin/style.scss");
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _assets_connect_right_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./assets/connect-right.png */ "./_inc/components/admin/assets/connect-right.png");
+/* harmony import */ var _assets_connect_right_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_assets_connect_right_png__WEBPACK_IMPORTED_MODULE_7__);
 /**
  * External dependencies
  */
@@ -2596,6 +3971,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * The Connection IU Admin App.
  *
@@ -2603,56 +3979,52 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 function Admin() {
-  var connectionStatus = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
-    return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getConnectionStatus();
-  }, []);
   var APINonce = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
     return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getAPINonce();
   }, []);
   var APIRoot = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
     return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getAPIRoot();
   }, []);
-  var authorizationUrl = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
-    return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getAuthorizationUrl();
-  }, []);
-  var doNotUseConnectionIframe = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
-    return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getDoNotUseConnectionIframe();
-  }, []);
   var registrationNonce = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
     return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getRegistrationNonce();
   }, []);
+  var assetBuildUrl = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
+    return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getAssetBuildUrl();
+  }, []);
+  var connectionStatus = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useSelect"])(function (select) {
+    return select(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]).getConnectionStatus();
+  }, []);
 
   var _useDispatch = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])(_store__WEBPACK_IMPORTED_MODULE_4__["STORE_ID"]),
-      connectionStatusSetRegistered = _useDispatch.connectionStatusSetRegistered,
-      connectionStatusSetUserConnected = _useDispatch.connectionStatusSetUserConnected,
-      connectionDataSetAuthorizationUrl = _useDispatch.connectionDataSetAuthorizationUrl;
+      setConnectionStatus = _useDispatch.setConnectionStatus;
 
-  var onUserConnected = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function () {
-    connectionStatusSetUserConnected(true);
-  }, [connectionStatusSetUserConnected]);
-  var onRegistered = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (response) {
-    connectionStatusSetRegistered(true);
-
-    if (response.authorizeUrl) {
-      connectionDataSetAuthorizationUrl(response.authorizeUrl);
-    }
-  }, [connectionStatusSetRegistered, connectionDataSetAuthorizationUrl]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header__WEBPACK_IMPORTED_MODULE_5__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "connection-status-card"
-  }, connectionStatus.isRegistered && !connectionStatus.isUserConnected && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Site Registered', 'jetpack')), connectionStatus.isRegistered && connectionStatus.isUserConnected && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Site and User Connected', 'jetpack'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_automattic_jetpack_connection__WEBPACK_IMPORTED_MODULE_2__["JetpackConnection"], {
-    apiRoot: APIRoot,
-    apiNonce: APINonce,
-    authorizationUrl: authorizationUrl,
+  var statusCallback = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function (status) {
+    setConnectionStatus(status);
+  }, [setConnectionStatus]);
+  var onDisconnectedCallback = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(function () {
+    setConnectionStatus({
+      isActive: false,
+      isRegistered: false,
+      isUserConnected: false
+    });
+  }, [setConnectionStatus]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_header__WEBPACK_IMPORTED_MODULE_5__["default"], null), connectionStatus.isRegistered && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_automattic_jetpack_connection__WEBPACK_IMPORTED_MODULE_2__["ConnectionStatusCard"], {
     isRegistered: connectionStatus.isRegistered,
     isUserConnected: connectionStatus.isUserConnected,
-    hasConnectedOwner: connectionStatus.hasConnectedOwner,
-    forceCalypsoFlow: doNotUseConnectionIframe,
-    onRegistered: onRegistered,
-    onUserConnected: onUserConnected,
+    apiRoot: APIRoot,
+    apiNonce: APINonce,
+    onDisconnected: onDisconnectedCallback,
+    redirectUri: "tools.php?page=wpcom-connection-manager"
+  }), !connectionStatus.isRegistered && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_automattic_jetpack_connection__WEBPACK_IMPORTED_MODULE_2__["ConnectScreen"], {
+    apiRoot: APIRoot,
+    apiNonce: APINonce,
     registrationNonce: registrationNonce,
     from: "connection-ui",
-    redirectUri: "tools.php?page=wpcom-connection-manager"
-  }));
+    redirectUri: "tools.php?page=wpcom-connection-manager",
+    statusCallback: statusCallback,
+    images: [_assets_connect_right_png__WEBPACK_IMPORTED_MODULE_7___default.a],
+    assetBaseUrl: assetBuildUrl
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])("Secure and speed up your site for free with Jetpack's powerful WordPress tools.", 'jetpack')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Measure your impact with beautiful stats', 'jetpack')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Speed up your site with optimized images', 'jetpack')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Protect your site against bot attacs', 'jetpacks')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Get notifications if your site goes offline', 'jetpacks')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Enhance your site with dozens of other features', 'jetpack')))));
 }
 
 /***/ }),
@@ -2738,40 +4110,21 @@ var API = function API() {
 
 /***/ }),
 
-/***/ "./_inc/reducers/connection-data.js":
-/*!******************************************!*\
-  !*** ./_inc/reducers/connection-data.js ***!
-  \******************************************/
+/***/ "./_inc/reducers/assets.js":
+/*!*********************************!*\
+  !*** ./_inc/reducers/assets.js ***!
+  \*********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectSpread2 */ "./node_modules/@babel/runtime/helpers/objectSpread2.js");
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_connection_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions/connection-data */ "./_inc/actions/connection-data.js");
-
-
-/**
- * Internal dependencies
- */
-
-
-var settings = function settings() {
+var assets = function assets() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case _actions_connection_data__WEBPACK_IMPORTED_MODULE_1__["CONNECTION_DATA_SET_AUTHORIZATION_URL"]:
-      return _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, state), {}, {
-        authorizationUrl: action.url
-      });
-  }
-
   return state;
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (settings);
+/* harmony default export */ __webpack_exports__["default"] = (assets);
 
 /***/ }),
 
@@ -2784,11 +4137,7 @@ var settings = function settings() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectSpread2 */ "./node_modules/@babel/runtime/helpers/objectSpread2.js");
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_connection_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions/connection-status */ "./_inc/actions/connection-status.js");
-
-
+/* harmony import */ var _actions_connection_status__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/connection-status */ "./_inc/actions/connection-status.js");
 /**
  * Internal dependencies
  */
@@ -2799,15 +4148,8 @@ var connectionStatus = function connectionStatus() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case _actions_connection_status__WEBPACK_IMPORTED_MODULE_1__["CONNECTION_STATUS_REGISTERED"]:
-      return _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, state), {}, {
-        isRegistered: action.isRegistered
-      });
-
-    case _actions_connection_status__WEBPACK_IMPORTED_MODULE_1__["CONNECTION_STATUS_USER_CONNECTED"]:
-      return _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, state), {}, {
-        isUserConnected: action.isUserConnected
-      });
+    case _actions_connection_status__WEBPACK_IMPORTED_MODULE_0__["SET_CONNECTION_STATUS"]:
+      return action.connectionStatus;
   }
 
   return state;
@@ -2830,7 +4172,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _connection_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./connection-status */ "./_inc/reducers/connection-status.js");
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api */ "./_inc/reducers/api.js");
-/* harmony import */ var _connection_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./connection-data */ "./_inc/reducers/connection-data.js");
+/* harmony import */ var _assets__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets */ "./_inc/reducers/assets.js");
 /**
  * External dependencies
  */
@@ -2845,7 +4187,7 @@ __webpack_require__.r(__webpack_exports__);
 var reducer = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   connectionStatus: _connection_status__WEBPACK_IMPORTED_MODULE_1__["default"],
   API: _api__WEBPACK_IMPORTED_MODULE_2__["default"],
-  connectionData: _connection_data__WEBPACK_IMPORTED_MODULE_3__["default"]
+  assets: _assets__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (reducer);
 
@@ -2875,24 +4217,21 @@ var APISelectors = {
 
 /***/ }),
 
-/***/ "./_inc/selectors/connection-data.js":
-/*!*******************************************!*\
-  !*** ./_inc/selectors/connection-data.js ***!
-  \*******************************************/
+/***/ "./_inc/selectors/assets.js":
+/*!**********************************!*\
+  !*** ./_inc/selectors/assets.js ***!
+  \**********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var settingsSelectors = {
-  getDoNotUseConnectionIframe: function getDoNotUseConnectionIframe(state) {
-    return state.connectionData.doNotUseConnectionIframe || null;
-  },
-  getAuthorizationUrl: function getAuthorizationUrl(state) {
-    return state.connectionData.authorizationUrl || null;
+var assetsSelectors = {
+  getAssetBuildUrl: function getAssetBuildUrl(state) {
+    return state.assets.buildUrl || null;
   }
 };
-/* harmony default export */ __webpack_exports__["default"] = (settingsSelectors);
+/* harmony default export */ __webpack_exports__["default"] = (assetsSelectors);
 
 /***/ }),
 
@@ -2923,11 +4262,11 @@ var connectionSelectors = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/objectSpread2 */ "./node_modules/@babel/runtime/helpers/objectSpread2.js");
-/* harmony import */ var _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! /home/runner/work/jetpack/jetpack/node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectSpread2 */ "../../../node_modules/.pnpm/@babel+runtime@7.14.0/node_modules/@babel/runtime/helpers/objectSpread2.js");
+/* harmony import */ var _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _connection_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./connection-status */ "./_inc/selectors/connection-status.js");
 /* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./api */ "./_inc/selectors/api.js");
-/* harmony import */ var _connection_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./connection-data */ "./_inc/selectors/connection-data.js");
+/* harmony import */ var _assets__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets */ "./_inc/selectors/assets.js");
 
 
 /**
@@ -2937,7 +4276,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var selectors = _babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, _connection_status__WEBPACK_IMPORTED_MODULE_1__["default"]), _api__WEBPACK_IMPORTED_MODULE_2__["default"]), _connection_data__WEBPACK_IMPORTED_MODULE_3__["default"]);
+var selectors = _home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()(_home_runner_work_jetpack_jetpack_node_modules_pnpm_babel_runtime_7_14_0_node_modules_babel_runtime_helpers_objectSpread2__WEBPACK_IMPORTED_MODULE_0___default()({}, _connection_status__WEBPACK_IMPORTED_MODULE_1__["default"]), _api__WEBPACK_IMPORTED_MODULE_2__["default"]), _assets__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (selectors);
 
@@ -2973,81 +4312,6 @@ var storeConfig = {
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime/helpers/defineProperty.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/helpers/objectSpread2.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/objectSpread2.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var defineProperty = __webpack_require__(/*! ./defineProperty.js */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys(Object(source), true).forEach(function (key) {
-        defineProperty(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
-
-module.exports = _objectSpread2;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-
-/***/ }),
-
 /***/ "@wordpress/components":
 /*!************************************!*\
   !*** external ["wp","components"] ***!
@@ -3067,6 +4331,17 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
 /***/ (function(module, exports) {
 
 (function() { module.exports = window["wp"]["data"]; }());
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = window["wp"]["element"]; }());
 
 /***/ }),
 

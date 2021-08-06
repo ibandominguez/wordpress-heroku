@@ -1,13 +1,13 @@
 === Storefront ===
 Contributors: automattic, tiagonoronha, jameskoster
 Requires at least: 5.3.4
-Tested up to: 5.6.0
-Stable tag: 3.5.1
-Version: 3.5.1
+Tested up to: 5.7.0
+Stable tag: 3.7.0
+Version: 3.7.0
 WC requires at least: 4.2
-WC tested up to: 5.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+WC tested up to: 5.3
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: e-commerce, two-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, featured-images, full-width-template, threaded-comments, accessibility-ready, rtl-language-support, footer-widgets, sticky-post, theme-options, editor-style
 
 Storefront is the perfect theme for your next WooCommerce project.
@@ -50,6 +50,18 @@ To the best of our knowledge, Google doesn’t track nor share end user data.
 Privacy Policy for the Google Fonts API: https://developers.google.com/fonts/faq#what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
 
 == Changelog ==
+
+= 3.7.0 - 2021-05-25 =
+- Fix - Fix compatibility problem with Gravity forms premium ([#1690](https://github.com/woocommerce/storefront/pull/1690))
+- Dev - Image optimization (imagealpha & imageoptim) ([#1691](https://github.com/woocommerce/storefront/pull/1691))
+
+= 3.6.0 - 2021-05-11 =
+- Fix – Fix potential error that can occur when product is null on sticky add to cart ([#1650](https://github.com/woocommerce/storefront/pull/1650))
+- Fix – Accessibility: add aria-label on breadcrumbs ([#1668](https://github.com/woocommerce/storefront/pull/1668))
+- Fix – Hide spinner when Payment Request button is disabled ([#1672](https://github.com/woocommerce/storefront/pull/1672))
+- Dev – Remove deprecated functions ([#1652](https://github.com/woocommerce/storefront/pull/1652))
+- Dev – Remove jQuery Pointer Events Polyfill (PEP) ([#1654](https://github.com/woocommerce/storefront/pull/1654))
+- Dev – Update various dependencies.
 
 = 3.5.1 - 2021-03-17 =
 

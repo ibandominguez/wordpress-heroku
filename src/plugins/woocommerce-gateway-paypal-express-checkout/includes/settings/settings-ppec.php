@@ -426,18 +426,20 @@ $per_context_settings = array(
 		'desc_tip'    => true,
 		'description' => __( 'Hides the specified funding methods.', 'woocommerce-gateway-paypal-express-checkout' ),
 		'options'     => array(
-			'CREDIT'     => __( 'PayPal Credit', 'woocommerce-gateway-paypal-express-checkout' ),
-			'ELV'        => __( 'ELV', 'woocommerce-gateway-paypal-express-checkout' ),
-			'CARD'       => __( 'Credit or debit cards', 'woocommerce-gateway-paypal-express-checkout' ),
-			'VENMO'      => __( 'Venmo', 'woocommerce-gateway-paypal-express-checkout' ),
-			'SEPA'       => __( 'SEPA-Lastschrift', 'woocommerce-gateway-paypal-express-checkout' ),
-			'BANCONTACT' => __( 'Bancontact', 'woocommerce-gateway-paypal-express-checkout' ),
-			'EPS'        => __( 'eps', 'woocommerce-gateway-paypal-express-checkout' ),
-			'GIROPAY'    => __( 'giropay', 'woocommerce-gateway-paypal-express-checkout' ),
-			'IDEAL'      => __( 'iDEAL', 'woocommerce-gateway-paypal-express-checkout' ),
-			'MYBANK'     => __( 'MyBank', 'woocommerce-gateway-paypal-express-checkout' ),
-			'P24'        => __( 'Przelewy24', 'woocommerce-gateway-paypal-express-checkout' ),
-			'SOFORT'     => __( 'Sofort', 'woocommerce-gateway-paypal-express-checkout' ),
+			'CARD'        => __( 'Credit or debit cards', 'woocommerce-gateway-paypal-express-checkout' ),
+			'CREDIT'      => __( 'PayPal Credit', 'woocommerce-gateway-paypal-express-checkout' ),
+			'BANCONTACT'  => __( 'Bancontact', 'woocommerce-gateway-paypal-express-checkout' ),
+			'BLIK'        => __( 'BLIK', 'woocommerce-gateway-paypal-express-checkout' ),
+			'ELV'         => __( 'ELV', 'woocommerce-gateway-paypal-express-checkout' ),
+			'EPS'         => __( 'eps', 'woocommerce-gateway-paypal-express-checkout' ),
+			'GIROPAY'     => __( 'giropay', 'woocommerce-gateway-paypal-express-checkout' ),
+			'IDEAL'       => __( 'iDEAL', 'woocommerce-gateway-paypal-express-checkout' ),
+			'MERCADOPAGO' => __( 'MercadoPago', 'woocommerce-gateway-paypal-express-checkout' ),
+			'MYBANK'      => __( 'MyBank', 'woocommerce-gateway-paypal-express-checkout' ),
+			'P24'         => __( 'Przelewy24', 'woocommerce-gateway-paypal-express-checkout' ),
+			'SEPA'        => __( 'SEPA-Lastschrift', 'woocommerce-gateway-paypal-express-checkout' ),
+			'SOFORT'      => __( 'Sofort', 'woocommerce-gateway-paypal-express-checkout' ),
+			'VENMO'       => __( 'Venmo', 'woocommerce-gateway-paypal-express-checkout' ),
 		),
 	),
 	'credit_enabled' => array(
@@ -564,11 +566,10 @@ $per_context_settings['button_size']['class']    .= ' woocommerce_ppec_paypal_sp
 $per_context_settings['credit_enabled']['class'] .= ' woocommerce_ppec_paypal_spb';
 
 $settings['cart_checkout_enabled'] = array(
-	'title'       => __( 'Checkout on cart page', 'woocommerce-gateway-paypal-express-checkout' ),
+	'title'       => __( 'Enable on the cart page', 'woocommerce-gateway-paypal-express-checkout' ),
 	'type'        => 'checkbox',
 	'class'       => 'woocommerce_ppec_paypal_visibility_toggle',
-	'label'       => __( 'Enable PayPal Checkout on the cart page', 'woocommerce-gateway-paypal-express-checkout' ),
-	'description' => __( 'This shows or hides the PayPal Checkout button on the cart page.', 'woocommerce-gateway-paypal-express-checkout' ),
+	'label'       => __( 'Enable PayPal Checkout buttons on the cart page', 'woocommerce-gateway-paypal-express-checkout' ),
 	'desc_tip'    => true,
 	'default'     => 'yes',
 );
@@ -611,13 +612,12 @@ $settings['single_product_settings'] = array(
 );
 
 $settings['checkout_on_single_product_enabled'] = array(
-	'title'       => __( 'Checkout on Single Product', 'woocommerce-gateway-paypal-express-checkout' ),
+	'title'       => __( 'Enable on the single product page', 'woocommerce-gateway-paypal-express-checkout' ),
 	'type'        => 'checkbox',
 	'class'       => 'woocommerce_ppec_paypal_visibility_toggle',
-	'label'       => __( 'Checkout on Single Product', 'woocommerce-gateway-paypal-express-checkout' ),
+	'label'       => __( 'Enable PayPal Checkout buttons on the single product page', 'woocommerce-gateway-paypal-express-checkout' ),
 	'default'     => 'yes',
 	'desc_tip'    => true,
-	'description' => __( 'Enable PayPal Checkout on Single Product view.', 'woocommerce-gateway-paypal-express-checkout' ),
 );
 
 $settings['single_product_settings_toggle'] = array(
@@ -645,11 +645,10 @@ $settings['mark_settings'] = array(
 );
 
 $settings['mark_enabled'] = array(
-	'title'       => __( 'PayPal Mark', 'woocommerce-gateway-paypal-express-checkout' ),
+	'title'       => __( 'Enable on the checkout page', 'woocommerce-gateway-paypal-express-checkout' ),
 	'type'        => 'checkbox',
 	'class'       => 'woocommerce_ppec_paypal_visibility_toggle',
-	'label'       => __( 'Enable the PayPal Mark on regular checkout', 'woocommerce-gateway-paypal-express-checkout' ),
-	'description' => __( 'This enables the PayPal mark, which can be shown on regular WooCommerce checkout to use PayPal Checkout like a regular WooCommerce gateway.', 'woocommerce-gateway-paypal-express-checkout' ),
+	'label'       => __( 'Enable PayPal Checkout buttons on the regular checkout page', 'woocommerce-gateway-paypal-express-checkout' ),
 	'desc_tip'    => true,
 	'default'     => 'yes',
 );

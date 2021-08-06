@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Storefront package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-12-16 09:29:00+0000\n"
+"PO-Revision-Date: 2021-05-11 11:49:41+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,11 +19,15 @@ msgstr "Storefront es el tema perfecto para tu próximo proyecto WooCommerce. Di
 msgid "Storefront"
 msgstr "Storefront"
 
-#: inc/nux/class-storefront-nux-admin-inbox-messages-customize.php:34
+#: inc/woocommerce/class-storefront-woocommerce.php:226
+msgid "breadcrumbs"
+msgstr "migas de pan"
+
+#: inc/nux/class-storefront-nux-admin-inbox-messages-customize.php:35
 msgid "Visit the Storefront settings page to start setup and customization of your shop."
 msgstr "Visita la página de ajustes de Storefront para empezar a configurar y personalizar tu tienda."
 
-#: inc/nux/class-storefront-nux-admin-inbox-messages-customize.php:33
+#: inc/nux/class-storefront-nux-admin-inbox-messages-customize.php:34
 msgid "Design your store with Storefront 🎨"
 msgstr "Diseña tu tienda con Storefront 🎨"
 
@@ -185,7 +189,7 @@ msgstr "Organiza tus menús añadiendo páginas, categorías, etiquetas y enlace
 msgid "Customize your navigation menus"
 msgstr "Personaliza tus menús de navegación"
 
-#: inc/class-storefront.php:487
+#: inc/class-storefront.php:485
 msgid "Post Navigation"
 msgstr "Navegación de entradas"
 
@@ -355,7 +359,7 @@ msgstr "Omitir este paso"
 msgid "No thanks, skip the tour"
 msgstr "No gracias, sáltate la visita"
 
-#: inc/nux/class-storefront-nux-admin-inbox-messages-customize.php:41
+#: inc/nux/class-storefront-nux-admin-inbox-messages-customize.php:42
 #: inc/nux/class-storefront-nux-guided-tour.php:112
 #: inc/nux/class-storefront-nux-admin.php:180
 msgid "Let's go!"
