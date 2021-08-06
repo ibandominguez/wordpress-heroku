@@ -57,7 +57,7 @@ if (!defined('ABSPATH')):
 endif;
 
 define('PROTOCOL', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://');
-define('HOST', $_SERVER['HTTP_HOST']);
+define('HOST', count(explode('.', $_SERVER['HTTP_HOST'])) <= 2 ? 'www.'.$_SERVER['HTTP_HOST'] : $_SERVER['HTTP_HOST']); // Root domain replication
 define('URL', PROTOCOL.HOST);
 define('PREFIX', getEnvOr('PREFIX', 'wphh_'));
 
