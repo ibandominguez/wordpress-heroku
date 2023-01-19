@@ -2,6 +2,6 @@
   "name": "Wordpress on heroku",
   "description": "An easy way to wordress and heroku, file system ready",
   "repository": "https://github.com/ibandominguez/wordpress-heroku",
-  "addons": ["jawsdb:kitefin", "cloudcube:free"],
+  "addons": ["jawsdb:kitefin", "cloudcube:hobby"],
   "keywords": ["php", "wordress", "s3"]
 }
