@@ -8,10 +8,10 @@
     "packages": [
         {
             "name": "wordpress/wordpress",
-            "version": "5.8",
+            "version": "5.9",
             "dist": {
                 "type": "zip",
-                "url": "https://wordpress.org/wordpress-5.8.zip"
+                "url": "https://wordpress.org/wordpress-5.9.zip"
             },
             "type": "library"
         }
@@ -23,7 +23,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~7.4.9",
+        "php": "~8.1.6",
         "ext-gd": "*",
         "ext-exif": "*",
         "ext-imagick": "*"

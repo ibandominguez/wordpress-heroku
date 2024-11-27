@@ -4,20 +4,20 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "5.8",
+        "version": "5.9",
         "dist": {
-          "url": "https://wordpress.org/wordpress-5.8.zip",
+          "url": "https://wordpress.org/wordpress-5.9.zip",
           "type": "zip"
         }
       }
     }
   ],
   "require": {
-    "php": "~7.4.9",
+    "php": "~8.1.6",
     "ext-gd": "*",
     "ext-exif": "*",
     "ext-imagick": "*",
-    "wordpress/wordpress": "^5.8"
+    "wordpress/wordpress": "^5.9"
   },
   "scripts": {
     "rm-public": "rm -rf public",
